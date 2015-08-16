@@ -1,9 +1,9 @@
 part of view;
 
 class Placement {
-  num x;
-  num y;
-  Function computeDimensions;
+  var computeTranslation;
+  var computeDimensions;
+  Placement(this.computeTranslation, this.computeDimensions);
 }
 
 class Dimension {

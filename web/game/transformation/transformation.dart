@@ -12,6 +12,7 @@ part 'polygon.dart';
 part 'vector.dart';
 
 abstract class Transformation {
+  Transformation inverse();
   void apply(CanvasRenderingContext2D context);
   TPoint applyToPoint(TPoint point);
 }

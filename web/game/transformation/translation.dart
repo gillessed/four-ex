@@ -1,8 +1,13 @@
 part of transformation;
 
 class Translation extends Transformation {
+  static Translation ZERO = new Translation(0, 0);
+  static var ZERO_F = (num width, num height) {
+    return ZERO;
+  };
   num dx;
   num dy;
+  
   Translation(this.dx, this.dy);
 
   Translation translate(num x, num y) {
@@ -17,5 +22,10 @@ class Translation extends Transformation {
   @override
   TPoint applyToPoint(TPoint point) {
     return point.translate(dx, dy);
+  }
+
+  @override
+  Transformation inverse() {
+    return new Translation(-dx, -dy);
   }
 }

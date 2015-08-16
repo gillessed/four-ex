@@ -31,22 +31,23 @@ class Polygon {
   void drawPath(CanvasRenderingContext2D canvas) {
     canvas.beginPath();
     canvas.moveTo(points.first.x, points.first.y);
-    for(int i = 0; i < points.length; i++) {
+    for(int i = 1; i < points.length; i++) {
       canvas.lineTo(points[i].x, points[i].y);
     }
     canvas.closePath();
   }
 
   bool contains(TPoint p) {
-    List<Vector> vectors = [];
+    List<Segment> segments = [];
     for(int i = 0; i < points.length - 1; i++) {
-      vectors.add(new Vector(points[i], points[i + 1]));
+      segments.add(new Segment(points[i], points[i + 1]));
     }
+    segments.add(new Segment(points.last, points.first));
     TPoint outside = new TPoint(boundingBox.left, boundingBox.top);
-    Vector toPoint = new Vector(outside, p);
+    Segment toPoint = new Segment(outside, p);
     int count = 0;
-    vectors.forEach((v) {
-      if(v.intersects(toPoint)) {
+    segments.forEach((s) {
+      if(s.intersects(toPoint)) {
         count++;
       }
     });

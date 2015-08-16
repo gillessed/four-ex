@@ -41,9 +41,14 @@ void main() {
     mainView.onMouseWheel(e);
   });
   body.onMouseMove.listen((e) {
-    TPoint mousePoint = new TPoint(e.screenX, e.screenY);
-    mainView.onMouseMoved(e, mousePoint);
+    View.globalMouse.x = e.offset.x;
+    View.globalMouse.y = e.offset.y;
   });
-  Canvas canvas = new Canvas(canvasElement, (var context, int width, int height) {mainView.draw(context, width.toDouble(), height.toDouble());});
+  Canvas canvas = new Canvas(canvasElement, (var context, num width, num height) {
+    mainView.width = width;
+    mainView.height = height;
+    View.hoveredViews.clear();
+    mainView.draw(context);
+  });
   canvas.start();
 }

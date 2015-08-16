@@ -14,4 +14,9 @@ class Scale extends Transformation {
   TPoint applyToPoint(TPoint point) {
     return point.scale(sx, sy);
   }
+
+  @override
+  Transformation inverse() {
+    return new Scale(1 / sx, 1 / sy);
+  }
 }

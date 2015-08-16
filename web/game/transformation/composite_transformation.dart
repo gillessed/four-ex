@@ -30,11 +30,20 @@ class CompositeTransformation extends Transformation {
   }
 
   @override
-  Point applyToPoint(Point point) {
-    Point value = point;
+  TPoint applyToPoint(TPoint point) {
+    TPoint value = point;
     for(Transformation transformation in transformations) {
       value = transformation.applyToPoint(value);
     }
     return value;
+  }
+
+  @override
+  Transformation inverse() {
+    List<Transformation> inverses = [];
+    for(int i = transformations.length - 1; i >= 0; i--) {
+      inverses.add(transformations[i].inverse());
+    }
+    return new CompositeTransformation(inverses);
   }
 }

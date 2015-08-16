@@ -13,4 +13,9 @@ class Rotation extends Transformation {
   TPoint applyToPoint(TPoint point) {
     return point.rotate(theta);
   }
+
+  @override
+  Transformation inverse() {
+    return new Rotation(-theta);
+  }
 }

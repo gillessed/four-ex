@@ -10,7 +10,7 @@ class MainMenuView extends View {
   MainMenuView(this.model);
   
   @override
-  void drawComponent(CanvasRenderingContext2D context, num width, num height) {
+  void drawComponent(CanvasRenderingContext2D context) {
     this.height = height;
     context..save()..translate(0, LINE_HEIGHT);
     for(Output line in model.lines) {
@@ -71,5 +71,10 @@ class MainMenuView extends View {
     if(totalHeight > height) {
       scroller.setScroll(height - totalHeight);
     }
+  }
+
+  @override
+  bool containsPoint(TPoint point) {
+    return true;
   }
 }

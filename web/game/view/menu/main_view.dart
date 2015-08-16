@@ -8,18 +8,31 @@ class MainView extends View {
   MainView(this.model) {
     mainMenuView = new MainMenuView(model.mainMenuTerminal);
     scroller = new VerticalScrollView(mainMenuView);
-    mainMenuView.scroller = scroller;
-    children[scroller] = new Translation(0, 0);
+    addChild(
+      scroller,
+      new Placement(
+        Translation.ZERO_F,
+        (num parentWidth, num parentHeight) {
+          return new Dimension(parentWidth, parentHeight);
+    }));
     View.focusedView = mainMenuView;
     
     model.newGameListener.add((game) {
       GameView gameView = new GameView(game);
-      children.clear();
-      children[gameView] = new Translation(0, 0);
+      this.clearChildren();
+      this.addChild(
+        gameView, 
+        new Placement(
+            Translation.ZERO_F,
+          (num parentWidth, num parentHeight) {
+            return new Dimension(parentWidth, parentHeight);
+      }));
       View.focusedView = gameView;
     });
   }
-  
+
   @override
-  void drawComponent(CanvasRenderingContext2D context, num width, num height) {}
+  bool containsPoint(TPoint point) {
+    return true;
+  }
 }
