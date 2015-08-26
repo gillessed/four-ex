@@ -48,11 +48,19 @@ class BiList<S, T> {
     return first[getIndexOfT(t)];
   }
 
-  void replaceT(S s, T t) {
+  void replaceSByS(S s, S s1) {
+    first[getIndexOfS(s)] = s1;
+  }
+
+  void replaceTByT(T t, T t1) {
+    second[getIndexOfT(t)] = t1;
+  }
+
+  void replaceTByS(S s, T t) {
     second[getIndexOfS(s)] = t;
   }
 
-  void replaceS(S s, T t) {
+  void replaceSByT(S s, T t) {
     first[getIndexOfT(t)] = s;
   }
   

@@ -20,3 +20,23 @@ class Scale extends Transformation {
     return new Scale(1 / sx, 1 / sy);
   }
 }
+
+class UniformScale extends Transformation {
+  num s;
+  UniformScale(this.s);
+  
+  @override
+  void apply(CanvasRenderingContext2D context) {
+    context.scale(s, s);
+  }
+
+  @override
+  TPoint applyToPoint(TPoint point) {
+    return point.scale(s, s);
+  }
+
+  @override
+  Transformation inverse() {
+    return new Scale(1 / s, 1 / s);
+  }
+}

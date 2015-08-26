@@ -3,9 +3,9 @@
 
 import 'dart:html';
 import 'canvas.dart';
-import 'transformation/transformation.dart';
 import 'model/model.dart';
 import 'view/view.dart';
+import 'transformation/transformation.dart';
 
 CanvasElement canvasElement;
 ButtonElement createButton;
@@ -41,13 +41,38 @@ void main() {
     mainView.onMouseWheel(e);
   });
   body.onMouseMove.listen((e) {
-    View.globalMouse.x = e.offset.x;
-    View.globalMouse.y = e.offset.y;
+    TPoint mouse = new TPoint(e.offset.x, e.offset.y);
+    mainView.onMouseMoved(e, mouse);
+  });
+  body.onMouseDown.listen((e) {
+    if(e.button == 0) {
+      if(e.ctrlKey) {
+        View.mouse1Down = true;
+      } else { 
+        View.mouse0Down = true;
+      }
+    } else if(e.button == 2) {
+      View.mouse2Down = true;
+    }
+    mainView.onMouseDown(e);
+  });
+  body.onMouseUp.listen((e) {
+    if(e.button == 0) {
+      if(e.ctrlKey) {
+        View.mouse1Down = true;
+      } else { 
+        View.mouse0Down = false;
+      }
+    } else if(e.button == 2) {
+      View.mouse2Down = false;
+    }
+    mainView.onMouseUp(e);
   });
   Canvas canvas = new Canvas(canvasElement, (var context, num width, num height) {
     mainView.width = width;
     mainView.height = height;
     View.hoveredViews.clear();
+    mainView.computeHover();
     mainView.draw(context);
   });
   canvas.start();

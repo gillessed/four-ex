@@ -18,11 +18,19 @@ class Terminal {
     lines.add(new Prompt(""));
   }
   
-  void parse(String line) {
+  Future parse(String line) {
     switch(state) {
       case STATE_MAIN: 
-        if(line == "new game") {
+        if(line == 'new game') {
           main.newGame();
+        } else if(line == 'test rest') {
+          restController.getTestJson().then(
+            (json) {
+              lines.add(new Line('REST endpoint is functioning'));
+            }, onError: (error) {
+              lines.add(new Line('REST endpoint is current down'));
+            }
+          );
         } else {
           showHelp(line);
         }
@@ -31,10 +39,11 @@ class Terminal {
   }
   
   void showHelp(line) {
-    lines.add(new Line("Did not recognize command \"${line}\""));
-    lines.add(new Line("Possible commands are:"));
-    lines.add(new Line("  new game"));
-    lines.add(new Line("  load game"));
+    lines.add(new Line('Did not recognize command "${line}"'));
+    lines.add(new Line('Possible commands are:'));
+    lines.add(new Line('  new game'));
+    lines.add(new Line('  load game'));
+    lines.add(new Line('  test rest'));
   }
 }
 

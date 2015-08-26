@@ -8,6 +8,7 @@ class MainView extends View {
   MainView(this.model) {
     mainMenuView = new MainMenuView(model.mainMenuTerminal);
     scroller = new VerticalScrollView(mainMenuView);
+    mainMenuView.scroller = scroller;
     addChild(
       scroller,
       new Placement(
@@ -23,7 +24,7 @@ class MainView extends View {
       this.addChild(
         gameView, 
         new Placement(
-            Translation.ZERO_F,
+          Translation.ZERO_F,
           (num parentWidth, num parentHeight) {
             return new Dimension(parentWidth, parentHeight);
       }));
