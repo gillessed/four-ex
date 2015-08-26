@@ -10,7 +10,6 @@ class GamePropertiesHandler extends RestHandler {
   @override
   Object handleGetRequest(String path, Map<String, String> keys, Object body) {
     String dataFile = keys[DATA_FILE];
-    print(dataFile);
     String testJsonString = new File('${dataPath}/${dataFile}').readAsStringSync();
     return JSON.decode(testJsonString);
   }

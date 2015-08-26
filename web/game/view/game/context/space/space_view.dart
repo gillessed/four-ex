@@ -1,6 +1,9 @@
 part of view;
 
 class SpaceView extends View {
+  
+  static const num LIGHT_YEAR_RATIO = 100.0;
+  
   Game model;
   SpaceContextView spaceContextView;
   Translation spaceTranslation;
@@ -35,7 +38,7 @@ class SpaceView extends View {
       
       context.save();
       context.translate(starSystem.x, starSystem.y);
-      num radius = (starSystem.star.size / 100.0) * MAX_RADIUS;
+      num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * MAX_RADIUS;
       var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
       star1grd.addColorStop(0, starSystem.star.gradient0);
       star1grd.addColorStop(1, starSystem.star.gradient1);
@@ -54,6 +57,7 @@ class SpaceView extends View {
 
   @override
   void doMouseWheel(WheelEvent e) {
+    print('${spaceTranslation.dx} ${spaceTranslation.dy} ${spaceScale.s}');
     num oldScale = spaceScale.s;
     spaceScale.s *= pow(1.003, -e.deltaY);
     if(spaceScale.s > maxScale) {
@@ -64,8 +68,24 @@ class SpaceView extends View {
     double x1 = (mouse.x - spaceTranslation.dx) / oldScale;
     double y1 = (mouse.y - spaceTranslation.dy) / oldScale;
     num factor = (spaceScale.s / oldScale) * (1 - spaceScale.s / oldScale);
-    spaceTranslation.dx += x1 * factor;
-    spaceTranslation.dy += y1 * factor;
+    changeTransformation(x1 * factor, y1 * factor);
+  }
+  
+  void changeTransformation(num dx, num dy) {
+    setTranslation(
+        spaceTranslation.dx + dx,
+        spaceTranslation.dy + dy);
+  }
+  
+  void setTranslation(num dx, num dy) {
+    if(dx > LIGHT_YEAR_RATIO / spaceScale.s) {
+      dx = LIGHT_YEAR_RATIO / spaceScale.s;
+    }
+    if(dy > LIGHT_YEAR_RATIO / spaceScale.s) {
+      dy = LIGHT_YEAR_RATIO / spaceScale.s;
+    }
+    spaceTranslation.dx = dx;
+    spaceTranslation.dy = dy;
   }
 
   @override
@@ -87,9 +107,8 @@ class SpaceView extends View {
   void doMouseMoved(MouseEvent e) {
     if(mapDrag == true) {
       double dx = (mouse.x - oldMouse.x) / spaceScale.s;
-      double dy = (mouse.y - oldMouse.y) / spaceScale.s; 
-      spaceTranslation.dx += dx;
-      spaceTranslation.dy += dy;
+      double dy = (mouse.y - oldMouse.y) / spaceScale.s;
+      changeTransformation(dx, dy);
     }
   }
 }
