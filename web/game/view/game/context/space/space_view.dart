@@ -1,7 +1,11 @@
 part of view;
 
+/**
+ * This view draws the main space view with the grid, stars,
+ * planets and other space objects. It has it's own coordinate
+ * system separate from the view hierarchy.
+ */
 class SpaceView extends View {
-  
   static const num LIGHT_YEAR_RATIO = 100.0;
   
   Game model;
@@ -14,7 +18,7 @@ class SpaceView extends View {
   SpaceView(this.model, this.spaceContextView) {
    space = model.space;
    spaceTranslation = new Translation(0, 0);
-   spaceScale = new UniformScale(100);
+   spaceScale = new UniformScale(LIGHT_YEAR_RATIO);
   }
   
   @override
@@ -22,6 +26,7 @@ class SpaceView extends View {
     spaceScale.apply(context);
     spaceTranslation.apply(context);
     
+    // Draw grid
     context.lineWidth = 1 / spaceScale.s;
     context.strokeStyle = 'rgb(50,50,50)';
     for(int i = 0; i <= space.width; i++) {
@@ -33,20 +38,24 @@ class SpaceView extends View {
         ..stroke();
     }
     
+    // Draw star systems
     space.starSystems.forEach((starSystem) {
-      double MAX_RADIUS = 0.2;
-      
       context.save();
       context.translate(starSystem.x, starSystem.y);
-      num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * MAX_RADIUS;
+      num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * Star.MAX_RADIUS;
       var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
       star1grd.addColorStop(0, starSystem.star.gradient0);
       star1grd.addColorStop(1, starSystem.star.gradient1);
-      context.fillStyle = star1grd;
-      context.beginPath();
-      context.arc(0, 0, radius, 0, 2 * 3.14159);
-      context.fill();
-      context.restore();
+      context
+        ..fillStyle = star1grd
+        ..beginPath()
+        ..arc(0, 0, radius, 0, 2 * 3.14159)
+        ..shadowColor = starSystem.star.gradient1
+        ..shadowBlur = 10 * spaceScale.s / LIGHT_YEAR_RATIO
+        ..shadowOffsetX = 0
+        ..shadowOffsetY = 0
+        ..fill()
+        ..restore();
     });
   }
   
@@ -57,7 +66,7 @@ class SpaceView extends View {
 
   @override
   void doMouseWheel(WheelEvent e) {
-    print('${spaceTranslation.dx} ${spaceTranslation.dy} ${spaceScale.s}');
+    // Scale space view within bounds
     num oldScale = spaceScale.s;
     spaceScale.s *= pow(1.003, -e.deltaY);
     if(spaceScale.s > maxScale) {
@@ -65,12 +74,15 @@ class SpaceView extends View {
     } else if (spaceScale.s < minScale) {
       spaceScale.s = minScale;
     }
-    double x1 = (mouse.x - spaceTranslation.dx) / oldScale;
-    double y1 = (mouse.y - spaceTranslation.dy) / oldScale;
-    num factor = (spaceScale.s / oldScale) * (1 - spaceScale.s / oldScale);
-    changeTransformation(x1 * factor, y1 * factor);
+    
+    // Translate space to keep mouse position static
+    num factor = (1 / spaceScale.s - 1 / oldScale);
+    changeTransformation(mouse.x * factor, mouse.y * factor);
   }
   
+  /**
+   * Offset the space translation by a fixed about.
+   */
   void changeTransformation(num dx, num dy) {
     setTranslation(
         spaceTranslation.dx + dx,
@@ -83,6 +95,14 @@ class SpaceView extends View {
     }
     if(dy > LIGHT_YEAR_RATIO / spaceScale.s) {
       dy = LIGHT_YEAR_RATIO / spaceScale.s;
+    }
+    double tx = width / spaceScale.s;
+    if(dx < -space.width + tx - LIGHT_YEAR_RATIO / spaceScale.s) {
+      dx = -space.width + tx - LIGHT_YEAR_RATIO / spaceScale.s;
+    }
+    double ty = height / spaceScale.s;
+    if(dy < -space.height + ty - LIGHT_YEAR_RATIO / spaceScale.s) {
+      dy = -space.height + ty - LIGHT_YEAR_RATIO / spaceScale.s;
     }
     spaceTranslation.dx = dx;
     spaceTranslation.dy = dy;
@@ -110,5 +130,10 @@ class SpaceView extends View {
       double dy = (mouse.y - oldMouse.y) / spaceScale.s;
       changeTransformation(dx, dy);
     }
+  }
+  
+  @override
+  void doMouseExited() {
+    mapDrag = false;    
   }
 }

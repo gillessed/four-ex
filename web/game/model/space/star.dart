@@ -1,6 +1,9 @@
 part of model;
 
-class Star {
+class Star {  
+  
+  static const num MAX_RADIUS = 0.2;
+  
   String gradient0;
   String gradient1;
   num size;

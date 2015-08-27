@@ -71,8 +71,28 @@ void main() {
   Canvas canvas = new Canvas(canvasElement, (var context, num width, num height) {
     mainView.width = width;
     mainView.height = height;
+    
+    // Recreate hovered list
+    List<View> oldViews = [];
+    oldViews.addAll(View.hoveredViews);
     View.hoveredViews.clear();
     mainView.computeHover();
+    
+    // Do mouse entered/exited
+    if(oldViews.isEmpty) {
+      if(oldViews.isNotEmpty) {
+        oldViews.last.doMouseEntered();
+      }
+    } else if(View.hoveredViews.isEmpty) {
+      if(View.hoveredViews.isNotEmpty) {
+        View.hoveredViews.last.doMouseEntered();
+      }
+    } else if(View.hoveredViews.last != oldViews.last) {
+      oldViews.last.doMouseExited();
+      View.hoveredViews.last.doMouseEntered();
+    }
+    
+    // Draw
     mainView.draw(context);
   });
   canvas.start();

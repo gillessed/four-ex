@@ -19,6 +19,7 @@ part 'game/context/space/space_context_view.dart';
 part 'game/context/space/space_context_button.dart';
 part 'game/context/space/space_view.dart';
 part 'game/context/space/status_bar/status_bar_view.dart';
+part 'game/context/space/status_bar/minimap_view.dart';
 part 'game/context/influence/influence_context_view.dart';
 part 'game/context/influence/influence_context_button.dart';
 part 'game/context/colonies/colonies_context_view.dart';
@@ -99,7 +100,9 @@ abstract class View {
   }
   
   void onMouseWheel(WheelEvent e) {
-    focusedView.doMouseWheel(e);
+    if(hoveredViews.isNotEmpty) {
+      hoveredViews.last.doMouseWheel(e);
+    }
   }
   
   void onMouseDown(MouseEvent e) {
@@ -143,6 +146,8 @@ abstract class View {
   void doMouseDown(MouseEvent e) {}
   void doMouseUp(MouseEvent e) {}
   void doMouseMoved(MouseEvent e) {}
+  void doMouseEntered() {}
+  void doMouseExited() {}
   
   void drawComponent(CanvasRenderingContext2D context) {}
   

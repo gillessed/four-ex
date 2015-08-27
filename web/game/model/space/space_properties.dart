@@ -14,7 +14,11 @@ Map<StarLayout, Function> STAR_LAYOUTS = {
 List<Point> getRandomPlanets(int count, int width, int height) {
   var points = [];
   for(int i = 0; i < count; i++) {
-    points.add(new Point(random.nextDouble() * width, random.nextDouble() * height));
+    Point p;
+    do {
+      p = new Point(random.nextDouble() * width, random.nextDouble() * height);
+    } while(listReduce(listMap(points, (l) {return p.distanceTo(l) < Star.MAX_RADIUS * 2.1;}), (bool s, bool t) {return s || t;}, startValue: false));
+    points.add(p);
   }
   return points;
 }
