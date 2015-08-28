@@ -37,4 +37,12 @@ class SpaceContextView extends ContextView {
   ContextButton getContextButton() {
     return contextButton;
   }
+  
+  void setStatusView(SpaceObject spaceObject) {
+    statusBarView.setStatusView(spaceObject);
+  }
+  
+  SpaceObject getSelectedObject() {
+    return statusBarView.selected;
+  }
 }

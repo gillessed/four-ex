@@ -7,6 +7,7 @@ part of view;
  */
 class SpaceView extends View {
   static const num LIGHT_YEAR_RATIO = 100.0;
+  static const num MIN_RADIUS = 20.0;
   
   Game model;
   SpaceContextView spaceContextView;
@@ -69,11 +70,8 @@ class SpaceView extends View {
       context.restore();
     });
     
-    if(hover != null) {
-      num radius = hover.getBoundingRadius();
-      if(radius * spaceScale.s < 20) {
-        radius = 20 / spaceScale.s;
-      }
+    if(hover != null && hover != spaceContextView.getSelectedObject()) {
+      num radius = _getMinRadius(hover);
       context.save();
       context
         ..translate(hover.pos.x, hover.pos.y)
@@ -85,6 +83,28 @@ class SpaceView extends View {
         ..stroke();
       context.restore();
     }
+    
+    if(spaceContextView.getSelectedObject() != null) {
+      SpaceObject object = spaceContextView.getSelectedObject();
+      num radius = _getMinRadius(object);
+      context.save();
+      context
+        ..translate(object.pos.x, object.pos.y)
+        ..strokeStyle = 'rgb(255,255,255)'
+        ..lineWidth = 2 / spaceScale.s
+        ..beginPath()
+        ..arc(0, 0, radius, 0, 2 * 3.14159)
+        ..stroke();
+      context.restore();
+    }
+  }
+  
+  num _getMinRadius(SpaceObject object) {
+    num newRadius = object.getBoundingRadius();
+    if(newRadius * spaceScale.s < MIN_RADIUS) {
+      newRadius = MIN_RADIUS / spaceScale.s;
+    }
+    return newRadius;
   }
   
   num get biggestDiff => max(width / space.width, height / space.height);  
@@ -117,6 +137,12 @@ class SpaceView extends View {
         spaceTranslation.dy + dy);
   }
   
+  void centerViewOn(num x, num y) {
+    double mx = -spaceTranslation.dx + (width / 2) / spaceScale.s;
+    double my = -spaceTranslation.dy + (height / 2) / spaceScale.s;
+    changeTranslation(mx - x, my - y);
+  }
+  
   void setTranslation(num dx, num dy) {
     if(dx > LIGHT_YEAR_RATIO / spaceScale.s) {
       dx = LIGHT_YEAR_RATIO / spaceScale.s;
@@ -147,7 +173,7 @@ class SpaceView extends View {
   void doMouseUp(MouseEvent e) {
     mapDrag = false;
     if(e.button == 0 && !e.ctrlKey) {
-      // TODO: selection
+      spaceContextView.setStatusView(hover);
     }
   }
   
@@ -159,9 +185,10 @@ class SpaceView extends View {
       changeTranslation(dx, dy);
     } else if(!e.ctrlKey) {
       TPoint spacePoint = mouse.apply(spaceScale.inverse()).apply(spaceTranslation.inverse());
-      hover = null;
       for(StarSystem system in space.starSystems) {
-        if(system.pos.distanceTo(spacePoint) < system.getBoundingRadius()) {
+        num radius = _getMinRadius(system);
+        hover = null;
+        if(system.pos.distanceTo(spacePoint) < radius) {
           hover = system;
           break;
         }

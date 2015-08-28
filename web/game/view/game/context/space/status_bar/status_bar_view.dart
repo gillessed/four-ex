@@ -8,9 +8,12 @@ class StatusBarView extends View {
   
   Game model;
   SpaceContextView spaceContextView;
+  SpaceView spaceView;
   MinimapView minimap;
+  SpaceObject selected;
+  View selectedView;
   
-  StatusBarView(this.model, this.spaceContextView, SpaceView spaceView) {
+  StatusBarView(this.model, this.spaceContextView, this.spaceView) {
     minimap = new MinimapView(model, spaceContextView, spaceView);
     addChild(
       minimap,
@@ -20,6 +23,19 @@ class StatusBarView extends View {
         },
         (num parentWidth, num parentHeight) {
           return MINIMAP_DIMENSIONS;
+        }
+      )
+    );
+    selected = null;
+    selectedView = new BlankStatusView();
+    addChild(
+      selectedView,
+      new Placement(
+        (num parentWidth, num parentHeight) {
+          return new Translation(OFFSET, OFFSET);
+        },
+        (num parentWidth, num parentHeight) {
+          return new Dimension(parentWidth - STATUS_BAR_HEIGHT - OFFSET, STATUS_BAR_HEIGHT - OFFSET);
         }
       )
     );
@@ -47,5 +63,22 @@ class StatusBarView extends View {
       ..font = "50px Geo"
       ..textAlign = "center"
       ..fillText("Status Bar", width / 2, height / 2);
+  }
+  
+  void setStatusView(SpaceObject object) {
+    if(selected != null && object == null) {
+      View newStatusView = new BlankStatusView();
+      replaceChild(selectedView, newStatusView);
+      selected = object;
+      selectedView = newStatusView;
+    } else if(object != selected) {
+      View newStatusView = null;
+      if(object is StarSystem) {
+        newStatusView = new StarSystemStatusView(object, spaceView);
+      }
+      replaceChild(selectedView, newStatusView);
+      selected = object;
+      selectedView = newStatusView;
+    }
   }
 }
