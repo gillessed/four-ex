@@ -14,8 +14,12 @@ class Game {
   }
   
   static Future<Game> newGame(SpaceProperties spaceProperties) {
-    return restController.getStarTypesJson().then((starJson) {
-      spaceProperties.starJson = starJson;
+    return Future.wait([
+      restController.getStarTypesJson(),
+      restController.getStarNamesJson()
+    ]).then((values) {
+      spaceProperties.starJson = values[0];
+      spaceProperties.starNames = values[1];
       return new Game.generate(spaceProperties);
     });
   }

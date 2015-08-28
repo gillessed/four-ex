@@ -25,4 +25,14 @@ class TPoint {
   String toString() {
     return "TPoint[${x}, ${y}]";
   }
+
+  num distanceTo(TPoint point) {
+    num dx = x - point.x;
+    num dy = y - point.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+
+  TPoint apply(Transformation transformation) {
+    return transformation.applyToPoint(this);
+  }
 }

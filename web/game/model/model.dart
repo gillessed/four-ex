@@ -3,6 +3,7 @@ library model;
 import 'dart:math' show Random, Point;
 import 'dart:async';
 import '../rest/rest_controller.dart' show restController;
+import '../transformation/transformation.dart';
 import '../utils/utils.dart';
 
 part 'game.dart';

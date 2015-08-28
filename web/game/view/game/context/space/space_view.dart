@@ -14,6 +14,7 @@ class SpaceView extends View {
   UniformScale spaceScale;
   bool mapDrag = false;
   Space space;
+  SpaceObject hover;
   
   SpaceView(this.model, this.spaceContextView) {
    space = model.space;
@@ -31,6 +32,7 @@ class SpaceView extends View {
     context.strokeStyle = 'rgb(50,50,50)';
     for(int i = 0; i <= space.width; i++) {
       context
+        ..beginPath()
         ..moveTo(0, i)
         ..lineTo(space.width, i)
         ..moveTo(i, 0)
@@ -39,9 +41,13 @@ class SpaceView extends View {
     }
     
     // Draw star systems
+    num fontSize = 0.6;
+    if(fontSize * spaceScale.s > 25) {
+      fontSize = 25 / spaceScale.s;
+    }
     space.starSystems.forEach((starSystem) {
       context.save();
-      context.translate(starSystem.x, starSystem.y);
+      context.translate(starSystem.pos.x, starSystem.pos.y);
       num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * Star.MAX_RADIUS;
       var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
       star1grd.addColorStop(0, starSystem.star.gradient0);
@@ -55,8 +61,30 @@ class SpaceView extends View {
         ..shadowOffsetX = 0
         ..shadowOffsetY = 0
         ..fill()
-        ..restore();
+        ..fillStyle = 'rgb(255,255,255)'
+        ..shadowBlur = 0.0001
+        ..font = '${fontSize}px geo'
+        ..textAlign = 'center'
+        ..fillText(starSystem.name, 0, fontSize + radius);
+      context.restore();
     });
+    
+    if(hover != null) {
+      num radius = hover.getBoundingRadius();
+      if(radius * spaceScale.s < 20) {
+        radius = 20 / spaceScale.s;
+      }
+      context.save();
+      context
+        ..translate(hover.pos.x, hover.pos.y)
+        ..strokeStyle = HudBar.HUD_COLOUR
+        ..setLineDash([5 / spaceScale.s])
+        ..lineWidth = 2 / spaceScale.s
+        ..beginPath()
+        ..arc(0, 0, radius, 0, 2 * 3.14159)
+        ..stroke();
+      context.restore();
+    }
   }
   
   num get biggestDiff => max(width / space.width, height / space.height);  
@@ -77,13 +105,13 @@ class SpaceView extends View {
     
     // Translate space to keep mouse position static
     num factor = (1 / spaceScale.s - 1 / oldScale);
-    changeTransformation(mouse.x * factor, mouse.y * factor);
+    changeTranslation(mouse.x * factor, mouse.y * factor);
   }
   
   /**
    * Offset the space translation by a fixed about.
    */
-  void changeTransformation(num dx, num dy) {
+  void changeTranslation(num dx, num dy) {
     setTranslation(
         spaceTranslation.dx + dx,
         spaceTranslation.dy + dy);
@@ -128,7 +156,16 @@ class SpaceView extends View {
     if(mapDrag == true) {
       double dx = (mouse.x - oldMouse.x) / spaceScale.s;
       double dy = (mouse.y - oldMouse.y) / spaceScale.s;
-      changeTransformation(dx, dy);
+      changeTranslation(dx, dy);
+    } else if(!e.ctrlKey) {
+      TPoint spacePoint = mouse.apply(spaceScale.inverse()).apply(spaceTranslation.inverse());
+      hover = null;
+      for(StarSystem system in space.starSystems) {
+        if(system.pos.distanceTo(spacePoint) < system.getBoundingRadius()) {
+          hover = system;
+          break;
+        }
+      }
     }
   }
   

@@ -11,12 +11,12 @@ Map<StarLayout, Function> STAR_LAYOUTS = {
   StarLayout.RANDOM: getRandomPlanets
 };
 
-List<Point> getRandomPlanets(int count, int width, int height) {
+List<TPoint> getRandomPlanets(int count, int width, int height) {
   var points = [];
   for(int i = 0; i < count; i++) {
-    Point p;
+    TPoint p;
     do {
-      p = new Point(random.nextDouble() * width, random.nextDouble() * height);
+      p = new TPoint(random.nextDouble() * width, random.nextDouble() * height);
     } while(listReduce(listMap(points, (l) {return p.distanceTo(l) < Star.MAX_RADIUS * 2.1;}), (bool s, bool t) {return s || t;}, startValue: false));
     points.add(p);
   }
@@ -37,4 +37,5 @@ class SpaceProperties {
   StarLayout starLayout;
   
   List starJson;
+  List starNames;
 }

@@ -1,10 +1,11 @@
 part of model;
 
 class StarSystem extends SpaceObject {
+  String name;
   Star star;
-  StarSystem(num x, num y, this.star) : super(x, y);
+  StarSystem(TPoint pos, this.name, this.star) : super(pos);
   
-  factory StarSystem.generate(SpaceProperties properties, num x, num y) {
+  factory StarSystem.generate(SpaceProperties properties, TPoint pos, String name) {
     var starType = properties.starJson[random.nextInt(properties.starJson.length)];
     num sizeMin = starType['SIZE'][0];
     num sizeMax = starType['SIZE'][1];
@@ -13,6 +14,10 @@ class StarSystem extends SpaceObject {
         starType['GRADIENT'][0],
         starType['GRADIENT'][1],
         starSize);
-    return new StarSystem(x, y, star);
+    return new StarSystem(pos, name, star);
+  }
+  
+  num getBoundingRadius() {
+    return Star.MAX_RADIUS * 1.1;
   }
 }

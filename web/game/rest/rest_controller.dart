@@ -29,6 +29,10 @@ class RestController {
     return _perform(GET, '/data/stars.json');
   }
   
+  Future getStarNamesJson() {
+    return _perform(GET, '/data/star_names.json');
+  }
+  
   Future _perform(String method, String route, {String sendDataArg}) {
     String sendData = sendDataArg;
     if(sendData == null) {

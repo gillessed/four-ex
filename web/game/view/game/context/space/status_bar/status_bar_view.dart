@@ -10,8 +10,8 @@ class StatusBarView extends View {
   SpaceContextView spaceContextView;
   MinimapView minimap;
   
-  StatusBarView(this.model, this.spaceContextView) {
-    minimap = new MinimapView(model, spaceContextView);
+  StatusBarView(this.model, this.spaceContextView, SpaceView spaceView) {
+    minimap = new MinimapView(model, spaceContextView, spaceView);
     addChild(
       minimap,
       new Placement(

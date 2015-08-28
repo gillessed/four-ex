@@ -19,7 +19,7 @@ class SpaceContextView extends ContextView {
         }
       )
     );
-    statusBarView = new StatusBarView(model, this);
+    statusBarView = new StatusBarView(model, this, spaceView);
     addChild(
       statusBarView,
       new Placement(

@@ -9,16 +9,17 @@ class Space {
   
   factory Space.generate(SpaceProperties properties) {
     num pointCount = properties.width * properties.height * properties.planetFrequency;
-    List<Point> starSystemPoints = getRandomPlanets(pointCount, properties.width, properties.height);
-    List<StarSystem> starSystems = listMap(starSystemPoints, (Point p) {
-      return new StarSystem.generate(properties, p.x, p.y);
+    List<TPoint> starSystemPoints = getRandomPlanets(pointCount, properties.width, properties.height);
+    List<StarSystem> starSystems = listMap(starSystemPoints, (TPoint pos) {
+      String name = properties.starNames[random.nextInt(properties.starNames.length)];
+      return new StarSystem.generate(properties, pos, name);
     });
     return new Space(properties.width, properties.height, starSystems);
   }
 }
 
-class SpaceObject {
-  num x;
-  num y;
-  SpaceObject(this.x, this.y);
+abstract class SpaceObject {
+  TPoint pos;
+  SpaceObject(this.pos);
+  num getBoundingRadius();
 }
