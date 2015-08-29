@@ -36,7 +36,7 @@ class StarSystem extends SpaceObject {
     List<PlanetaryBody> planetaryBodies = [];
     bool hasAsteroidBelt = false;
     for(int i = 0; i < planetCount; i++) {
-      int index = i + 1 - (hasAsteroidBelt ? 1 : 0);
+      int index = i - (hasAsteroidBelt ? 1 : 0);
       if(random.nextDouble() < properties.nonPlanetFrequency) {
         // Gas Giant
         planetaryBodies.add(new GasGiant.generate(properties, index));

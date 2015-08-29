@@ -91,9 +91,6 @@ class MinimapView extends View {
     double tx = mouse.x / width * (space.width + 2 * border) - border;
     double ty = mouse.y / height * (space.height + 2 * border) - border;
     spaceView.centerViewOn(tx, ty);
-//    double mx = -spaceView.spaceTranslation.dx + (spaceView.width / 2) / spaceView.spaceScale.s;
-//    double my = -spaceView.spaceTranslation.dy + (spaceView.height / 2) / spaceView.spaceScale.s;
-//    spaceView.changeTranslation(mx - tx, my - ty);
   }
   
 }

@@ -143,6 +143,10 @@ class SpaceView extends View {
     changeTranslation(mx - x, my - y);
   }
   
+  void centerViewOnPoint(TPoint point) {
+    centerViewOn(point.x, point.y);
+  }
+  
   void setTranslation(num dx, num dy) {
     if(dx > LIGHT_YEAR_RATIO / spaceScale.s) {
       dx = LIGHT_YEAR_RATIO / spaceScale.s;

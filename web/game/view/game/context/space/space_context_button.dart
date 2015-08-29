@@ -16,34 +16,10 @@ class SpaceContextButton extends ContextButton {
     context
       ..fill()
       ..stroke();
-
-    context
-      ..strokeStyle = getForegroundColour()
-      ..save()
-      ..beginPath()
-      ..translate(ContextButton.SIZE / 2, ContextButton.SIZE / 2)
-      ..arc(0, 0, ContextButton.SIZE / 2 - 5, 0, 2 * 3.14159)
-      ..restore()
-      ..stroke();
-
-    context
-      ..save()
-      ..beginPath()
-      ..translate(ContextButton.SIZE / 2, ContextButton.SIZE / 2)
-      ..rotate(-3.14159 / 4)
-      ..scale(4, 1)
-      ..arc(0, 0, 3.5, 0, 2 * 3.14159)
-      ..restore()
-      ..stroke();
-
-    context
-      ..save()
-      ..beginPath()
-      ..translate(ContextButton.SIZE / 2, ContextButton.SIZE / 2)
-      ..rotate(-3.14159 / 4)
-      ..arc(0, 0, ContextButton.SIZE / 2 - 5, 3.14159, 2 * 3.14159)
-      ..restore()
-      ..fill()
-      ..stroke();
+    
+    context.save();
+    context.translate(width / 2, height / 2);
+    Icons.drawRingedPlanetIcon(context, ContextButton.SIZE / 2 - 5, getForegroundColour(), getFillColour(), 2, 2);
+    context.restore();
   }
 }

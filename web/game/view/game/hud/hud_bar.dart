@@ -47,7 +47,7 @@ class HudBar extends View {
             return new Translation(parentWidth / 2 - CONTEXT_BUTTON_MID_OFFSET - button.index * HUD_BAR_HEIGHT, ContextButton.OFFSET);
           },
           (num parentWidth, num parentHeight) {
-            return new Dimension(0, 0);
+            return new Dimension(ContextButton.SIZE, ContextButton.SIZE);
           }
         ));
       i--;

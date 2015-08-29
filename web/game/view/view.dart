@@ -9,6 +9,7 @@ import '../utils/utils.dart';
 import '../rest/rest_controller.dart';
 
 part 'placement.dart';
+part 'icons/icons.dart';
 part 'menu/main_view.dart';
 part 'menu/main_menu_view.dart';
 part 'menu/terminal.dart';

@@ -45,7 +45,7 @@ class SpaceProperties {
   List planetsJson;
   Map constantsJson;
   
-  String get nextPlanetName => starJson[random.nextInt(starJson.length)];
+  String get nextPlanetName => starNamesJson[random.nextInt(starNamesJson.length)];
   List<num> get planetCountDistribution => constantsJson[_PLANET_COUNT_DISTRIBUTION];
-  num get nonPlanetFrequency => num.parse(constantsJson[_NON_PLANET_FREQUENCY]);
+  num get nonPlanetFrequency => constantsJson[_NON_PLANET_FREQUENCY];
 }

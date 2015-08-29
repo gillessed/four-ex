@@ -29,8 +29,7 @@ class Planet extends PlanetaryBody {
     Map planetTypeJson = properties.planetsJson[random.nextInt(properties.planetsJson.length)];
     String type = planetTypeJson["TYPE"];
     List<num> qualityRange = planetTypeJson["QUALITY_RANGE"];
-    int quality = ((random.nextInt(qualityRange[1] - qualityRange[0]) + qualityRange[0]) * Planet.MAX_QUALITY).toInt();
-    
+    int quality = ((random.nextDouble() * (qualityRange[1] - qualityRange[0]) + qualityRange[0]) * Planet.MAX_QUALITY).toInt();
     
     // Generate Tiles
     // TODO
