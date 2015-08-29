@@ -7,6 +7,7 @@ class Star {
   String gradient0;
   String gradient1;
   num size;
+  Bonus bonus;
   Star(this.gradient0, this.gradient1, this.size);
 }
 

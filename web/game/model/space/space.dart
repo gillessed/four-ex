@@ -11,7 +11,7 @@ class Space {
     num pointCount = properties.width * properties.height * properties.planetFrequency;
     List<TPoint> starSystemPoints = getRandomPlanets(pointCount, properties.width, properties.height);
     List<StarSystem> starSystems = listMap(starSystemPoints, (TPoint pos) {
-      String name = properties.starNames[random.nextInt(properties.starNames.length)];
+      String name = properties.nextPlanetName;
       return new StarSystem.generate(properties, pos, name);
     });
     return new Space(properties.width, properties.height, starSystems);

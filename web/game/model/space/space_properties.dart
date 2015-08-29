@@ -24,6 +24,10 @@ List<TPoint> getRandomPlanets(int count, int width, int height) {
 }
 
 class SpaceProperties {
+  
+  static const String _PLANET_COUNT_DISTRIBUTION = "PLANET_COUNT_DISTRIBUTION";
+  static const String _NON_PLANET_FREQUENCY = "NON_PLANET_FREQUENCY";
+  
   num width;
   num height;
   num starSystemFrequency;
@@ -37,5 +41,11 @@ class SpaceProperties {
   StarLayout starLayout;
   
   List starJson;
-  List starNames;
+  List starNamesJson;
+  List planetsJson;
+  Map constantsJson;
+  
+  String get nextPlanetName => starJson[random.nextInt(starJson.length)];
+  List<num> get planetCountDistribution => constantsJson[_PLANET_COUNT_DISTRIBUTION];
+  num get nonPlanetFrequency => num.parse(constantsJson[_NON_PLANET_FREQUENCY]);
 }

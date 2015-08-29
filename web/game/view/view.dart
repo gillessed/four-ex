@@ -2,13 +2,16 @@ library view;
 
 import 'dart:html';
 import 'dart:math';
+import 'dart:async';
 import '../transformation/transformation.dart';
 import '../model/model.dart';
 import '../utils/utils.dart';
+import '../rest/rest_controller.dart';
 
 part 'placement.dart';
 part 'menu/main_view.dart';
 part 'menu/main_menu_view.dart';
+part 'menu/terminal.dart';
 part 'ui/vertical_scroll_view.dart';
 part 'game/game_view.dart';
 part 'game/hud/turn_button.dart';

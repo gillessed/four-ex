@@ -1,5 +1,11 @@
 part of model;
 
+abstract class DataFileController {
+  Future getTestJson();
+  Future getStarTypesJson();
+  Future getStarNamesJson();
+}
+
 class Game {
   Space space;
   int turn;
@@ -12,15 +18,5 @@ class Game {
     game.turn = 1;
     return game;
   }
-  
-  static Future<Game> newGame(SpaceProperties spaceProperties) {
-    return Future.wait([
-      restController.getStarTypesJson(),
-      restController.getStarNamesJson()
-    ]).then((values) {
-      spaceProperties.starJson = values[0];
-      spaceProperties.starNames = values[1];
-      return new Game.generate(spaceProperties);
-    });
-  }
 }
+

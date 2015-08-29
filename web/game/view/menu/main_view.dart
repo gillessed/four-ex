@@ -6,7 +6,7 @@ class MainView extends View {
   MainMenuView mainMenuView;
   
   MainView(this.model) {
-    mainMenuView = new MainMenuView(model.mainMenuTerminal);
+    mainMenuView = new MainMenuView(model, this);
     scroller = new VerticalScrollView(mainMenuView);
     mainMenuView.scroller = scroller;
     addChild(
@@ -17,8 +17,29 @@ class MainView extends View {
           return new Dimension(parentWidth, parentHeight);
     }));
     View.focusedView = mainMenuView;
-    
-    model.newGameListener.add((game) {
+  }
+
+  @override
+  bool containsPoint(TPoint point) {
+    return true;
+  }
+  
+  void newGame() {
+    SpaceProperties spaceProperties = new SpaceProperties();
+    spaceProperties.width = 50;
+    spaceProperties.height = 50;
+    spaceProperties.planetFrequency = 0.1;
+    Future.wait([
+      restController.getStarTypesJson(),
+      restController.getStarNamesJson(),
+      restController.getPlanetsJson(),
+      restController.getConstantsJson()
+    ]).then((values) {
+      spaceProperties.starJson = values[0];
+      spaceProperties.starNamesJson = values[1];
+      spaceProperties.planetsJson = values[2];
+      spaceProperties.constantsJson = values[3];
+      Game game = new Game.generate(spaceProperties);
       GameView gameView = new GameView(game);
       this.clearChildren();
       this.addChild(
@@ -30,10 +51,5 @@ class MainView extends View {
       }));
       View.focusedView = gameView;
     });
-  }
-
-  @override
-  bool containsPoint(TPoint point) {
-    return true;
   }
 }

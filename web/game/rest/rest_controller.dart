@@ -33,6 +33,14 @@ class RestController {
     return _perform(GET, '/data/star_names.json');
   }
   
+  Future getPlanetsJson() {
+    return _perform(GET, '/data/planets.json');
+  }
+  
+  Future getConstantsJson() {
+    return _perform(GET, '/data/constants.json');
+  }
+  
   Future _perform(String method, String route, {String sendDataArg}) {
     String sendData = sendDataArg;
     if(sendData == null) {

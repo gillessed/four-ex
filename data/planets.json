@@ -1,0 +1,24 @@
+[
+  {
+    "TYPE": "M-Class",
+    "QUALITY_RANGE": [0.3, 0.6],
+    "TILE_BONUSES": {
+      "POP_GROWTH": [0.05, 0.02, 0.005],
+      "RESEARCH": [0.005, 0, 0],
+      "INDUSTRY": [0.005, 0, 0],
+      "INFLUENCE": [0.01, 0, 0],
+      "HAPPINESS": [0.03, 0.01, 0.001],
+      "ECONOMY": [0.02, 0.001, 0]
+    }
+  },{
+    "TYPE": "Aquatic",
+    "QUALITY_RANGE": [0.2, 0.2],
+    "TILE_BONUSES": {
+      "POP_GROWTH": [0.01, 0.001, 0],
+      "INDUSTRY": [0.02, 0.005, 0],
+      "RESEARCH": [0.03, 0.008, 0],
+      "ECONOMY": [0.02, 0.005, 0],
+      "HAPPINESS": [0.03, 0.01, 0.002]
+    }
+  }
+]

@@ -4,16 +4,20 @@ class MainMenuView extends View {
   static const int LINE_HEIGHT = 40;
   
   num height;
-  Terminal model;
+  MainModel model;
   VerticalScrollView scroller;
+  MainView mainView;
+  Terminal terminal;
   
-  MainMenuView(this.model);
+  MainMenuView(this.model, this.mainView) {
+    terminal = new Terminal(model, mainView);
+  }
   
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     this.height = height;
     context..save()..translate(0, LINE_HEIGHT);
-    for(Output line in model.lines) {
+    for(Output line in terminal.lines) {
       String draw = new String.fromCharCodes(line.line);
       if(line.isPrompt()) {
         draw = "> " + draw;
@@ -30,35 +34,35 @@ class MainMenuView extends View {
     int keyCode = e.keyCode;
     if(keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
       if(e.shiftKey) {
-        model.lines.last.line.add(keyCode);
+        terminal.lines.last.line.add(keyCode);
       } else {
-        model.lines.last.line.add(new String.fromCharCode(keyCode).toLowerCase().codeUnitAt(0));
+        terminal.lines.last.line.add(new String.fromCharCode(keyCode).toLowerCase().codeUnitAt(0));
       }
     }
     if(keyCode >= KeyCode.ZERO && keyCode <= KeyCode.NINE && !e.shiftKey) {
-      model.lines.last.line.add(keyCode);
+      terminal.lines.last.line.add(keyCode);
     }
     if(keyCode == KeyCode.PERIOD) {
-      model.lines.last.line.add(".".codeUnitAt(0));
+      terminal.lines.last.line.add(".".codeUnitAt(0));
     }
     if(keyCode == KeyCode.DASH) {
-      model.lines.last.line.add("-".codeUnitAt(0));
+      terminal.lines.last.line.add("-".codeUnitAt(0));
     }
     if(keyCode == KeyCode.SPACE) {
-      model.lines.last.line.add(" ".codeUnitAt(0));
+      terminal.lines.last.line.add(" ".codeUnitAt(0));
     }
-    if(keyCode == KeyCode.BACKSPACE && model.lines.last.line.isNotEmpty) {
-      model.lines.last.line.removeLast();
+    if(keyCode == KeyCode.BACKSPACE && terminal.lines.last.line.isNotEmpty) {
+      terminal.lines.last.line.removeLast();
     }
     if(keyCode == KeyCode.ENTER) {
-      model.enter();
+      terminal.enter();
     }
     if(scroller != null) {
       scrollToBottom();
     }
   }
   
-  int get totalHeight => LINE_HEIGHT * (model.lines.length + 1);
+  int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);
 
   @override
   void doMouseWheel(WheelEvent e) {
@@ -77,4 +81,6 @@ class MainMenuView extends View {
   bool containsPoint(TPoint point) {
     return true;
   }
+  
+  
 }

@@ -1,4 +1,4 @@
-part of model;
+part of view;
 
 class Terminal {
   static const int STATE_MAIN = 0;
@@ -6,8 +6,9 @@ class Terminal {
   
   List<Output> lines;
   MainModel main;
+  MainView mainView;
   int state;
-  Terminal(this.main) {
+  Terminal(this.main, this.mainView) {
     lines = [new Prompt("")];
     state = STATE_MAIN;
   }
@@ -22,7 +23,7 @@ class Terminal {
     switch(state) {
       case STATE_MAIN: 
         if(line == 'new game') {
-          main.newGame();
+          mainView.newGame();
         } else if(line == 'test rest') {
           restController.getTestJson().then(
             (json) {
