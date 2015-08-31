@@ -19,7 +19,7 @@ class MinimapView extends View {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     
@@ -50,7 +50,7 @@ class MinimapView extends View {
     
     // Draw view rectangle
     context
-      ..strokeStyle = 'rgb(255,0,0)'
+      ..strokeStyle = model.humanPlayer.color
       ..lineWidth = 1
       ..save();
     minimapScale.apply(context);

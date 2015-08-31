@@ -2,7 +2,7 @@ part of model;
 
 class AsteroidBelt extends PlanetaryBody {
   Bonus bonus;
-  String get name => '${starSystem.name} Belt}';
+  String get name => '${starSystem.name} Belt';
   
   AsteroidBelt(this.bonus);
   

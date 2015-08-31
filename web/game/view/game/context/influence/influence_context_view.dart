@@ -5,7 +5,7 @@ class InfluenceContextView extends ContextView {
   GameView gameView;
   
   InfluenceContextView(Game model, this.gameView) : super(model) {
-    contextButton = new InfluenceContextButton(gameView, this);
+    contextButton = new InfluenceContextButton(model, gameView, this);
   }
   
   @override

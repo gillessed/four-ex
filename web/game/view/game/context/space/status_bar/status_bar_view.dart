@@ -27,7 +27,7 @@ class StatusBarView extends View {
       )
     );
     selected = null;
-    selectedView = new BlankStatusView();
+    selectedView = new BlankStatusView(model);
     addChild(
       selectedView,
       new Placement(
@@ -44,7 +44,7 @@ class StatusBarView extends View {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     
@@ -67,14 +67,14 @@ class StatusBarView extends View {
   
   void setStatusView(SpaceObject object) {
     if(selected != null && object == null) {
-      View newStatusView = new BlankStatusView();
+      View newStatusView = new BlankStatusView(model);
       replaceChild(selectedView, newStatusView);
       selected = object;
       selectedView = newStatusView;
     } else if(object != selected) {
       View newStatusView = null;
       if(object is StarSystem) {
-        newStatusView = new StarSystemStatusView(object, spaceView);
+        newStatusView = new StarSystemStatusView(model, object, spaceView);
       }
       replaceChild(selectedView, newStatusView);
       selected = object;

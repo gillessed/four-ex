@@ -8,7 +8,7 @@ class SpaceContextView extends ContextView {
   SpaceView spaceView;
 
   SpaceContextView(Game model, this.gameView) : super(model) {
-    contextButton = new SpaceContextButton(gameView, this);
+    contextButton = new SpaceContextButton(model, gameView, this);
     spaceView = new SpaceView(model, this);
     addChild(
       spaceView,

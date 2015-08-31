@@ -5,14 +5,14 @@ class ResearchContextButton extends ContextButton {
   static const num TOP_WIDTH = ContextButton.SIZE * 0.2;
   static const num BOTTOM_WIDTH = ContextButton.SIZE * 0.7;
 
-  ResearchContextButton(GameView gameView, ContextView contextView)
-    : super(gameView, contextView);
+  ResearchContextButton(Game model, GameView gameView, ContextView contextView)
+    : super(model, gameView, contextView);
   
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
       ..fillStyle = getFillColour()
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..lineWidth = 2;
 
     polygon.drawPath(context);

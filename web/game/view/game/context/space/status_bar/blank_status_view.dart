@@ -1,10 +1,14 @@
 part of view;
 
 class BlankStatusView extends View {
+  
+  Game model;
+  BlankStatusView(this.model);
+  
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     

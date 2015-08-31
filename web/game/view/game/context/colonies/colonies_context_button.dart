@@ -3,14 +3,14 @@ part of view;
 class ColoniesContextButton extends ContextButton {
   static const num OFFSET = 4;
 
-  ColoniesContextButton(GameView gameView, ContextView contextView)
-    : super(gameView, contextView);
+  ColoniesContextButton(Game model, GameView gameView, ContextView contextView)
+    : super(model, gameView, contextView);
 
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
       ..fillStyle = getFillColour()
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..lineWidth = 2;
 
     polygon.drawPath(context);

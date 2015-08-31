@@ -1,22 +1,20 @@
 part of model;
 
-abstract class DataFileController {
-  Future getTestJson();
-  Future getStarTypesJson();
-  Future getStarNamesJson();
-}
-
 class Game {
   Space space;
   int turn;
-
-  Game();
+  List<Player> players;
+  Player humanPlayer;
   
-  factory Game.generate(SpaceProperties spaceProperties) {
-    Game game = new Game();
-    game.space = new Space.generate(spaceProperties);
-    game.turn = 1;
-    return game;
+  Game(this.space, this.turn, this.players, this.humanPlayer);
+  
+  factory Game.generate(SpaceProperties spaceProperties, List<PlayerProperties> playerPropertiesList, int humanPlayer) {
+    Space space = new Space.generate(spaceProperties, playerPropertiesList);
+    List<Player> players = [];
+    playerPropertiesList.forEach((PlayerProperties playerProperties) {
+      players.add(new Player.generate(spaceProperties, playerProperties, space.homeSystems[playerProperties]));
+    });
+    return new Game(space, 1, players, players[humanPlayer]);
   }
 }
 

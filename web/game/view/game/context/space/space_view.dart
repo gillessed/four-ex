@@ -47,23 +47,13 @@ class SpaceView extends View {
       fontSize = 25 / spaceScale.s;
     }
     space.starSystems.forEach((starSystem) {
+      num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * Star.MAX_RADIUS;
+      num shadowBlur = 10 * spaceScale.s / LIGHT_YEAR_RATIO;
+      Icons.drawStar(context, starSystem, radius, shadowBlur);
       context.save();
       context.translate(starSystem.pos.x, starSystem.pos.y);
-      num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * Star.MAX_RADIUS;
-      var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
-      star1grd.addColorStop(0, starSystem.star.gradient0);
-      star1grd.addColorStop(1, starSystem.star.gradient1);
       context
-        ..fillStyle = star1grd
-        ..beginPath()
-        ..arc(0, 0, radius, 0, 2 * 3.14159)
-        ..shadowColor = starSystem.star.gradient1
-        ..shadowBlur = 10 * spaceScale.s / LIGHT_YEAR_RATIO
-        ..shadowOffsetX = 0
-        ..shadowOffsetY = 0
-        ..fill()
-        ..fillStyle = 'rgb(255,255,255)'
-        ..shadowBlur = 0.0001
+        ..fillStyle = starSystem.controlledStarSystem == null ? 'rgb(255,255,255)' : starSystem.controlledStarSystem.player.color
         ..font = '${fontSize}px geo'
         ..textAlign = 'center'
         ..fillText(starSystem.name, 0, fontSize + radius);
@@ -75,7 +65,7 @@ class SpaceView extends View {
       context.save();
       context
         ..translate(hover.pos.x, hover.pos.y)
-        ..strokeStyle = HudBar.HUD_COLOUR
+        ..strokeStyle = model.humanPlayer.color
         ..setLineDash([5 / spaceScale.s])
         ..lineWidth = 2 / spaceScale.s
         ..beginPath()

@@ -5,7 +5,7 @@ class EconomyContextView extends ContextView {
   GameView gameView;
   
   EconomyContextView(Game model, this.gameView) : super(model) {
-    contextButton = new EconomyContextButton(gameView, this);
+    contextButton = new EconomyContextButton(model, gameView, this);
   }
   
   @override

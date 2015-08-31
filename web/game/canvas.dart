@@ -10,20 +10,18 @@ class Canvas {
   var doDraw;
   int width;
   int height;
+  bool cancelAnimation = false;
   
   Canvas(this.canvas, this.doDraw);
   
   start() {
     window.addEventListener('resize', resizeCanvas, false);
-    canvas.addEventListener('click', requestRedraw);
-    const oneSec = const Duration(milliseconds:20);
-    new Timer.periodic(oneSec, requestRedraw);
     resizeCanvas(null);
+    requestRedraw();
   }
   
   stop() {
-    window.removeEventListener('resize', resizeCanvas);
-    canvas.removeEventListener('click', requestRedraw);
+    cancelAnimation = true;
   }
   
   void draw([_]) {
@@ -34,6 +32,9 @@ class Canvas {
            ..fillRect(0, 0, width, height);
     
     doDraw(context, width, height);
+    if(!cancelAnimation) {
+      requestRedraw();
+    }
   }
 
   void resizeCanvas(_) {
@@ -41,10 +42,9 @@ class Canvas {
     canvas.height = window.innerHeight;
     width = canvas.width;
     height = canvas.height;
-    requestRedraw(null);
   }
   
-  void requestRedraw(_) {
+  void requestRedraw() {
     window.requestAnimationFrame(draw);
   }
 }

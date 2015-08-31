@@ -2,14 +2,14 @@ part of view;
 
 class InfluenceContextButton extends ContextButton {
 
-  InfluenceContextButton(GameView gameView, ContextView contextView)
-    : super(gameView, contextView);
+  InfluenceContextButton(Game model, GameView gameView, ContextView contextView)
+    : super(model, gameView, contextView);
 
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
       ..fillStyle = getFillColour()
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..lineWidth = 2;
 
     polygon.drawPath(context);

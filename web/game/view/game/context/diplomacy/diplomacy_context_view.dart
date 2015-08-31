@@ -5,7 +5,7 @@ class DiplomacyContextView extends ContextView {
   GameView gameView;
   
   DiplomacyContextView(Game model, this.gameView) : super(model) {
-    contextButton = new DiplomacyContextButton(gameView, this);
+    contextButton = new DiplomacyContextButton(model, gameView, this);
   }
   
   @override

@@ -44,7 +44,7 @@ class TurnButton extends View {
       }
     }
     context..fillStyle = fillColour
-           ..strokeStyle = HudBar.HUD_COLOUR
+           ..strokeStyle = model.humanPlayer.color
            ..lineWidth = 2;
     
     polygon.drawPath(context);

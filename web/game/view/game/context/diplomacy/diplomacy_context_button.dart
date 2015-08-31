@@ -4,14 +4,14 @@ class DiplomacyContextButton extends ContextButton {
   static const num OFFSET = 6;
   static const num RADIUS = 2;
 
-  DiplomacyContextButton(GameView gameView, ContextView contextView)
-    : super(gameView, contextView);
+  DiplomacyContextButton(Game model, GameView gameView, ContextView contextView)
+    : super(model ,gameView, contextView);
 
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
       ..fillStyle = getFillColour()
-      ..strokeStyle = HudBar.HUD_COLOUR
+        ..strokeStyle = model.humanPlayer.color
       ..lineWidth = 2;
 
     polygon.drawPath(context);

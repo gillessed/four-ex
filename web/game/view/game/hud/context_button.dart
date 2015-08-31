@@ -8,7 +8,6 @@ abstract class ContextButton extends View {
   static const String HOVER_FILL = "rgb(50,50,50)";
   static const String CLICK_FILL = "rgb(255,255,255)";
   static const String SELECTED_FILL = "rgb(0,0,0)";
-  static const String DEFAULT_FOREGROUND = HudBar.HUD_COLOUR;
   static const String HOVER_FOREGROUND = "rgb(255,255,255)";
   static const String CLICK_FOREGROUND = "rgb(0,0,0)";
   static const String SELECTED_FOREGROUND = "rgb(255,255,255)";
@@ -17,8 +16,9 @@ abstract class ContextButton extends View {
   Polygon polygon;
   GameView gameView;
   ContextView contextView;
+  Game model;
 
-  ContextButton(this.gameView, this.contextView) {
+  ContextButton(this.model, this.gameView, this.contextView) {
     polygon = new Polygon([
       new TPoint(0, 0),
       new TPoint(SIZE, 0),
@@ -55,7 +55,7 @@ abstract class ContextButton extends View {
         return HOVER_FOREGROUND;
       }
     } else {
-      return DEFAULT_FOREGROUND;
+      return model.humanPlayer.color;
     }
   }
 

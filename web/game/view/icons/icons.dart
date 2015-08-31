@@ -2,6 +2,29 @@ part of view;
 
 class Icons {
 
+  static void drawStar(
+      CanvasRenderingContext2D context,
+      StarSystem starSystem,
+      num radius,
+      num shadowBlur) {
+
+    context.save();
+    context.translate(starSystem.pos.x, starSystem.pos.y);
+    var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
+    star1grd.addColorStop(0, starSystem.star.gradient0);
+    star1grd.addColorStop(1, starSystem.star.gradient1);
+    context
+      ..fillStyle = star1grd
+      ..beginPath()
+      ..arc(0, 0, radius, 0, 2 * 3.14159)
+      ..shadowColor = starSystem.star.gradient1
+      ..shadowBlur = shadowBlur
+      ..shadowOffsetX = 0
+      ..shadowOffsetY = 0
+      ..fill();
+    context.restore();
+  }
+  
   static void drawRingedPlanetIcon(
       CanvasRenderingContext2D context,
       num radius,

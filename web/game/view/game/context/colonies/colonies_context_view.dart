@@ -5,7 +5,7 @@ class ColoniesContextView extends ContextView {
   GameView gameView;
   
   ColoniesContextView(Game model, this.gameView) : super(model) {
-    contextButton = new ColoniesContextButton(gameView, this);
+    contextButton = new ColoniesContextButton(model, gameView, this);
   }
   
   @override

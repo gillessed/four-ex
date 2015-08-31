@@ -2,9 +2,10 @@ part of view;
 
 class StarSystemStatusView extends View {
   static const PLANETARY_BODY_VIEW_WIDTH = 150;
+  Game game;
   StarSystem model;
   StarStatusComponent starStatusComponent;
-  StarSystemStatusView(this.model, SpaceView spaceView) {
+  StarSystemStatusView(this.game, this.model, SpaceView spaceView) {
     starStatusComponent = new StarStatusComponent(model, spaceView);
     addChild(
       starStatusComponent,
@@ -22,6 +23,8 @@ class StarSystemStatusView extends View {
         child = new PlanetStatusComponent(body, spaceView);
       } else if(body is GasGiant) {
         child = new GasGiantStatusComponent(body, spaceView);
+      } else if(body is AsteroidBelt) {
+        child = new AsteroidBeltStatusComponent(body, spaceView);
       }
       
       if(child != null) {
@@ -45,7 +48,7 @@ class StarSystemStatusView extends View {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = HudBar.HUD_COLOUR
+      ..strokeStyle = game.humanPlayer.color
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     
@@ -67,7 +70,8 @@ class StarStatusComponent extends View {
   static const num BLUR_RADIUS = 20;
   SpaceView spaceView;
   StarSystem model;
-  StarStatusComponent(this.model, this.spaceView);
+  Game game;
+  StarStatusComponent(this.game, this.model, this.spaceView);
   
   num get radius => (model.star.size / 100) * STAR_COMPONENT_RADIUS;
   
@@ -75,20 +79,10 @@ class StarStatusComponent extends View {
   void drawComponent(CanvasRenderingContext2D context) {
     context.translate(width / 2, height / 2);
     num radius = (model.star.size / 100) * STAR_COMPONENT_RADIUS;
-    var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
-    star1grd.addColorStop(0, model.star.gradient0);
-    star1grd.addColorStop(1, model.star.gradient1);
+    num shadowBlur = BLUR_RADIUS * model.star.size / 100;
+    Icons.drawStar(context, model, radius, shadowBlur);
     context
-      ..fillStyle = star1grd
-      ..beginPath()
-      ..arc(0, 0, radius, 0, 2 * 3.14159)
-      ..shadowColor = model.star.gradient1
-      ..shadowBlur = BLUR_RADIUS * model.star.size / 100
-      ..shadowOffsetX = 0
-      ..shadowOffsetY = 0
-      ..fill()
       ..fillStyle = 'rgb(255,255,255)'
-      ..shadowBlur = 0.0001
       ..font = '${FONT_SIZE}px geo'
       ..textBaseline = 'middle'
       ..textAlign = 'center'
@@ -146,32 +140,6 @@ class GasGiantStatusComponent extends PlanetaryBodyStatusComponent {
   void drawComponent(CanvasRenderingContext2D context) {
     context.translate(width / 2, height / 2);
     Icons.drawRingedPlanetIcon(context, GAS_GIANT_RADIUS, 'rgb(255,255,255)', 'rgb(70,70,70)', 1, 5);
-//    context
-//      ..strokeStyle = 'rgb(255,255,255)'
-//      ..fillStyle = 'rgb(70,70,70)'
-//      ..beginPath()
-//      ..arc(0, 0, GAS_GIANT_RADIUS, 0, 2 * 3.14159)
-//      ..fill()
-//      ..stroke();
-//
-//    context
-//      ..save()
-//      ..lineWidth = 3
-//      ..beginPath()
-//      ..rotate(-3.14159 / 4)
-//      ..scale(1.5, 0.5)
-//      ..arc(0, 0, GAS_GIANT_RADIUS, 0, 2 * 3.14159)
-//      ..stroke()
-//      ..restore();
-//
-//    context
-//      ..save()
-//      ..beginPath()
-//      ..rotate(-3.14159 / 4)
-//      ..arc(0, 0, GAS_GIANT_RADIUS, 3.14159, 2 * 3.14159)
-//      ..fill()
-//      ..stroke()
-//      ..restore();
 
     context
       ..fillStyle = 'rgb(255,255,255)'
@@ -182,5 +150,34 @@ class GasGiantStatusComponent extends PlanetaryBodyStatusComponent {
       ..font = '${SMALL_FONT_SIZE}px geo'
       ..fillStyle = 'rgb(178,178,178)'
       ..fillText('Gas Giant', 0, -(SMALL_FONT_SIZE + GAS_GIANT_RADIUS + 10));
+  }
+}
+
+class AsteroidBeltStatusComponent extends PlanetaryBodyStatusComponent {
+  static const num ASTEROID_SPREAD_RADIUS = 25;
+  SpaceView spaceView;
+  AsteroidBelt model;
+  AsteroidBeltStatusComponent(this.model, this.spaceView);
+  
+  @override
+  void drawComponent(CanvasRenderingContext2D context) {
+    context.translate(width / 2, height / 2);
+
+    context
+      ..fillStyle = 'rgb(0,255,0)'
+      ..font = '40px geo'
+      ..textBaseline = 'middle'
+      ..textAlign = 'center'
+      ..fillText('TODO', 0, 0);
+    
+    context
+      ..fillStyle = 'rgb(255,255,255)'
+      ..font = '${LARGE_FONT_SIZE}px geo'
+      ..textBaseline = 'middle'
+      ..textAlign = 'center'
+      ..fillText(model.name, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + ASTEROID_SPREAD_RADIUS + 10))
+      ..font = '${SMALL_FONT_SIZE}px geo'
+      ..fillStyle = 'rgb(178,178,178)'
+      ..fillText('Asteroid Belt', 0, -(SMALL_FONT_SIZE + ASTEROID_SPREAD_RADIUS + 10));
   }
 }

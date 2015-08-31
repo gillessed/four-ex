@@ -2,7 +2,6 @@ part of view;
 
 class HudBar extends View {
   
-  static const String HUD_COLOUR = "rgb(0,0,255)";
   static const num HUD_BAR_HEIGHT = 40;
   static const num CONTEXT_BUTTON_OFFSET = 30;
   static const num CONTEXT_BUTTON_MID_OFFSET = (TurnButton.BEVEL_WIDTH + TurnButton.HEIGHT) / 2 + CONTEXT_BUTTON_OFFSET;
@@ -58,7 +57,7 @@ class HudBar extends View {
   void drawComponent(CanvasRenderingContext2D context) {
     context.save();
     context
-      ..strokeStyle = HUD_COLOUR
+      ..strokeStyle = model.humanPlayer.color
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     

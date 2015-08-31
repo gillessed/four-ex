@@ -5,7 +5,7 @@ class ResearchContextView extends ContextView {
   GameView gameView;
   
   ResearchContextView(Game model, this.gameView) : super(model) {
-    contextButton = new ResearchContextButton(gameView, this);
+    contextButton = new ResearchContextButton(model, gameView, this);
   }
   
   @override
