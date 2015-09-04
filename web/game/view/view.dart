@@ -14,6 +14,8 @@ part 'menu/main_view.dart';
 part 'menu/main_menu_view.dart';
 part 'menu/terminal.dart';
 part 'ui/vertical_scroll_view.dart';
+part 'ui/button.dart';
+part 'ui/list_selector_view.dart';
 part 'game/game_view.dart';
 part 'game/hud/turn_button.dart';
 part 'game/hud/context_button.dart';

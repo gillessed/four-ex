@@ -4,7 +4,7 @@ class StarSystem extends SpaceObject {
   String name;
   Star star;
   List<PlanetaryBody> planetaryBodies;
-  List<Planet> get planets => planetaryBodies.where((planetaryBody) {planetaryBody is Planet;}).toList();
+  List<Planet> get planets => planetaryBodies.where((planetaryBody) {return planetaryBody is Planet;}).toList();
   ControlledStarSystem controlledStarSystem;
   
   StarSystem(TPoint pos, this.name, this.star, this.planetaryBodies) : super(pos);

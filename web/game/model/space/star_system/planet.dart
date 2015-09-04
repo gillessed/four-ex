@@ -7,7 +7,8 @@ class Planet extends PlanetaryBody {
   int index;
   num quality;
   String type;
-  String get name => '${starSystem.name} ${ROMAN_NUMERALS[index]} (${quality})';
+  String get name => '${starSystem.name} ${ROMAN_NUMERALS[index]}';
+  String get nameQuality => '${name} (${quality})';
   List<List<Tile>> tiles;
   Colony colony;
   

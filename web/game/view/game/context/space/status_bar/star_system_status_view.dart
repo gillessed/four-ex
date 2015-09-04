@@ -6,7 +6,7 @@ class StarSystemStatusView extends View {
   StarSystem model;
   StarStatusComponent starStatusComponent;
   StarSystemStatusView(this.game, this.model, SpaceView spaceView) {
-    starStatusComponent = new StarStatusComponent(model, spaceView);
+    starStatusComponent = new StarStatusComponent(game, model, spaceView);
     addChild(
       starStatusComponent,
       new Placement(
@@ -113,8 +113,14 @@ class PlanetStatusComponent extends PlanetaryBodyStatusComponent {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context.translate(width / 2, height / 2);
+    String stroke;
+    if(model.colony == null) {
+      stroke = 'rgb(255,255,255)';
+    } else{
+      stroke = model.colony.player.color;
+    }
     context
-      ..strokeStyle = 'rgb(255,255,255)'
+      ..strokeStyle = stroke
       ..beginPath()
       ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
       ..stroke()
@@ -122,7 +128,7 @@ class PlanetStatusComponent extends PlanetaryBodyStatusComponent {
       ..font = '${LARGE_FONT_SIZE}px geo'
       ..textBaseline = 'middle'
       ..textAlign = 'center'
-      ..fillText(model.name, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+      ..fillText(model.nameQuality, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
       ..font = '${SMALL_FONT_SIZE}px geo'
       ..fillStyle = 'rgb(178,178,178)'
       ..fillText(model.type, 0, -(SMALL_FONT_SIZE + PLANET_RADIUS + 10))

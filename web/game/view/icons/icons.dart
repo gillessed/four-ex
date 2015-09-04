@@ -1,5 +1,9 @@
 part of view;
 
+abstract class Icon {
+  void draw(CanvasRenderingContext2D context);
+}
+
 class Icons {
 
   static void drawStar(

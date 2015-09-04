@@ -35,7 +35,7 @@ class StatusBarView extends View {
           return new Translation(OFFSET, OFFSET);
         },
         (num parentWidth, num parentHeight) {
-          return new Dimension(parentWidth - STATUS_BAR_HEIGHT - OFFSET, STATUS_BAR_HEIGHT - OFFSET);
+          return new Dimension(parentWidth - STATUS_BAR_HEIGHT - OFFSET, STATUS_BAR_HEIGHT - 2 * OFFSET);
         }
       )
     );
