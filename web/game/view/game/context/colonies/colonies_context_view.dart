@@ -2,6 +2,7 @@ part of view;
 
 class ColoniesContextView extends ContextView {
   static const num SELECTOR_HEIGHT = 40;
+  static const OFFSET = 5;
   
   ColoniesContextButton contextButton;
   GameView gameView;
@@ -11,6 +12,7 @@ class ColoniesContextView extends ContextView {
   StarSystemSelector starSystemSelector;
   ListSelectorView<Colony> colonySelectorView;
   ColonySelector colonySelector;
+  ColoniesTileView coloniesTileView;
   
   ColoniesContextView(Game model, this.gameView) : super(model) {
     contextButton = new ColoniesContextButton(model, gameView, this);
@@ -19,12 +21,16 @@ class ColoniesContextView extends ContextView {
         starSystemSelector,
         300, 
         (ControlledStarSystem controlled) {return controlled.starSystem.name;},
-        model.humanPlayer.color,
+        model.humanPlayer.color.color1,
         'rgb(200,200,200)',
         '30px geo',
         'rgb(0,0,0)',
+        'rgb(50,50,50)',
         'rgb(255,255,255)',
-        2);
+        2,
+        onItemChanged: (_) {
+          
+        });
     addChild(
       starSystemSelectorView,
       new Placement(
@@ -38,12 +44,16 @@ class ColoniesContextView extends ContextView {
         colonySelector,
         300, 
         (Colony colony) {return colony.planet.name;},
-        model.humanPlayer.color,
+        model.humanPlayer.color.color1,
         'rgb(200,200,200)',
         '30px geo',
         'rgb(0,0,0)',
+        'rgb(50,50,50)',
         'rgb(255,255,255)',
-        2);
+        2,
+        onItemChanged: (Colony newValue, Colony oldValue) {
+          coloniesTileView.colony = newValue;
+        });
     addChild(
       colonySelectorView,
       new Placement(
@@ -52,6 +62,17 @@ class ColoniesContextView extends ContextView {
         },
         (num parentWidth, num parentHeight) {
           return new Dimension(parentWidth / 2, SELECTOR_HEIGHT);
+        })
+    );
+    coloniesTileView = new ColoniesTileView(colonySelector.current());
+    addChild(
+    coloniesTileView,
+      new Placement(
+        (num parentWidth, num parentHeight) {
+          return new Translation(OFFSET, SELECTOR_HEIGHT + OFFSET);
+        },
+        (num parentWidth, num parentHeight) {
+          return new Dimension(parentWidth - OFFSET * 2, parentHeight - SELECTOR_HEIGHT - 2 * OFFSET);
         })
     );
   }
@@ -81,6 +102,7 @@ class StarSystemSelector extends Selector<ControlledStarSystem> {
     for(int i = 0; i < length; i++) {
       if(currentStarSystem.starSystem == player.controlledStarSystems[i].starSystem) {
         currentStarSystem = player.controlledStarSystems[(i + 1) % length];
+        break;
       }
     }
   }
@@ -91,6 +113,7 @@ class StarSystemSelector extends Selector<ControlledStarSystem> {
     for(int i = 0; i < length; i++) {
       if(currentStarSystem.starSystem == player.controlledStarSystems[i].starSystem) {
         currentStarSystem = player.controlledStarSystems[(i - 1 + length) % length];
+        break;
       }
     }
   }
@@ -100,8 +123,8 @@ class ColonySelector extends Selector<Colony> {
   ControlledStarSystem currentStarSystem;
   Colony currentColony;
   
-  ColonySelector(ControlledStarSystem system) {
-    currentColony = system.colonies[0];
+  ColonySelector(this.currentStarSystem) {
+    currentColony = currentStarSystem.colonies[0];
   }
   
   @override
@@ -115,6 +138,7 @@ class ColonySelector extends Selector<Colony> {
     for(int i = 0; i < length; i++) {
       if(currentColony.planet == currentStarSystem.colonies[i].planet) {
         currentColony = currentStarSystem.colonies[(i + 1) % length];
+        break;
       }
     }
   }
@@ -125,6 +149,7 @@ class ColonySelector extends Selector<Colony> {
     for(int i = 0; i < length; i++) {
       if(currentColony.planet == currentStarSystem.colonies[i].planet) {
         currentColony = currentStarSystem.colonies[(i - 1 + length) % length];
+        break;
       }
     }
   }

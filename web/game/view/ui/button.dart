@@ -44,4 +44,9 @@ abstract class Button extends View {
       return defaultStrokeColor;
     }
   }
+  
+  @override 
+  void doMouseUp(MouseEvent e) {
+    onClick();
+  }
 }

@@ -42,7 +42,37 @@ class ListSelectorView<T> extends View {
         hoverColor,
         clickColor,
         true);
-    
+    addChild(
+      previousButton,
+      new Placement(
+        (num parentWidth, num parentHeight) {
+          return new Translation((parentWidth - titleWidth) / 2 - parentHeight, 0);
+        }, (num parentWidth, num parentHeight) {
+          return new Dimension(parentHeight, parentHeight);
+    }));
+    nextButton = new ListSelectorButton(
+        () {
+          T oldValue = selector.current();
+          selector.next();
+          T newValue = selector.current();
+          if(oldValue != newValue) {
+            onItemChanged(newValue, oldValue);
+          }
+        },
+        lineWidth,
+        lineColor,
+        backgroundColor,
+        hoverColor,
+        clickColor,
+        false);
+    addChild(
+      nextButton,
+      new Placement(
+        (num parentWidth, num parentHeight) {
+          return new Translation((parentWidth + titleWidth) / 2, 0);
+        }, (num parentWidth, num parentHeight) {
+          return new Dimension(parentHeight, parentHeight);
+    }));
   }
   
   @override
@@ -85,8 +115,8 @@ class ListSelectorButton extends Button {
   String borderColor;
   bool left;
   ListSelectorButton(
-      this.onClick,
-      this.lineWidth,
+      Function onClick,
+      this.borderWidth,
       this.borderColor,
       String backgroundColor,
       String hoverColor,
@@ -96,7 +126,9 @@ class ListSelectorButton extends Button {
           defaultFillColor: backgroundColor,
           hoverFillColor: hoverColor,
           clickFillColor: clickColor
-          );
+          ) {
+    this.onClick = onClick;
+  }
 
   Polygon get polygon {
     if(left) {
@@ -128,6 +160,8 @@ class ListSelectorButton extends Button {
   bool containsPoint(TPoint point) {
     return polygon.contains(point);
   }
+  
+  
 }
 
 abstract class Selector<T> {

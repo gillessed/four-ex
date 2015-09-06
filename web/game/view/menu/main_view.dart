@@ -31,7 +31,7 @@ class MainView extends View {
     SpaceProperties spaceProperties = new SpaceProperties();
     spaceProperties.width = 50;
     spaceProperties.height = 50;
-    spaceProperties.planetFrequency = 0.1;
+    spaceProperties.planetFrequency = 0.11;
     spaceProperties.starLayout = StarLayout.RANDOM;
     Future.wait([
       restController.getStarTypesJson(),
@@ -58,10 +58,13 @@ class MainView extends View {
   }
   
   List<PlayerProperties> getDefaultPlayerProperties() {
+    PlayerColorPalette p1 = new PlayerColorPalette('rgb(9,66,210)', 'rgb(9,128,237)', 'rgb(0,0,255)', 'rgb(0,0,255)');
+    PlayerColorPalette p2 = new PlayerColorPalette.single('rgb(255,0,0)');
+    PlayerColorPalette p3 = new PlayerColorPalette.single('rgb(0,255,0)');
     return [
-      new PlayerProperties('rgb(255,0,0)', 'Human', 'Barack Obama', 'Sol'),
-      new PlayerProperties('rgb(0,255,0)', 'Klingon', 'Gowron', 'Quonos'),
-      new PlayerProperties('rgb(0,0,255)', 'Romulan', 'Praetor Shinzon', 'Romulus')
+      new PlayerProperties(p1, 'Human', 'Barack Obama', 'Sol'),
+      new PlayerProperties(p2, 'Klingon', 'Gowron', 'Quonos'),
+      new PlayerProperties(p3, 'Romulan', 'Praetor Shinzon', 'Romulus')
     ];
   }
 }

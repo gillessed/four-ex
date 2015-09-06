@@ -10,7 +10,7 @@ class ColoniesContextButton extends ContextButton {
   void drawComponent(CanvasRenderingContext2D context) {
     context
       ..fillStyle = getFillColour()
-      ..strokeStyle = model.humanPlayer.color
+      ..strokeStyle = model.humanPlayer.color.color1
       ..lineWidth = 2;
 
     polygon.drawPath(context);

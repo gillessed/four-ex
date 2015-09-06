@@ -32,6 +32,7 @@ part 'game/context/influence/influence_context_view.dart';
 part 'game/context/influence/influence_context_button.dart';
 part 'game/context/colonies/colonies_context_view.dart';
 part 'game/context/colonies/colonies_context_button.dart';
+part 'game/context/colonies/colonies_tile_view.dart';
 part 'game/context/research/research_context_view.dart';
 part 'game/context/research/research_context_button.dart';
 part 'game/context/economy/economy_context_view.dart';

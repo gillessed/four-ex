@@ -49,11 +49,14 @@ class SpaceView extends View {
     space.starSystems.forEach((starSystem) {
       num radius = (starSystem.star.size / LIGHT_YEAR_RATIO) * Star.MAX_RADIUS;
       num shadowBlur = 10 * spaceScale.s / LIGHT_YEAR_RATIO;
+      context.save();
+      context.translate(starSystem.pos.x, starSystem.pos.y);
       Icons.drawStar(context, starSystem, radius, shadowBlur);
+      context.restore();
       context.save();
       context.translate(starSystem.pos.x, starSystem.pos.y);
       context
-        ..fillStyle = starSystem.controlledStarSystem == null ? 'rgb(255,255,255)' : starSystem.controlledStarSystem.player.color
+        ..fillStyle = starSystem.controlledStarSystem == null ? 'rgb(255,255,255)' : starSystem.controlledStarSystem.player.color.color1
         ..font = '${fontSize}px geo'
         ..textAlign = 'center'
         ..fillText(starSystem.name, 0, fontSize + radius);

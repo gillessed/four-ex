@@ -44,7 +44,7 @@ class TurnButton extends View {
       }
     }
     context..fillStyle = fillColour
-           ..strokeStyle = model.humanPlayer.color
+           ..strokeStyle = model.humanPlayer.color.color2
            ..lineWidth = 2;
     
     polygon.drawPath(context);

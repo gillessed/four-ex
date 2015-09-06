@@ -55,7 +55,7 @@ abstract class ContextButton extends View {
         return HOVER_FOREGROUND;
       }
     } else {
-      return model.humanPlayer.color;
+      return model.humanPlayer.color.color2;
     }
   }
 

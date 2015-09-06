@@ -48,7 +48,7 @@ class StarSystemStatusView extends View {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = game.humanPlayer.color
+      ..strokeStyle = game.humanPlayer.color.color1
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     
@@ -117,7 +117,7 @@ class PlanetStatusComponent extends PlanetaryBodyStatusComponent {
     if(model.colony == null) {
       stroke = 'rgb(255,255,255)';
     } else{
-      stroke = model.colony.player.color;
+      stroke = model.colony.player.color.color1;
     }
     context
       ..strokeStyle = stroke

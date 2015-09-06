@@ -44,7 +44,7 @@ class StatusBarView extends View {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = model.humanPlayer.color
+      ..strokeStyle = model.humanPlayer.color.color1
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     

@@ -13,7 +13,6 @@ class Icons {
       num shadowBlur) {
 
     context.save();
-    context.translate(starSystem.pos.x, starSystem.pos.y);
     var star1grd = context.createRadialGradient(0, 0, 0.01 * radius, 0, 0, 0.99 * radius);
     star1grd.addColorStop(0, starSystem.star.gradient0);
     star1grd.addColorStop(1, starSystem.star.gradient1);

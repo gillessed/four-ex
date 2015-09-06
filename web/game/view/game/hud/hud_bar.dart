@@ -57,7 +57,7 @@ class HudBar extends View {
   void drawComponent(CanvasRenderingContext2D context) {
     context.save();
     context
-      ..strokeStyle = model.humanPlayer.color
+      ..strokeStyle = model.humanPlayer.color.color1
       ..fillStyle = 'rgb(0,0,0)'
       ..lineWidth = 2;
     
