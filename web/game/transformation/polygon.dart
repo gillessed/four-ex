@@ -53,4 +53,54 @@ class Polygon {
     });
     return (count % 2) == 1;
   }
+  
+  static num _trH = sin(3.14159 / 6);
+  static num _trS = sin(3.14159 / 3);
+  static Polygon getTriangle(num radius) {
+    num h = radius * _trH;
+    num s = radius * _trS;
+    return new Polygon([
+      new TPoint(-s, h),
+      new TPoint(s, h),
+      new TPoint(0, -radius)]);
+  }
+  
+  static num _sqX = 1 / sqrt(2);
+  static Polygon getSquare(num radius) {
+    num x = radius * _sqX;
+    return new Polygon([
+      new TPoint(-radius, -radius),
+      new TPoint(-radius, radius),
+      new TPoint(radius, radius),
+      new TPoint(radius, -radius)]);
+  }
+  
+  static num _pentH = sin(3 * 3.14159 / 5);
+  static num _pentS = sin(3.14159 / 5);
+  static num _pentX = sin(3.14159 / 10);
+  static num _pentY = sin(2 * 3.14159 / 5);
+  static Polygon getPentagon(num radius) {
+    num h = radius * _pentH;
+    num s = radius * _pentS;
+    num x = 2 * s * _pentX;
+    num y = 2 * s * _pentY;
+    return new Polygon([
+      new TPoint(-s, h),
+      new TPoint(s, h),
+      new TPoint(s + x, h - y),
+      new TPoint(0, -radius),
+      new TPoint(-s - x, h - y)]);
+  }
+  
+  static num _hexY = sqrt(3) / 2;
+  static Polygon getHexagon(num radius) {
+    num y = radius * _hexY;
+    return new Polygon([
+      new TPoint(-radius, 0),
+      new TPoint(-radius/2, y),
+      new TPoint(radius/2, y),
+      new TPoint(radius, 0),
+      new TPoint(radius/2, -y),
+      new TPoint(-radius/2, -y)]);
+  }
 }

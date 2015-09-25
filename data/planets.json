@@ -2,8 +2,10 @@
   {
     "TYPE": "M-Class",
     "QUALITY_RANGE": [0.3, 0.6],
+    "POPULATION_RANGE": [0.85, 1.2],
     "TILE_BONUSES": {
-      "POP_GROWTH": [0.05, 0.02, 0.005],
+      "POPULATION_GROWTH": [0.05, 0.02, 0.005],
+      "POPULATION_MAX": [0.001, 0.0004, 0.0001],
       "RESEARCH": [0.005, 0, 0],
       "INDUSTRY": [0.005, 0, 0],
       "INFLUENCE": [0.01, 0, 0],
@@ -12,9 +14,10 @@
     }
   },{
     "TYPE": "Aquatic",
-    "QUALITY_RANGE": [0.2, 0.2],
+    "QUALITY_RANGE": [0.2, 0.3],
+    "POPULATION_RANGE": [0.5, 0.8],
     "TILE_BONUSES": {
-      "POP_GROWTH": [0.01, 0.001, 0],
+      "POPULATION_GROWTH": [0.01, 0.001, 0],
       "INDUSTRY": [0.02, 0.005, 0],
       "RESEARCH": [0.03, 0.008, 0],
       "ECONOMY": [0.02, 0.005, 0],

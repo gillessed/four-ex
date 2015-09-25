@@ -10,9 +10,9 @@ class AsteroidBelt extends PlanetaryBody {
     int amount = random.nextInt(50) + 50;
     Bonus bonus;
     if(random.nextDouble() > 0.5) {
-      bonus = new IndustryBonus(amount);
+      bonus = new Bonus(BonusType.INDUSTRY, amount);
     } else {
-      bonus = new EconomyBonus(amount); 
+      bonus = new Bonus(BonusType.ECONOMY, amount); 
     }
     return new AsteroidBelt(bonus);
   }

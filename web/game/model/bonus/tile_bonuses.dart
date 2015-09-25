@@ -1,45 +1,41 @@
 part of model;
 
+Map<BonusType, String> _BONUS_KEYS = {
+  BonusType.INDUSTRY: 'INDUSTRY',
+  BonusType.ECONOMY: 'ECONOMY',
+  BonusType.RESEARCH: 'RESEARCH',
+  BonusType.POPULATION_MAX: 'POPULATION_MAX',
+  BonusType.INFLUENCE: 'INFLUENCE',
+  BonusType.HAPPINESS: 'HAPPINESS',
+  BonusType.POPULATION_GROWTH: 'POPULATION_GROWTH'
+};
+
 /**
  * Probabilities that a 100%, 300% or 700% bonus
  * appears on a tile or a non-planet object.
  */
 class TileBonusProbabilities {
-  List<num> industry = [0, 0, 0];
-  List<num> populationMax = [0, 0, 0];
-  List<num> populationGrowth = [0, 0, 0];
-  List<num> economy = [0, 0, 0];
-  List<num> research = [0, 0, 0];
-  List<num> happiness = [0, 0, 0];
-  List<num> influence = [0, 0, 0];
+  Map<BonusType, List<num>> probabilities = {};
   
   TileBonusProbabilities();
   
   TileBonusProbabilities.fromJson(Map jsonObject) {
-    if(jsonObject.containsKey("INDUSTRY")) {
-      industry = jsonObject["INDUSTRY"];
-    }
-    if(jsonObject.containsKey("POPLUATION_MAX")) {
-      populationMax = jsonObject["POPLUATION_MAX"];
-    }
-    if(jsonObject.containsKey("POPULATION_GROWTH")) {
-      populationGrowth = jsonObject["POPULATION_GROWTH"];
-    }
-    if(jsonObject.containsKey("ECONOMY")) {
-      economy = jsonObject["ECONOMY"];
-    }
-    if(jsonObject.containsKey("RESEARCH")) {
-      research = jsonObject["RESEARCH"];
-    }
-    if(jsonObject.containsKey("HAPPINESS")) {
-      happiness = jsonObject["HAPPINESS"];
-    }
-    if(jsonObject.containsKey("INFLUENCE")) {
-      influence = jsonObject["INFLUENCE"];
+    for(BonusType type in BonusType.values) {
+      String key = _BONUS_KEYS[type];
+      if(jsonObject.containsKey(key)) {
+        probabilities[type] = jsonObject[key];
+      }
     }
   }
   
-  Bonus generateBonus() {
-    
+  List<Bonus> generate() {
+    List<Bonus> bonuses = [];
+    probabilities.forEach((BonusType type, List<num> probabilities) {
+      Bonus bonus = Bonus.createTileBonus(type, probabilities);
+      if(bonus != null) {
+        bonuses.add(bonus);
+      }
+    });
+    return bonuses;
   }
 }

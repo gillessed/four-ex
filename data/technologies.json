@@ -1,0 +1,21 @@
+[
+  {
+    "NAME": "Scientific Method",
+    "DESCRIPTION": "Develop basic space research capabilities.",
+    "COST": 10000,
+    "BONUSES": {
+      "RESEARCH": 5
+    }
+  },
+  {
+    "NAME": "Dimensional Laboratories",
+    "DESCRIPTION": "Create labs capable of experimenting through dimensional barriers.",
+    "COST": 40000,
+    "BONUSES": {
+      "RESEARCH": 5
+    },
+    "PREREQUISITES": [
+      "Scientific Method"
+    ]
+  }
+]

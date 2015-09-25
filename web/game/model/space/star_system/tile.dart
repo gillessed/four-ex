@@ -1,7 +1,10 @@
 part of model;
 
 class Tile {
-  int x;
-  int y;
-  Bonus bonus;
+  List<Bonus> bonuses;
+  Tile(this.bonuses);
+  
+  factory Tile.generate(SpaceProperties properties, TileBonusProbabilities bonuses) {
+    return new Tile(bonuses.generate());
+  }
 }

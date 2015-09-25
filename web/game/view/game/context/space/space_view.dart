@@ -58,6 +58,11 @@ class SpaceView extends View {
       context
         ..fillStyle = starSystem.controlledStarSystem == null ? 'rgb(255,255,255)' : starSystem.controlledStarSystem.player.color.color1
         ..font = '${fontSize}px geo'
+        // For some reason, without these lines, names won't render on a mac T_T
+        ..shadowBlur = 0.00001
+        ..shadowColor = 'rgb(255,255,255)'
+        ..shadowOffsetX = 0
+        ..shadowOffsetY = 0
         ..textAlign = 'center'
         ..fillText(starSystem.name, 0, fontSize + radius);
       context.restore();
@@ -68,7 +73,7 @@ class SpaceView extends View {
       context.save();
       context
         ..translate(hover.pos.x, hover.pos.y)
-        ..strokeStyle = model.humanPlayer.color
+        ..strokeStyle = model.humanPlayer.color.color1
         ..setLineDash([5 / spaceScale.s])
         ..lineWidth = 2 / spaceScale.s
         ..beginPath()

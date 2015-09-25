@@ -20,7 +20,7 @@ class StarSystemStatusView extends View {
     model.planetaryBodies.forEach((PlanetaryBody body) {
       PlanetaryBodyStatusComponent child;
       if(body is Planet) {
-        child = new PlanetStatusComponent(body, spaceView);
+        child = new PlanetStatusComponent(body, game, spaceView);
       } else if(body is GasGiant) {
         child = new GasGiantStatusComponent(body, spaceView);
       } else if(body is AsteroidBelt) {
@@ -108,31 +108,59 @@ class PlanetStatusComponent extends PlanetaryBodyStatusComponent {
   static const num PLANET_RADIUS = 20;
   SpaceView spaceView;
   Planet model;
-  PlanetStatusComponent(this.model, this.spaceView);
+  Game game;
+  PlanetStatusComponent(this.model, this.game, this.spaceView);
   
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context.translate(width / 2, height / 2);
-    String stroke;
     if(model.colony == null) {
-      stroke = 'rgb(255,255,255)';
-    } else{
-      stroke = model.colony.player.color.color1;
+      context
+        ..strokeStyle = 'rgb(255,255,255)'
+        ..beginPath()
+        ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
+        ..stroke()
+        ..fillStyle = 'rgb(255,255,255)'
+        ..font = '${LARGE_FONT_SIZE}px geo'
+        ..textBaseline = 'middle'
+        ..textAlign = 'center'
+        ..fillText(model.nameQuality, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+        ..font = '${SMALL_FONT_SIZE}px geo'
+        ..fillStyle = 'rgb(178,178,178)'
+        ..fillText(model.type, 0, -(SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+        ..fillText('Uninhabited', 0, LARGE_FONT_SIZE + PLANET_RADIUS);
+    } else if(model.colony.system.player == game.humanPlayer) {
+      context
+        ..strokeStyle = model.colony.system.player.color.color1
+        ..beginPath()
+        ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
+        ..stroke()
+        ..fillStyle = 'rgb(255,255,255)'
+        ..font = '${LARGE_FONT_SIZE}px geo'
+        ..textBaseline = 'middle'
+        ..textAlign = 'center'
+        ..fillText(model.nameQuality, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+        ..font = '${SMALL_FONT_SIZE}px geo'
+        ..fillStyle = 'rgb(178,178,178)'
+        ..fillText(model.type, 0, -(SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+        ..fillStyle = 'rgb(255,255,255)'
+        ..fillText('Pop: ${model.colony.getPopulationMil()} M', 0, LARGE_FONT_SIZE + PLANET_RADIUS);
+        //TODO: add open colony button. Damn, probably have to split this into three separate classes.
+    } else {
+      context
+        ..strokeStyle = model.colony.system.player.color.color1
+        ..beginPath()
+        ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
+        ..stroke()
+        ..fillStyle = 'rgb(255,255,255)'
+        ..font = '${LARGE_FONT_SIZE}px geo'
+        ..textBaseline = 'middle'
+        ..textAlign = 'center'
+        ..fillText(model.nameQuality, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
+        ..font = '${SMALL_FONT_SIZE}px geo'
+        ..fillStyle = 'rgb(178,178,178)'
+        ..fillText(model.type, 0, -(SMALL_FONT_SIZE + PLANET_RADIUS + 10));
     }
-    context
-      ..strokeStyle = stroke
-      ..beginPath()
-      ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
-      ..stroke()
-      ..fillStyle = 'rgb(255,255,255)'
-      ..font = '${LARGE_FONT_SIZE}px geo'
-      ..textBaseline = 'middle'
-      ..textAlign = 'center'
-      ..fillText(model.nameQuality, 0, -(LARGE_FONT_SIZE + SMALL_FONT_SIZE + PLANET_RADIUS + 10))
-      ..font = '${SMALL_FONT_SIZE}px geo'
-      ..fillStyle = 'rgb(178,178,178)'
-      ..fillText(model.type, 0, -(SMALL_FONT_SIZE + PLANET_RADIUS + 10))
-      ..fillText('Uninhabited', 0, LARGE_FONT_SIZE + PLANET_RADIUS);
   }
 }
 

@@ -6,9 +6,20 @@ class Player {
   String leaderName;
   List<ControlledStarSystem> controlledStarSystems;
   ControlledStarSystem get homeSystem => controlledStarSystems.first;
+  Economy economy;
   SpaceProperties spaceProperties;
   
-  Player(this.spaceProperties, this.color, this.speciesName, this.leaderName, this.controlledStarSystems);
+  Player(
+      this.spaceProperties,
+      this.color,
+      this.speciesName,
+      this.leaderName,
+      this.controlledStarSystems,
+      this.economy);
+  
+  int getTotalResearch() {
+    
+  }
   
   factory Player.generate(SpaceProperties spaceProperties, PlayerProperties playerProperties, StarSystem homeSystem) {
     ControlledStarSystem homeControlledSystem = new ControlledStarSystem.homeSystem(spaceProperties, homeSystem);
@@ -17,7 +28,8 @@ class Player {
         playerProperties.playerColor,
         playerProperties.speciesName, 
         playerProperties.leaderName,
-        [homeControlledSystem]);
+        [homeControlledSystem],
+        new Economy.generate());
     homeControlledSystem.setPlayer(player);
     return player;
   }
@@ -38,7 +50,7 @@ class ControlledStarSystem {
   void setPlayer(Player player) {
     this.player = player;
     colonies.forEach((Colony colony) {
-      colony.player = player;
+      colony.system = this;
     });
   }
 }

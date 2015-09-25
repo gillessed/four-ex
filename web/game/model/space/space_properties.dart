@@ -71,6 +71,7 @@ class SpaceProperties {
   List starNamesJson;
   List planetsJson;
   Map constantsJson;
+  List<Technology> technologies;
   
   String get nextPlanetName => starNamesJson[random.nextInt(starNamesJson.length)];
   List<num> get planetCountDistribution => constantsJson[_PLANET_COUNT_DISTRIBUTION];

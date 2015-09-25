@@ -11,9 +11,9 @@ class GasGiant extends PlanetaryBody {
     int amount = random.nextInt(50) + 50;
     Bonus bonus;
     if(random.nextDouble() > 0.5) {
-      bonus = new HappinessBonus(amount);
+      bonus = new Bonus(BonusType.HAPPINESS, amount);
     } else {
-      bonus = new ResearchBonus(amount); 
+      bonus = new Bonus(BonusType.RESEARCH, amount); 
     }
     return new GasGiant(index, bonus);
   }

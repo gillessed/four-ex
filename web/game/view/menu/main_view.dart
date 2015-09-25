@@ -25,9 +25,6 @@ class MainView extends View {
   }
   
   void newGame() {
-    
-    
-    
     SpaceProperties spaceProperties = new SpaceProperties();
     spaceProperties.width = 50;
     spaceProperties.height = 50;
@@ -37,12 +34,14 @@ class MainView extends View {
       restController.getStarTypesJson(),
       restController.getStarNamesJson(),
       restController.getPlanetsJson(),
-      restController.getConstantsJson()
+      restController.getConstantsJson(),
+      restController.getTechnologiesJson()
     ]).then((values) {
       spaceProperties.starJson = values[0];
       spaceProperties.starNamesJson = values[1];
       spaceProperties.planetsJson = values[2];
       spaceProperties.constantsJson = values[3];
+      spaceProperties.technologies = Technology.parseTechnologiesJson(values[4]);
       Game game = new Game.generate(spaceProperties, getDefaultPlayerProperties(), 0);
       GameView gameView = new GameView(game);
       this.clearChildren();

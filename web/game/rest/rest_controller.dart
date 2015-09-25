@@ -41,6 +41,10 @@ class RestController {
     return _perform(GET, '/data/constants.json');
   }
   
+  Future getTechnologiesJson() {
+    return _perform(GET, '/data/technologies.json');
+  }
+  
   Future _perform(String method, String route, {String sendDataArg}) {
     String sendData = sendDataArg;
     if(sendData == null) {
