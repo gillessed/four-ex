@@ -8,6 +8,7 @@ class Player {
   ControlledStarSystem get homeSystem => controlledStarSystems.first;
   Economy economy;
   SpaceProperties spaceProperties;
+  Research research;
   
   Player(
       this.spaceProperties,
@@ -15,10 +16,9 @@ class Player {
       this.speciesName,
       this.leaderName,
       this.controlledStarSystems,
-      this.economy);
-  
-  int getTotalResearch() {
-    
+      this.economy,
+      List<Technology> technologies) {
+    research = new Research(this, technologies);
   }
   
   factory Player.generate(SpaceProperties spaceProperties, PlayerProperties playerProperties, StarSystem homeSystem) {
@@ -29,7 +29,8 @@ class Player {
         playerProperties.speciesName, 
         playerProperties.leaderName,
         [homeControlledSystem],
-        new Economy.generate());
+        new Economy.generate(),
+        spaceProperties.technologies);
     homeControlledSystem.setPlayer(player);
     return player;
   }

@@ -7,6 +7,7 @@ class Technology {
   bool repeatable;
   List<Bonus> staticBonuses;
   List<Technology> prerequisites;
+  List<Technology> children;
   
   Technology.fromJson(Map json) {
     name = json["NAME"];
@@ -18,12 +19,10 @@ class Technology {
       staticBonuses.addAll(Bonus.parseJsonList(json["BONUSES"]));
     }
     prerequisites = [];
+    children = [];
   }
   
   static List<Technology> parseTechnologiesJson(List json) {
-    print(json);
-    print(json == null);
-    print(json is List);
     List<Technology> technologies = [];
     Map<String, Technology> technologyMap = {};
     Map<String, List<String>> prequisiteMap = {};
@@ -31,12 +30,19 @@ class Technology {
       Technology tech = new Technology.fromJson(obj);
       technologies.add(tech);
       technologyMap[tech.name] = tech;
-      prequisiteMap[tech.name] = obj["PREREQUISITES"];
+      if(obj["PREREQUISITES"] != null) {
+        prequisiteMap[tech.name] = obj["PREREQUISITES"];
+      }
     });
     prequisiteMap.forEach((String name, List<String> prereqs) {
       Technology tech = technologyMap[name];
       prereqs.forEach((String prereq) {
         tech.prerequisites.add(technologyMap[prereq]);
+      });
+    });
+    technologies.forEach((Technology technology) {
+      technology.prerequisites.forEach((Technology prereq) {
+        prereq.children.add(technology);
       });
     });
     return technologies;

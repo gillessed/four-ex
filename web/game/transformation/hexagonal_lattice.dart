@@ -74,6 +74,7 @@ class HexagonalLattice<T> {
 
   List<T> getNeighbours(int x, int y) {
     //TODO
+    return null;
   }
   
   /**

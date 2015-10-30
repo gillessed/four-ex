@@ -28,4 +28,9 @@ class Translation extends Transformation {
   Transformation inverse() {
     return new Translation(-dx, -dy);
   }
+  
+  @override
+  String toString() {
+    return 'Translation[x=${dx};y=${dy}]';
+  }
 }

@@ -42,6 +42,12 @@ class Colony {
   }
   
   int getResearch() {
-    
+   //TODO: calculate colony research
+    return 1;
+  }
+  
+  num getResearchBonus() {
+    //TODO: calculate research bonus
+    return 1;
   }
 }

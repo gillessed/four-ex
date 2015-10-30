@@ -132,8 +132,10 @@ class PlanetStatusComponent extends PlanetaryBodyStatusComponent {
     } else if(model.colony.system.player == game.humanPlayer) {
       context
         ..strokeStyle = model.colony.system.player.color.color1
+        ..fillStyle = model.colony.system.player.color.color2
         ..beginPath()
         ..arc(0, 0, PLANET_RADIUS, 0, 2 * 3.14159)
+        ..fill()
         ..stroke()
         ..fillStyle = 'rgb(255,255,255)'
         ..font = '${LARGE_FONT_SIZE}px geo'

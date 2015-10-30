@@ -1,7 +1,6 @@
 library canvas;
 
 import "dart:html";
-import "dart:async";
 
 class Canvas {
   static const backgroundColor = "#000000";

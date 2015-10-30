@@ -19,7 +19,7 @@ class Terminal {
     lines.add(new Prompt(""));
   }
   
-  Future parse(String line) {
+  void parse(String line) {
     switch(state) {
       case STATE_MAIN: 
         if(line == 'new game') {

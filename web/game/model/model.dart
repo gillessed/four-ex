@@ -21,6 +21,7 @@ part 'space/star_system/asteroid_belt.dart';
 part 'space/star_system/tile.dart';
 part 'economy/economy.dart';
 part 'research/technology.dart';
+part 'research/research.dart';
 
 class MainModel {
   Game game;

@@ -35,6 +35,8 @@ part 'game/context/colonies/colonies_context_button.dart';
 part 'game/context/colonies/colonies_tile_view.dart';
 part 'game/context/research/research_context_view.dart';
 part 'game/context/research/research_context_button.dart';
+part 'game/context/research/technology_bubble.dart';
+part 'game/context/research/technology_popup.dart';
 part 'game/context/economy/economy_context_view.dart';
 part 'game/context/economy/economy_context_button.dart';
 part 'game/context/diplomacy/diplomacy_context_view.dart';
@@ -50,13 +52,14 @@ abstract class View {
   
   BiList<View, Placement> _children;
   bool isVisible;
+  bool transparent;
   num width = 0;
   num height = 0;
   View parent;
   TPoint mouse;
   TPoint oldMouse;
   
-  View() {
+  View({this.transparent: false}) {
     _children = new BiList.blank();
     mouse = new TPoint.zero();
     oldMouse = new TPoint.zero();
@@ -82,7 +85,7 @@ abstract class View {
   
   void computeHover() {
     _children.forEachReverseUntil((child, placement) {
-      if(child.isVisible) {
+      if(child.isVisible && !child.transparent) {
         return doComputeHover(child, placement);
       } else {
         return false;

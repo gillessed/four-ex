@@ -65,9 +65,9 @@ class Polygon {
       new TPoint(0, -radius)]);
   }
   
-  static num _sqX = 1 / sqrt(2);
+//  static num _sqX = 1 / sqrt(2);
   static Polygon getSquare(num radius) {
-    num x = radius * _sqX;
+//    num x = radius * _sqX;
     return new Polygon([
       new TPoint(-radius, -radius),
       new TPoint(-radius, radius),

@@ -17,5 +17,119 @@
     "PREREQUISITES": [
       "Scientific Method"
     ]
+  },
+  {
+    "NAME": "Exoplane Modeling",
+    "DESCRIPTION": "Grants a deeper undestanding of the underlying fabric of the universe.",
+    "COST": 90000,
+    "BONUSES": {
+      "RESEARCH": 10
+    },
+    "PREREQUISITES": [
+      "Dimensional Laboratories"
+    ]
+  },
+  {
+    "NAME": "Basic Experimentation",
+    "DESCRIPTION": "Proceed with some experiments.",
+    "COST": 5000,
+    "BONUSES": {
+      "RESEARCH": 2
+    },
+    "PREREQUISITES": [
+      "Scientific Method"
+    ]
+  },
+  {
+    "NAME": "Star Drive",
+    "DESCRIPTION": "Prototype faster-than-light propulsion.",
+    "COST": 8000
+  },
+  {
+    "NAME": "Star Drive Mk II",
+    "DESCRIPTION": "Improved prototype.",
+    "COST": 2000,
+    "PREREQUISITES": [
+      "Star Drive"
+    ]
+  },
+  {
+    "NAME": "Interstellar Communication",
+    "DESCRIPTION": "Establish contact with other species among the stars.",
+    "COST": 8000
+  },
+  {
+    "NAME": "Space Warfare",
+    "DESCRIPTION": "Develop theories about how to conduct war in space.",
+    "COST": 12000
+  },
+  {
+    "NAME": "Space Weapons",
+    "DESCRIPTION": "Laying out plans to build weapons for use in space.",
+    "COST": 50000,
+    "PREREQUISITES": [
+      "Space Warfare"
+    ]
+  },
+  {
+    "NAME": "Rail Guns 1",
+    "DESCRIPTION": "Basic short range rail gun.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Weapons"
+    ]
+  },
+  {
+    "NAME": "Laser Canon I",
+    "DESCRIPTION": "Basic medium range laser canon.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Weapons"
+    ]
+  },
+  {
+    "NAME": "Torpedo Launcher I",
+    "DESCRIPTION": "Basic long range torpedo launcher.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Weapons"
+    ]
+  },
+  {
+    "NAME": "Space Armor",
+    "DESCRIPTION": "Forging armor for ships in space.",
+    "COST": 50000,
+    "PREREQUISITES": [
+      "Space Warfare"
+    ]
+  },
+  {
+    "NAME": "Hull Plating I",
+    "DESCRIPTION": "Thick hull plating to deflect incoming projectiles.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Armor"
+    ]
+  },
+  {
+    "NAME": "Energy Shields I",
+    "DESCRIPTION": "Energy shields to block incoming lasers.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Armor"
+    ]
+  },
+  {
+    "NAME": "Point Defense I",
+    "DESCRIPTION": "Point defense to shoot down torpedos.",
+    "COST": 100000,
+    "PREREQUISITES": [
+      "Space Armor"
+    ]
+  },
+  {
+    "NAME": "Sensors",
+    "DESCRIPTION": "Basic information gathering sensors.",
+    "COST": 6000
   }
 ]

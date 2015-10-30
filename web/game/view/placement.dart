@@ -1,6 +1,7 @@
 part of view;
 
 class Placement {
+  static Placement NO_OP = new Placement(Translation.ZERO_F, Dimension.NO_OP);
   var computeTranslation;
   var computeDimensions;
   Placement(this.computeTranslation, this.computeDimensions);
