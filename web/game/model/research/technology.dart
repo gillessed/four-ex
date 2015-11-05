@@ -8,12 +8,12 @@ class Technology {
   List<Bonus> staticBonuses;
   List<Technology> prerequisites;
   List<Technology> children;
-  
+
   Technology.fromJson(Map json) {
     name = json["NAME"];
     description = json["DESCRIPTION"];
     cost = json["COST"];
-    repeatable = json.containsKey("REPEATABLE") && json["REPEATABLE"] == "true";
+    repeatable = json.containsKey("REPEATABLE") && json["REPEATABLE"] == true;
     staticBonuses = [];
     if(json.containsKey("BONUSES")) {
       staticBonuses.addAll(Bonus.parseJsonList(json["BONUSES"]));

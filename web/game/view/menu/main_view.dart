@@ -57,6 +57,7 @@ class MainView extends View {
   }
   
   List<PlayerProperties> getDefaultPlayerProperties() {
+//    PlayerColorPalette p1 = new PlayerColorPalette('rgb(210,66,9)', 'rgb(237,128,9)', 'rgb(0,0,255)', 'rgb(0,0,255)');
     PlayerColorPalette p1 = new PlayerColorPalette('rgb(9,66,210)', 'rgb(9,128,237)', 'rgb(0,0,255)', 'rgb(0,0,255)');
     PlayerColorPalette p2 = new PlayerColorPalette.single('rgb(255,0,0)');
     PlayerColorPalette p3 = new PlayerColorPalette.single('rgb(0,255,0)');

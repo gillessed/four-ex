@@ -59,7 +59,7 @@ class StatusBarView extends View {
       ..stroke();
     
     context
-      ..fillStyle = "rgb(200,100,0)"
+      ..fillStyle = model.humanPlayer.color.color1
       ..font = "50px Geo"
       ..textAlign = "center"
       ..fillText("Status Bar", width / 2, height / 2);

@@ -66,7 +66,7 @@ class ColoniesContextView extends ContextView {
     );
     coloniesTileView = new ColoniesTileView(colonySelector.current());
     addChild(
-    coloniesTileView,
+      coloniesTileView,
       new Placement(
         (num parentWidth, num parentHeight) {
           return new Translation(OFFSET, SELECTOR_HEIGHT + OFFSET);

@@ -16,6 +16,7 @@ part 'menu/terminal.dart';
 part 'ui/vertical_scroll_view.dart';
 part 'ui/button.dart';
 part 'ui/list_selector_view.dart';
+part 'ui/paragraph.dart';
 part 'game/game_view.dart';
 part 'game/hud/turn_button.dart';
 part 'game/hud/context_button.dart';
@@ -33,10 +34,13 @@ part 'game/context/influence/influence_context_button.dart';
 part 'game/context/colonies/colonies_context_view.dart';
 part 'game/context/colonies/colonies_context_button.dart';
 part 'game/context/colonies/colonies_tile_view.dart';
+part 'game/context/colonies/tile_properties_view.dart';
+part 'game/context/colonies/tile_surface_view.dart';
 part 'game/context/research/research_context_view.dart';
 part 'game/context/research/research_context_button.dart';
 part 'game/context/research/technology_bubble.dart';
 part 'game/context/research/technology_popup.dart';
+part 'game/context/research/technology_layer.dart';
 part 'game/context/economy/economy_context_view.dart';
 part 'game/context/economy/economy_context_button.dart';
 part 'game/context/diplomacy/diplomacy_context_view.dart';
@@ -52,14 +56,14 @@ abstract class View {
   
   BiList<View, Placement> _children;
   bool isVisible;
-  bool transparent;
+  bool isTransparent;
   num width = 0;
   num height = 0;
   View parent;
   TPoint mouse;
   TPoint oldMouse;
   
-  View({this.transparent: false}) {
+  View({this.isTransparent: false}) {
     _children = new BiList.blank();
     mouse = new TPoint.zero();
     oldMouse = new TPoint.zero();
@@ -84,8 +88,8 @@ abstract class View {
   }
   
   void computeHover() {
-    _children.forEachReverseUntil((child, placement) {
-      if(child.isVisible && !child.transparent) {
+    _children.forEachReverseUntil((View child, Placement placement) {
+      if(child.isVisible) {
         return doComputeHover(child, placement);
       } else {
         return false;
@@ -94,8 +98,12 @@ abstract class View {
   }
 
   bool doComputeHover(View child, Placement placement) {
-    if(child.containsPoint(child.mouse)) {
-      hoveredViews.add(child);
+    if(child.isTransparent && child._children.isEmpty) {
+      return false;
+    } else if(child.containsPoint(child.mouse) || child.isTransparent) {
+      if(!child.isTransparent) {
+        hoveredViews.add(child);
+      }
       child.computeHover();
       return true;
     } else {
@@ -142,11 +150,11 @@ abstract class View {
   
   void computeMouseMoved(View child, Placement placement) {
     Translation translation = placement.computeTranslation(width, height);
-    TPoint tranformedPoint = translation.inverse().applyToPoint(mouse);
+    TPoint transformedPoint = translation.inverse().applyToPoint(mouse);
     child.oldMouse.x = child.mouse.x;
     child.oldMouse.y = child.mouse.y;
-    child.mouse.x = tranformedPoint.x;
-    child.mouse.y = tranformedPoint.y;
+    child.mouse.x = transformedPoint.x;
+    child.mouse.y = transformedPoint.y;
     child._children.forEach((subchild, subplacement) {
       child.computeMouseMoved(subchild, subplacement);
     });

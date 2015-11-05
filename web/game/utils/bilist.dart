@@ -111,4 +111,8 @@ class BiList<S, T> {
     first.clear();
     second.clear();
   }
+
+  bool get isEmpty {
+    return first.isEmpty && second.isEmpty;
+  }
 }

@@ -91,7 +91,7 @@ void main() {
       oldViews.last.doMouseExited();
       View.hoveredViews.last.doMouseEntered();
     }
-    
+
     // Draw
     mainView.draw(context);
   });

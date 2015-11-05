@@ -88,7 +88,7 @@ class ColoniesTileView extends View {
           throw new StateError('Should not have bonus amount ${bonus.amount}');
         }
         context
-          ..shadowBlur = 5
+          ..shadowBlur = 0
           ..shadowColor = context.fillStyle
           ..shadowOffsetX = 0
           ..shadowOffsetY = 0

@@ -20,7 +20,7 @@
   },
   {
     "NAME": "Exoplane Modeling",
-    "DESCRIPTION": "Grants a deeper undestanding of the underlying fabric of the universe.",
+    "DESCRIPTION": "Grants a deeper understanding of the underlying fabric of the universe.",
     "COST": 90000,
     "BONUSES": {
       "RESEARCH": 10
@@ -31,8 +31,9 @@
   },
   {
     "NAME": "Basic Experimentation",
-    "DESCRIPTION": "Proceed with some experiments.",
+    "DESCRIPTION": "Perform experiments to further our understanding of science.",
     "COST": 5000,
+    "REPEATABLE": true,
     "BONUSES": {
       "RESEARCH": 2
     },
@@ -72,7 +73,7 @@
     ]
   },
   {
-    "NAME": "Rail Guns 1",
+    "NAME": "Rail Guns I",
     "DESCRIPTION": "Basic short range rail gun.",
     "COST": 100000,
     "PREREQUISITES": [

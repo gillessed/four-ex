@@ -14,6 +14,17 @@ enum BonusType {
   HAPPINESS
 }
 
+Map<BonusType, String> _BONUS_NAMES = {
+  BonusType.INDUSTRY: 'Industry',
+  BonusType.ECONOMY: 'Economy',
+  BonusType.RESEARCH: 'Research',
+  BonusType.POPULATION_MAX: 'Population Max',
+  BonusType.INFLUENCE: 'Influence',
+  BonusType.HAPPINESS: 'Happiness',
+  BonusType.POPULATION_GROWTH: 'Population Growth'
+};
+
+
 BonusType _getBonusType(String key) {
   BonusType bonusType;
   _BONUS_KEYS.forEach((BonusType type, String name) {
@@ -32,6 +43,10 @@ class Bonus {
   int amount;
   
   Bonus(this.type, this.amount);
+
+  String humanReadableString() {
+    return '${_BONUS_NAMES[type]}: +${amount}';
+  }
   
   static Bonus createTileBonus(BonusType type, List<num> probabilities) {
     num rand = random.nextDouble();
