@@ -17,6 +17,7 @@ part 'ui/vertical_scroll_view.dart';
 part 'ui/button.dart';
 part 'ui/list_selector_view.dart';
 part 'ui/paragraph.dart';
+part 'ui/tabbed_panel.dart';
 part 'game/game_view.dart';
 part 'game/hud/turn_button.dart';
 part 'game/hud/context_button.dart';
