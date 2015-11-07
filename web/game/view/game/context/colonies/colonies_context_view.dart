@@ -12,7 +12,10 @@ class ColoniesContextView extends ContextView {
   StarSystemSelector starSystemSelector;
   ListSelectorView<Colony> colonySelectorView;
   ColonySelector colonySelector;
-  ColoniesTileView coloniesTileView;
+
+  ColonyImprovementsView colonyImprovementView;
+  ColonyShipView colonyShipsView;
+  //ColoniesTileView coloniesTileView;
   
   ColoniesContextView(Game model, this.gameView) : super(model) {
     contextButton = new ColoniesContextButton(model, gameView, this);
@@ -29,7 +32,7 @@ class ColoniesContextView extends ContextView {
         'rgb(255,255,255)',
         2,
         onItemChanged: (_) {
-          
+          // TODO: implement when we have more than one star system
         });
     addChild(
       starSystemSelectorView,
@@ -52,7 +55,8 @@ class ColoniesContextView extends ContextView {
         'rgb(255,255,255)',
         2,
         onItemChanged: (Colony newValue, Colony oldValue) {
-          coloniesTileView.colony = newValue;
+          colonyImprovementView.colony = newValue;
+          colonyShipsView.colony = newValue;
         });
     addChild(
       colonySelectorView,
@@ -64,9 +68,25 @@ class ColoniesContextView extends ContextView {
           return new Dimension(parentWidth / 2, SELECTOR_HEIGHT);
         })
     );
-    coloniesTileView = new ColoniesTileView(colonySelector.current());
+
+    colonyImprovementView = new ColonyImprovementsView();
+    colonyShipsView = new ColonyShipView();
+
+    Map<String, View> panels = {
+      'Improvements': colonyImprovementView,
+      'Ships': colonyShipsView
+    };
+    TabbedPanel coloniesTabbedPanel = new TabbedPanel(
+        gameView.model.humanPlayer,
+        panels,
+        'Improvements',
+        0,
+        100,
+        30,
+        Layout.TOP
+    );
     addChild(
-      coloniesTileView,
+      coloniesTabbedPanel,
       new Placement(
         (num parentWidth, num parentHeight) {
           return new Translation(OFFSET, SELECTOR_HEIGHT + OFFSET);

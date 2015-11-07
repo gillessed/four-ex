@@ -35,6 +35,8 @@ part 'game/context/influence/influence_context_button.dart';
 part 'game/context/colonies/colonies_context_view.dart';
 part 'game/context/colonies/colonies_context_button.dart';
 part 'game/context/colonies/colonies_tile_view.dart';
+part 'game/context/colonies/colonies_improvement_view.dart';
+part 'game/context/colonies/colonies_ships_view.dart';
 part 'game/context/colonies/tile_properties_view.dart';
 part 'game/context/colonies/tile_surface_view.dart';
 part 'game/context/research/research_context_view.dart';
