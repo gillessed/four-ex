@@ -131,8 +131,8 @@ class ResearchContextView extends ContextView {
       if (layerHeight > height && y + dy < -layerHeight + height) {
         y = -layerHeight + height;
       }
-      layerTranslation = new Translation(x, y);
     }
+    layerTranslation = new Translation(x, y);
   }
 }
 

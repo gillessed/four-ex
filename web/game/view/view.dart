@@ -18,6 +18,7 @@ part 'ui/button.dart';
 part 'ui/list_selector_view.dart';
 part 'ui/paragraph.dart';
 part 'ui/tabbed_panel.dart';
+part 'ui/draggable_view.dart';
 part 'game/game_view.dart';
 part 'game/hud/turn_button.dart';
 part 'game/hud/context_button.dart';
@@ -60,6 +61,7 @@ abstract class View {
   BiList<View, Placement> _children;
   bool isVisible;
   bool isTransparent;
+  bool captureMouse;
   num width = 0;
   num height = 0;
   View parent;
@@ -71,6 +73,7 @@ abstract class View {
     mouse = new TPoint.zero();
     oldMouse = new TPoint.zero();
     isVisible = true;
+    captureMouse = false;
   }
   
   void draw(CanvasRenderingContext2D context) {
@@ -90,25 +93,37 @@ abstract class View {
     });
   }
   
-  void computeHover() {
-    _children.forEachReverseUntil((View child, Placement placement) {
-      if(child.isVisible) {
-        return doComputeHover(child, placement);
-      } else {
-        return false;
-      }
-    });
+  bool computeHover() {
+    if(_children.isEmpty) {
+      return true;
+    } else {
+      return _children.forEachReverseUntil((View child, Placement placement) {
+        if(child.isVisible) {
+          return doComputeHover(child, placement);
+        } else {
+          return false;
+        }
+      });
+    }
   }
 
   bool doComputeHover(View child, Placement placement) {
     if(child.isTransparent && child._children.isEmpty) {
       return false;
     } else if(child.containsPoint(child.mouse) || child.isTransparent) {
-      if(!child.isTransparent) {
-        hoveredViews.add(child);
+      if(captureMouse && !isTransparent) {
+        hoveredViews.insert(0, child);
+        return true;
+      } else {
+        if (child.computeHover()) {
+          if (!child.isTransparent) {
+            hoveredViews.insert(0, child);
+          }
+          return true;
+        } else {
+          return false;
+        }
       }
-      child.computeHover();
-      return true;
     } else {
       return false;
     }

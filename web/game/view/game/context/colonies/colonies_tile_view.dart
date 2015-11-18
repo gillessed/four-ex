@@ -1,6 +1,6 @@
 part of view;
 
-class ColoniesTileView extends View {
+class ColonyTileView extends View {
   static const int HEXAGON_RADIUS = 60;
   static const int BONUS_INDICATOR_RADIUS = 8;
   static const num BONUS_RADIUS = -HEXAGON_RADIUS * 0.75 + BONUS_INDICATOR_RADIUS;
@@ -9,7 +9,7 @@ class ColoniesTileView extends View {
 
   Colony colony;
   HexagonalLattice lattice;
-  ColoniesTileView(this.colony) {
+  ColonyTileView(this.colony) {
     lattice = new HexagonalLattice.empty(
         true, false, Planet.TILE_WIDTH, Planet.TILE_HEIGHT);
   }

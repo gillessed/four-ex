@@ -22,7 +22,7 @@ abstract class Button extends View {
       this.clickStrokeColor});
   
   String getFillColor() {
-    if (View.hoveredViews.last == this) {
+    if (View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
       if (View.mouse0Down) {
         return clickFillColor;
       } else {
@@ -34,7 +34,7 @@ abstract class Button extends View {
   }
 
   String getStrokeColor() {
-    if (View.hoveredViews.last == this) {
+    if (View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
       if (View.mouse0Down) {
         return clickStrokeColor;
       } else {

@@ -34,7 +34,7 @@ class TurnButton extends View {
     context..save();
     String fillColour = DEFAULT_FILL;
     String textColour = DEFAULT_TEXT;
-    if(View.hoveredViews.last == this) {
+    if(View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
       if(View.mouse0Down) {
         fillColour = CLICK_FILL;
         textColour = CLICK_TEXT;
