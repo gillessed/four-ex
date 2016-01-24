@@ -1,10 +1,11 @@
 // Copyright (c) 2015, <your name>. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:html';
+import 'dart:html' hide Event;
 import 'canvas.dart';
 import 'model/model.dart';
 import 'view/view.dart';
+import 'view/game/game_view.dart';
 import 'transformation/transformation.dart';
 
 CanvasElement canvasElement;
@@ -34,15 +35,15 @@ void main() {
   
   MainModel model = new MainModel();
   MainView mainView = new MainView(model);
-  body.onKeyUp.listen((e) {mainView.onKeyUp(e);});
-  body.onKeyDown.listen((e) {mainView.onKeyDown(e);});
+  body.onKeyUp.listen((e) {mainView.eventKeyUp(e);});
+  body.onKeyDown.listen((e) {mainView.eventKeyDown(e);});
   body.onMouseWheel.listen((e) {
     e.preventDefault();
-    mainView.onMouseWheel(e);
+    mainView.eventMouseWheel(e);
   });
   body.onMouseMove.listen((e) {
     TPoint mouse = new TPoint(e.offset.x, e.offset.y);
-    mainView.onMouseMoved(e, mouse);
+    mainView.eventMouseMoved(e, mouse);
   });
   body.onMouseDown.listen((e) {
     if(e.button == 0) {
@@ -54,7 +55,7 @@ void main() {
     } else if(e.button == 2) {
       View.mouse2Down = true;
     }
-    mainView.onMouseDown(e);
+    mainView.eventMouseDown(e);
   });
   body.onMouseUp.listen((e) {
     if(e.button == 0) {
@@ -66,7 +67,7 @@ void main() {
     } else if(e.button == 2) {
       View.mouse2Down = false;
     }
-    mainView.onMouseUp(e);
+    mainView.eventMouseUp(e);
   });
   Canvas canvas = new Canvas(canvasElement, (var context, num width, num height) {
     mainView.width = width;
@@ -74,22 +75,20 @@ void main() {
     
     // Recreate hovered list
     List<View> oldViews = [];
-    oldViews.addAll(View.hoveredViews);
-    View.hoveredViews.clear();
+    oldViews.addAll(View.mouseFocusViews);
+    View.mouseFocusViews = [];
     mainView.computeHover();
-    
+
     // Do mouse entered/exited
-    if(oldViews.isEmpty) {
-      if(oldViews.isNotEmpty) {
-        oldViews.last.doMouseEntered();
+    for(View view in oldViews) {
+      if(!View.mouseFocusViews.contains(view) && view.eventListeners.containsKey(Event.MOUSE_EXITED)) {
+        view.eventListeners[Event.MOUSE_EXITED]();
       }
-    } else if(View.hoveredViews.isEmpty) {
-      if(View.hoveredViews.isNotEmpty) {
-        View.hoveredViews.last.doMouseEntered();
+    }
+    for(View view in View.mouseFocusViews) {
+      if(!oldViews.contains(view) && view.eventListeners.containsKey(Event.MOUSE_ENTERED)) {
+        view.eventListeners[Event.MOUSE_ENTERED]();
       }
-    } else if(View.hoveredViews.last != oldViews.last) {
-      oldViews.last.doMouseExited();
-      View.hoveredViews.last.doMouseEntered();
     }
 
     // Draw

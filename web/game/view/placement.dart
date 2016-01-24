@@ -11,6 +11,11 @@ class Dimension {
   static Function NO_OP = (num width, num height) {
     return new Dimension(width, height);
   };
+  static Function CONSTANT = (num width, num height) {
+    return (a, b) {
+      return new Dimension(width, height);
+    };
+  };
   num width;
   num height;
   Dimension(this.width, this.height);

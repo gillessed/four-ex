@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class TurnButton extends View {
   
@@ -27,6 +27,7 @@ class TurnButton extends View {
       new TPoint(LOWER_BEVEL_WIDTH / 2, HEIGHT),
       new TPoint(-LOWER_BEVEL_WIDTH / 2, HEIGHT)
     ]);
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
   }
 
   @override
@@ -34,7 +35,7 @@ class TurnButton extends View {
     context..save();
     String fillColour = DEFAULT_FILL;
     String textColour = DEFAULT_TEXT;
-    if(View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
+    if(mouseHover) {
       if(View.mouse0Down) {
         fillColour = CLICK_FILL;
         textColour = CLICK_TEXT;
@@ -63,7 +64,7 @@ class TurnButton extends View {
     return polygon.contains(p);
   }
 
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     model.turn++;
   }
 }

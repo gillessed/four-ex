@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 abstract class ContextButton extends View {
   static const num OFFSET = 5;
@@ -25,6 +25,7 @@ abstract class ContextButton extends View {
       new TPoint(SIZE, SIZE),
       new TPoint(0, SIZE),
     ]);
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
   }
 
   bool containsPoint(TPoint p) {
@@ -34,7 +35,7 @@ abstract class ContextButton extends View {
   String getFillColour() {
     if (gameView.currentContextView.getContextButton() == this) {
       return SELECTED_FILL;
-    } else if (View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
+    } else if (mouseHover) {
       if (View.mouse0Down) {
         return CLICK_FILL;
       } else {
@@ -48,7 +49,7 @@ abstract class ContextButton extends View {
   String getForegroundColour() {
     if (gameView.currentContextView.getContextButton() == this) {
       return SELECTED_FOREGROUND;
-    } else if (View.hoveredViews.isNotEmpty && View.hoveredViews.last == this) {
+    } else if (mouseHover) {
       if (View.mouse0Down) {
         return CLICK_FOREGROUND;
       } else {
@@ -59,8 +60,7 @@ abstract class ContextButton extends View {
     }
   }
 
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     if(e.button == 0 && !e.ctrlKey) {
       gameView.switchContextView(contextView);
     }

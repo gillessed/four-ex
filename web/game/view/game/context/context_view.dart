@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 abstract class ContextView extends View {
   Game model;

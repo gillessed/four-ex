@@ -1,11 +1,11 @@
 part of view;
 
-class VerticalScrollView extends View {
+class VerticalScrollView2 extends View {
   
   Translation translation;
   View child;
   
-  VerticalScrollView(this.child) {
+  VerticalScrollView2(this.child) {
     translation = new Translation(0, 0);
     addChild(
       child,

@@ -21,9 +21,6 @@ class ListSelectorView<T> extends View {
       this.lineColor,
       this.fontColor,
       this.font,
-      String backgroundColor,
-      String hoverColor,
-      String clickColor,
       this.lineWidth, {
       this.onItemChanged
       }) {
@@ -38,9 +35,6 @@ class ListSelectorView<T> extends View {
         },
         lineWidth,
         lineColor,
-        backgroundColor,
-        hoverColor,
-        clickColor,
         true);
     addChild(
       previousButton,
@@ -61,9 +55,6 @@ class ListSelectorView<T> extends View {
         },
         lineWidth,
         lineColor,
-        backgroundColor,
-        hoverColor,
-        clickColor,
         false);
     addChild(
       nextButton,
@@ -109,8 +100,7 @@ class ListSelectorView<T> extends View {
 }
 
 class ListSelectorButton extends Button {
-  
-  Function onClick;
+
   num borderWidth;
   String borderColor;
   bool left;
@@ -118,16 +108,7 @@ class ListSelectorButton extends Button {
       Function onClick,
       this.borderWidth,
       this.borderColor,
-      String backgroundColor,
-      String hoverColor,
-      String clickColor,
-      this.left) : super(
-          onClick,
-          defaultFillColor: backgroundColor,
-          hoverFillColor: hoverColor,
-          clickFillColor: clickColor
-          ) {
-    this.onClick = onClick;
+      this.left) : super(onClick: onClick) {
   }
 
   Polygon get polygon {

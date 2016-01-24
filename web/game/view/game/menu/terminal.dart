@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class Terminal {
   static const int STATE_MAIN = 0;

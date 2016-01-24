@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class ColonyTileView extends View {
   static const int HEXAGON_RADIUS = 60;

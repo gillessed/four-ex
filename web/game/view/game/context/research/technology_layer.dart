@@ -1,11 +1,10 @@
-part of view;
+part of game_view;
 
 class TechnologyLayer extends View {
   Game game;
   Map<Technology, TechnologyBubble> bubbleMap;
 
   TechnologyLayer(this.game, this.bubbleMap) {
-    isTransparent = true;
     bubbleMap.forEach((Technology technology, TechnologyBubble bubble) {
       technology.children.forEach((Technology child) {
         bubble.childrenBubbles.add(bubbleMap[child]);

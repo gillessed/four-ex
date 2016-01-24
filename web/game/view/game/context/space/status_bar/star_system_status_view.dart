@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class StarSystemStatusView extends View {
   static const PLANETARY_BODY_VIEW_WIDTH = 150;

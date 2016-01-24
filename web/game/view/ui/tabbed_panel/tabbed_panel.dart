@@ -6,7 +6,6 @@ enum Layout {
 }
 
 class TabbedPanel extends View {
-  Player player;
   Map<String, View> panels;
   Map<String, Tab> tabs;
   Tab selectedTab;
@@ -17,25 +16,17 @@ class TabbedPanel extends View {
   TabView tabView;
 
   TabbedPanel(
-      this.player,
       this.panels,
       String firstView,
       this.margin,
       this.tabWidth,
       this.tabHeight,
       this.layout) {
-    tabView = new TabView(player, panels[firstView]);
-    int x = 0;
+    tabView = new TabView(panels[firstView]);
+    int x = 20;
     tabs = {};
     panels.forEach((String name, View view) {
-      Tab newTab = new Tab(player, name, (Tab tab) {
-        selectedTab.selected = false;
-        print(tab);
-        print(tab.selected);
-        tab.selected = true;
-        selectedTab = tab;
-        tabView.setView(panels[name]);
-      });
+      Tab newTab = new Tab(this, name);
       tabs[name] = newTab;
       newTab.x = x;
       addChild(
@@ -67,26 +58,26 @@ class TabbedPanel extends View {
   }
 
   void addPanel(String name, View view) {
-
+    //TODO: Implement this
   }
 }
 
 class TabView extends View {
-  Player player;
   View view;
 
-  TabView(this.player, this.view) {
+  TabView(this.view) {
     addChild(view, Placement.NO_OP);
   }
 
   void setView(View newView) {
     _children.replaceSByS(view, newView);
+    this.view = newView;
   }
 
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = player.color.color2
+      ..strokeStyle = theme.color2
       ..lineWidth = 2
       ..beginPath()
       ..moveTo(0, 0)
@@ -99,22 +90,19 @@ class TabView extends View {
 }
 
 class Tab extends Button {
-  Player player;
-  String text;
+  TabbedPanel tabbedPanel;
+  String name;
   bool selected;
   int x;
 
-  Tab(Player player, this.text, Function onClick) : super(
-      onClick,
-      defaultFillColor: 'rgb(0, 0, 0)',
-      hoverFillColor: 'rgb(50,50,50)',
-      clickFillColor: 'rgb(255, ,255, 255)',
-      defaultStrokeColor: player.color.color2,
-      hoverStrokeColor: 'rgb(255, 255, 255)',
-      clickStrokeColor: 'rgb(0, 0, 0)'
-  ) {
-    this.player = player;
+  Tab(this.tabbedPanel, this.name) {
     selected = false;
+    eventListeners[Event.MOUSE_UP] = (MouseEvent e) {
+      tabbedPanel.selectedTab.selected = false;
+      selected = true;
+      tabbedPanel.selectedTab = this;
+      tabbedPanel.tabView.setView(tabbedPanel.panels[name]);
+    };
   }
 
   @override
@@ -137,7 +125,7 @@ class Tab extends Button {
   @override
   void drawComponent(CanvasRenderingContext2D context) {
     context
-      ..strokeStyle = player.color.color2
+      ..strokeStyle = theme.color2
       ..fillStyle = getFillColor()
       ..lineWidth = 2
       ..beginPath()
@@ -154,13 +142,7 @@ class Tab extends Button {
       ..fillStyle = getStrokeColor()
       ..textAlign = 'center'
       ..textBaseline = 'middle'
-      ..fillText(text, 0, 0);
-  }
-
-  @override
-  void doMouseUp(MouseEvent e) {
-    if(!selected) {
-      onClick(this);
-    }
+      ..font = '20px geo'
+      ..fillText(name, 0, 0);
   }
 }

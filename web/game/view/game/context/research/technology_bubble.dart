@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class TechnologyBubble extends View {
   Player player;
@@ -7,7 +7,11 @@ class TechnologyBubble extends View {
   Translation translation;
   List<TechnologyBubble> childrenBubbles = [];
   
-  TechnologyBubble(this.player, this.contextView, this.technology, this.translation);
+  TechnologyBubble(this.player, this.contextView, this.technology, this.translation) {
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    eventListeners[Event.MOUSE_ENTERED] = onMouseEntered;
+    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
+  }
 
   @override
   void drawComponent(CanvasRenderingContext2D context) {
@@ -134,8 +138,7 @@ class TechnologyBubble extends View {
     }
   }
 
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     if(player.research.prerequisitesMet(technology) 
         && technology != player.research.currentTechnology) {
       player.research.currentTechnology = technology;
@@ -143,8 +146,7 @@ class TechnologyBubble extends View {
     }
   }
 
-  @override
-  void doMouseEntered() {
+  void onMouseEntered() {
     contextView.technologyPopup.technology = technology;
     contextView.technologyPopup.bubblePoint = new TPoint(
         translation.dx + width / 2 + contextView.layerTranslation.dx,
@@ -153,8 +155,7 @@ class TechnologyBubble extends View {
     contextView.technologyPopup.isVisible = true;
   }
 
-  @override
-  void doMouseExited() {
+  void onMouseExited() {
     contextView.technologyPopup.isVisible = false;
   }
 }

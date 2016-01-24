@@ -1,11 +1,11 @@
-part of view;
+part of game_view;
 
 class MainMenuView extends View {
   static const int LINE_HEIGHT = 40;
   
   num height;
   MainModel model;
-  VerticalScrollView scroller;
+  VerticalScrollView2 scroller;
   MainView mainView;
   Terminal terminal;
   
@@ -28,9 +28,14 @@ class MainMenuView extends View {
              ..translate(0, LINE_HEIGHT);
     }
     context.restore();
+
+    eventListeners[Event.KEY_DOWN] = onKeyDown;
+    eventListeners[Event.MOUSE_WHEEL] = onMouseWheel;
   }
 
-  void doKeyDown(KeyboardEvent e) {
+  int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);
+
+  void onKeyDown(KeyboardEvent e) {
     int keyCode = e.keyCode;
     if(keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
       if(e.shiftKey) {
@@ -61,11 +66,8 @@ class MainMenuView extends View {
       scrollToBottom();
     }
   }
-  
-  int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);
 
-  @override
-  void doMouseWheel(WheelEvent e) {
+  void onMouseWheel(WheelEvent e) {
     if(scroller != null && totalHeight > height) {
       scroller.scrollWithin(-e.deltaY, height - totalHeight, 0);
     }

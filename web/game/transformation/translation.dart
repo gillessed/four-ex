@@ -2,6 +2,9 @@ part of transformation;
 
 class Translation extends Transformation {
   static Translation ZERO = new Translation(0, 0);
+  static Function CONSTANT = (num x, num y) {
+    return (a, b) {return new Translation(x, y);};
+  };
   static var ZERO_F = (num width, num height) {
     return ZERO;
   };

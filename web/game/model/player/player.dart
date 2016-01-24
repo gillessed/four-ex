@@ -1,7 +1,7 @@
 part of model;
 
 class Player {
-  PlayerColorPalette color;
+  Theme color;
   String speciesName;
   String leaderName;
   List<ControlledStarSystem> controlledStarSystems;

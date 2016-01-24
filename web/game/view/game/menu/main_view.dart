@@ -1,13 +1,13 @@
-part of view;
+part of game_view;
 
 class MainView extends View {
   MainModel model;
-  VerticalScrollView scroller;
+  VerticalScrollView2 scroller;
   MainMenuView mainMenuView;
   
   MainView(this.model) {
     mainMenuView = new MainMenuView(model, this);
-    scroller = new VerticalScrollView(mainMenuView);
+    scroller = new VerticalScrollView2(mainMenuView);
     mainMenuView.scroller = scroller;
     addChild(
       scroller,
@@ -16,7 +16,7 @@ class MainView extends View {
         (num parentWidth, num parentHeight) {
           return new Dimension(parentWidth, parentHeight);
     }));
-    View.focusedView = mainMenuView;
+    View.keyFocusView = mainMenuView;
   }
 
   @override
@@ -43,7 +43,7 @@ class MainView extends View {
       spaceProperties.constantsJson = values[3];
       spaceProperties.technologies = Technology.parseTechnologiesJson(values[4]);
       Game game = new Game.generate(spaceProperties, getDefaultPlayerProperties(), 0);
-      GameView gameView = new GameView(game);
+      GameView gameView = new GameView(game.humanPlayer.color, game);
       this.clearChildren();
       this.addChild(
         gameView, 
@@ -52,15 +52,15 @@ class MainView extends View {
           (num parentWidth, num parentHeight) {
             return new Dimension(parentWidth, parentHeight);
       }));
-      View.focusedView = gameView;
+      View.keyFocusView = gameView;
     });
   }
   
   List<PlayerProperties> getDefaultPlayerProperties() {
 //    PlayerColorPalette p1 = new PlayerColorPalette('rgb(210,66,9)', 'rgb(237,128,9)', 'rgb(0,0,255)', 'rgb(0,0,255)');
-    PlayerColorPalette p1 = new PlayerColorPalette('rgb(9,66,210)', 'rgb(9,128,237)', 'rgb(0,0,255)', 'rgb(0,0,255)');
-    PlayerColorPalette p2 = new PlayerColorPalette.single('rgb(255,0,0)');
-    PlayerColorPalette p3 = new PlayerColorPalette.single('rgb(0,255,0)');
+    Theme p1 = new Theme('rgb(9,66,210)', 'rgb(9,128,237)', 'rgb(0,115,180)', 'rgb(0,0,255)');
+    Theme p2 = new Theme.single('rgb(255,0,0)');
+    Theme p3 = new Theme.single('rgb(0,255,0)');
     return [
       new PlayerProperties(p1, 'Human', 'Barack Obama', 'Sol'),
       new PlayerProperties(p2, 'Klingon', 'Gowron', 'Quonos'),

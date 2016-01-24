@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class MinimapView extends View {
   Game model;
@@ -14,6 +14,10 @@ class MinimapView extends View {
     space = model.space;
     minimapArea = new Rectangle(0, 0, 1, 1);
     mapDrag = false;
+    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
+    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
   }
   
   @override
@@ -64,26 +68,22 @@ class MinimapView extends View {
       ..stroke();
   }
 
-  @override
-  void doMouseDown(MouseEvent e) {
+  void onMouseDown(MouseEvent e) {
     displaceMap();
     mapDrag = true;
   }
 
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     mapDrag = false;
   }
 
-  @override
-  void doMouseMoved(MouseEvent e) {
+  void onMouseMoved(MouseEvent e) {
     if(mapDrag) {
       displaceMap();
     }
   }
 
-  @override
-  void doMouseExited() {
+  void onMouseExited() {
     mapDrag = false;
   }
   

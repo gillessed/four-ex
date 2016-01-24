@@ -3,6 +3,7 @@ library model;
 import 'dart:math' show Point, max, min;
 import '../transformation/transformation.dart';
 import '../utils/utils.dart';
+import '../view/theme.dart';
 
 part 'game.dart';
 part 'player/player.dart';

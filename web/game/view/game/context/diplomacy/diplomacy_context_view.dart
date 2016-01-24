@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class DiplomacyContextView extends ContextView {
   DiplomacyContextButton contextButton;

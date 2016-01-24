@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 abstract class Icon {
   void draw(CanvasRenderingContext2D context);

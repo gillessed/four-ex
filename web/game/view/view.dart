@@ -1,82 +1,75 @@
 library view;
 
-import 'dart:html';
-import 'dart:math';
-import 'dart:async';
+import 'dart:html' hide Event;
 import '../transformation/transformation.dart';
-import '../model/model.dart';
 import '../utils/utils.dart';
-import '../rest/rest_controller.dart';
+import 'theme.dart';
 
 part 'placement.dart';
-part 'icons/icons.dart';
-part 'menu/main_view.dart';
-part 'menu/main_menu_view.dart';
-part 'menu/terminal.dart';
-part 'ui/vertical_scroll_view.dart';
-part 'ui/button.dart';
-part 'ui/list_selector_view.dart';
+part 'ui/event.dart';
+part 'ui/scroll/vertical_scroll_view.dart';
+part 'game/menu/vertical_scroll_view_depr.dart';
+part 'ui/button/button.dart';
+part 'ui/selector/list_selector_view.dart';
 part 'ui/paragraph.dart';
-part 'ui/tabbed_panel.dart';
-part 'ui/draggable_view.dart';
-part 'game/game_view.dart';
-part 'game/hud/turn_button.dart';
-part 'game/hud/context_button.dart';
-part 'game/hud/hud_bar.dart';
-part 'game/context/context_view.dart';
-part 'game/context/space/space_context_view.dart';
-part 'game/context/space/space_context_button.dart';
-part 'game/context/space/space_view.dart';
-part 'game/context/space/status_bar/minimap_view.dart';
-part 'game/context/space/status_bar/status_bar_view.dart';
-part 'game/context/space/status_bar/blank_status_view.dart';
-part 'game/context/space/status_bar/star_system_status_view.dart';
-part 'game/context/influence/influence_context_view.dart';
-part 'game/context/influence/influence_context_button.dart';
-part 'game/context/colonies/colonies_context_view.dart';
-part 'game/context/colonies/colonies_context_button.dart';
-part 'game/context/colonies/colonies_tile_view.dart';
-part 'game/context/colonies/colonies_improvement_view.dart';
-part 'game/context/colonies/colonies_ships_view.dart';
-part 'game/context/colonies/tile_properties_view.dart';
-part 'game/context/colonies/tile_surface_view.dart';
-part 'game/context/research/research_context_view.dart';
-part 'game/context/research/research_context_button.dart';
-part 'game/context/research/technology_bubble.dart';
-part 'game/context/research/technology_popup.dart';
-part 'game/context/research/technology_layer.dart';
-part 'game/context/economy/economy_context_view.dart';
-part 'game/context/economy/economy_context_button.dart';
-part 'game/context/diplomacy/diplomacy_context_view.dart';
-part 'game/context/diplomacy/diplomacy_context_button.dart';
+part 'ui/tabbed_panel/tabbed_panel.dart';
+part 'ui/drag/draggable_view.dart';
 
 abstract class View {
-  
+
   static bool mouse0Down = false;
   static bool mouse1Down = false;
   static bool mouse2Down = false;
-  static View focusedView;
-  static List<View> hoveredViews = [];
-  
+
+  static View keyFocusView;
+  static List<View> mouseFocusViews = [];
+  static Map<String, View> eventViews = {};
+  static Map<String, List<Function>> globalEventListeners = {
+    Event.MOUSE_WHEEL: [],
+    Event.MOUSE_UP: [],
+    Event.MOUSE_DOWN: [],
+    Event.MOUSE_MOVED: [],
+  };
+
   BiList<View, Placement> _children;
+  Map<String, Function> eventListeners;
+  Theme uiTheme;
   bool isVisible;
-  bool isTransparent;
-  bool captureMouse;
+  bool clip;
   num width = 0;
   num height = 0;
   View parent;
   TPoint mouse;
   TPoint oldMouse;
   
-  View({this.isTransparent: false}) {
+  View({this.uiTheme, this.clip: false}) {
     _children = new BiList.blank();
     mouse = new TPoint.zero();
     oldMouse = new TPoint.zero();
     isVisible = true;
-    captureMouse = false;
+    eventListeners = {};
   }
+
+  Theme get theme {
+    if(uiTheme == null) {
+      if(parent == null) {
+        return new Theme.single('rgb(0,0,0)');
+      } else {
+        return parent.theme;
+      }
+    } else {
+      return uiTheme;
+    }
+  }
+
+  bool get mouseHover => View.mouseFocusViews.contains(this);
   
   void draw(CanvasRenderingContext2D context) {
+    if(clip) {
+      context.save();
+      pathBorder(context);
+      context.clip();
+    }
     context.save();
     drawComponent(context);
     context.restore();
@@ -91,81 +84,39 @@ abstract class View {
         context.restore();
       }
     });
+    if(clip) {
+      context.restore();
+    }
+  }
+
+  bool consumesMouseEvent() {
+    return eventListeners.containsKey(Event.MOUSE_DOWN)
+      || eventListeners.containsKey(Event.MOUSE_UP)
+      || eventListeners.containsKey(Event.MOUSE_MOVED)
+      || eventListeners.containsKey(Event.MOUSE_WHEEL)
+      || eventListeners.containsKey(Event.MOUSE_ENTERED)
+      || eventListeners.containsKey(Event.MOUSE_EXITED);
   }
   
   bool computeHover() {
-    if(_children.isEmpty) {
-      return true;
-    } else {
-      return _children.forEachReverseUntil((View child, Placement placement) {
-        if(child.isVisible) {
-          return doComputeHover(child, placement);
-        } else {
-          return false;
-        }
-      });
-    }
-  }
-
-  bool doComputeHover(View child, Placement placement) {
-    if(child.isTransparent && child._children.isEmpty) {
-      return false;
-    } else if(child.containsPoint(child.mouse) || child.isTransparent) {
-      if(captureMouse && !isTransparent) {
-        hoveredViews.insert(0, child);
+    if(containsPoint(mouse)) {
+      if(computeChildHover()) {
+        mouseFocusViews.insert(0, this);
         return true;
-      } else {
-        if (child.computeHover()) {
-          if (!child.isTransparent) {
-            hoveredViews.insert(0, child);
-          }
-          return true;
-        } else {
-          return false;
-        }
+      } else if(consumesMouseEvent()) {
+        mouseFocusViews.insert(0, this);
+        return true;
       }
-    } else {
-      return false;
     }
+    return false;
   }
 
-  void onKeyUp(KeyboardEvent e) {
-    focusedView.doKeyUp(e);
-  }
-  
-  void onKeyDown(KeyboardEvent e) {
-    focusedView.doKeyDown(e);
-  }
-  
-  void onMouseWheel(WheelEvent e) {
-    if(hoveredViews.isNotEmpty) {
-      hoveredViews.last.doMouseWheel(e);
-    }
-  }
-  
-  void onMouseDown(MouseEvent e) {
-    if(hoveredViews.isNotEmpty) {
-      hoveredViews.last.doMouseDown(e);
-    }
-  }
-  
-  void onMouseUp(MouseEvent e) {
-    if(hoveredViews.isNotEmpty) {
-      focusedView = hoveredViews.last;
-      hoveredViews.last.doMouseUp(e);
-    }
-  }
-  
-  void onMouseMoved(MouseEvent e, TPoint point) {
-    mouse = new TPoint.fromPoint(point);
-    _children.forEach((child, placement) {
-      computeMouseMoved(child, placement);
+  bool computeChildHover() {
+    return _children.forEachReverseUntil((View child, Placement placement) {
+      return child.computeHover();
     });
-    if(hoveredViews.isNotEmpty) {
-      hoveredViews.last.doMouseMoved(e);
-    }
   }
-  
+
   void computeMouseMoved(View child, Placement placement) {
     Translation translation = placement.computeTranslation(width, height);
     TPoint transformedPoint = translation.inverse().applyToPoint(mouse);
@@ -178,21 +129,81 @@ abstract class View {
     });
   }
 
-  void doKeyUp(KeyboardEvent e) {}
-  void doKeyDown(KeyboardEvent e) {}
-  void doMouseWheel(WheelEvent e) {}
-  void doMouseDown(MouseEvent e) {}
-  void doMouseUp(MouseEvent e) {}
-  void doMouseMoved(MouseEvent e) {}
-  void doMouseEntered() {}
-  void doMouseExited() {}
+  void eventKeyUp(KeyboardEvent e) {
+    if(keyFocusView.eventListeners.containsKey(Event.KEY_UP)) {
+      keyFocusView.eventListeners[Event.KEY_UP](e);
+    }
+  }
+  
+  void eventKeyDown(KeyboardEvent e) {
+    if(keyFocusView.eventListeners.containsKey(Event.KEY_DOWN)) {
+      keyFocusView.eventListeners[Event.KEY_DOWN](e);
+    }
+  }
+  
+  void eventMouseWheel(WheelEvent e) {
+    getViewForEvent(Event.MOUSE_WHEEL)(e);
+    for(Function listener in View.globalEventListeners[Event.MOUSE_WHEEL]) {
+      listener(e);
+    }
+  }
+  
+  void eventMouseDown(MouseEvent e) {
+    getViewForEvent(Event.MOUSE_DOWN)(e);
+    for(Function listener in View.globalEventListeners[Event.MOUSE_DOWN]) {
+      listener(e);
+    }
+  }
+  
+  void eventMouseUp(MouseEvent e) {
+    getViewForEvent(Event.MOUSE_UP)(e);
+    for(Function listener in View.globalEventListeners[Event.MOUSE_UP]) {
+      listener(e);
+    }
+    if(mouseFocusViews.isNotEmpty) {
+      keyFocusView = mouseFocusViews.last;
+    }
+  }
+  
+  void eventMouseMoved(MouseEvent e, TPoint point) {
+    mouse = new TPoint.fromPoint(point);
+    _children.forEach((child, placement) {
+      computeMouseMoved(child, placement);
+    });
+    getViewForEvent(Event.MOUSE_MOVED)(e);
+    for(Function listener in View.globalEventListeners[Event.MOUSE_MOVED]) {
+      listener(e);
+    }
+  }
+
+  Function getViewForEvent(String event) {
+    for(View view in View.mouseFocusViews.reversed) {
+      if(view.eventListeners.containsKey(event)) {
+        return view.eventListeners[event];
+      }
+    }
+    return (_){};
+  }
   
   void drawComponent(CanvasRenderingContext2D context) {}
-  
+
+  void pathBorder(CanvasRenderingContext2D context) {
+    context..beginPath()
+      ..moveTo(0, 0)
+      ..lineTo(0, height)
+      ..lineTo(width, height)
+      ..lineTo(width, 0)
+      ..closePath();
+  }
+
   bool containsPoint(TPoint point) {
     return point.x > 0 && point.x < width && point.y > 0 && point.y < height;
   }
-  
+
+  void addChildAt(View child, Function translation, Function dimension) {
+    addChild(child, new Placement(translation, dimension));
+  }
+
   void addChild(View child, Placement placement) {
     child.parent = this;
     _children.add(child, placement);

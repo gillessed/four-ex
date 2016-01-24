@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class EconomyContextButton extends ContextButton {
   static const num OFFSET = 3;

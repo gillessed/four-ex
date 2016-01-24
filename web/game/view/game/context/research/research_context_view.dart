@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class ResearchContextView extends ContextView {
   static const num BUBBLE_WIDTH = 300;
@@ -69,6 +69,9 @@ class ResearchContextView extends ContextView {
 
     technologyPopup = new TechnologyPopup(model.humanPlayer);
     addChild(technologyPopup, Placement.NO_OP);
+    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
   }
 
   @override
@@ -76,20 +79,17 @@ class ResearchContextView extends ContextView {
     return contextButton;
   }
 
-  @override
-  void doMouseDown(MouseEvent e) {
+  void onMouseDown(MouseEvent e) {
     if(e.button == 0 && e.ctrlKey) {
       mapDrag = true;
     }
   }
 
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     mapDrag = false;
   }
   
-  @override
-  void doMouseMoved(MouseEvent e) {
+  void onMouseMoved(MouseEvent e) {
     if(mapDrag) {
       num dx = mouse.x - oldMouse.x;
       num dy = mouse.y - oldMouse.y;

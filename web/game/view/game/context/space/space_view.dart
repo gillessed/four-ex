@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 /**
  * This view draws the main space view with the grid, stars,
@@ -18,9 +18,14 @@ class SpaceView extends View {
   SpaceObject hover;
   
   SpaceView(this.model, this.spaceContextView) {
-   space = model.space;
-   spaceTranslation = new Translation(0, 0);
-   spaceScale = new UniformScale(LIGHT_YEAR_RATIO);
+    space = model.space;
+    spaceTranslation = new Translation(0, 0);
+    spaceScale = new UniformScale(LIGHT_YEAR_RATIO);
+    eventListeners[Event.MOUSE_WHEEL] = onMouseWheel;
+    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
+    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
   }
   
   @override
@@ -109,22 +114,6 @@ class SpaceView extends View {
   num get smallestSide => min(width, height);  
   num get minScale => biggestDiff;
   num get maxScale => smallestSide;
-
-  @override
-  void doMouseWheel(WheelEvent e) {
-    // Scale space view within bounds
-    num oldScale = spaceScale.s;
-    spaceScale.s *= pow(1.003, -e.deltaY);
-    if(spaceScale.s > maxScale) {
-      spaceScale.s = maxScale;
-    } else if (spaceScale.s < minScale) {
-      spaceScale.s = minScale;
-    }
-    
-    // Translate space to keep mouse position static
-    num factor = (1 / spaceScale.s - 1 / oldScale);
-    changeTranslation(mouse.x * factor, mouse.y * factor);
-  }
   
   /**
    * Offset the space translation by a fixed about.
@@ -164,23 +153,35 @@ class SpaceView extends View {
     spaceTranslation.dy = dy;
   }
 
-  @override
-  void doMouseDown(MouseEvent e) {
+  void onMouseWheel(WheelEvent e) {
+    // Scale space view within bounds
+    num oldScale = spaceScale.s;
+    spaceScale.s *= pow(1.003, -e.deltaY);
+    if(spaceScale.s > maxScale) {
+      spaceScale.s = maxScale;
+    } else if (spaceScale.s < minScale) {
+      spaceScale.s = minScale;
+    }
+
+    // Translate space to keep mouse position static
+    num factor = (1 / spaceScale.s - 1 / oldScale);
+    changeTranslation(mouse.x * factor, mouse.y * factor);
+  }
+
+  void onMouseDown(MouseEvent e) {
     if(e.button == 0 && e.ctrlKey) {
       mapDrag = true;
     }
   }
 
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     mapDrag = false;
     if(e.button == 0 && !e.ctrlKey) {
       spaceContextView.setStatusView(hover);
     }
   }
   
-  @override
-  void doMouseMoved(MouseEvent e) {
+  void onMouseMoved(MouseEvent e) {
     if(mapDrag == true) {
       double dx = (mouse.x - oldMouse.x) / spaceScale.s;
       double dy = (mouse.y - oldMouse.y) / spaceScale.s;
@@ -198,8 +199,7 @@ class SpaceView extends View {
     }
   }
   
-  @override
-  void doMouseExited() {
+  void onMouseExited() {
     mapDrag = false;    
   }
 }

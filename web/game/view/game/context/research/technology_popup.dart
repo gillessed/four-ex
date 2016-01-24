@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 enum Quadrant {
   TOP_LEFT,
@@ -23,7 +23,6 @@ class TechnologyPopup extends View {
   
   TechnologyPopup(this.player) {
     isVisible = false;
-    isTransparent = true;
   }
   
   @override
@@ -105,14 +104,14 @@ class TechnologyPopup extends View {
       subText = 'Undiscovered: 0 / ${technology.cost}';
     }
     context
-      ..translate(0, 20)
+      ..translate(0, 30)
       ..fillStyle = 'rgb(255,255,255)'
       ..font = '20px geo'
       ..textAlign = 'center'
       ..fillText(subText, 0, 0);
 
     context
-      ..translate(-WIDTH / 2, 20)
+      ..translate(-WIDTH / 2, 40)
       ..fillStyle = 'rgb(255,255,255)'
       ..font = '20px geo';
     int lines = Paragraph.drawParagraph(

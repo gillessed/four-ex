@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class ColoniesContextView extends ContextView {
   static const num SELECTOR_HEIGHT = 40;
@@ -22,14 +22,11 @@ class ColoniesContextView extends ContextView {
     starSystemSelector = new StarSystemSelector(model.humanPlayer);
     starSystemSelectorView = new ListSelectorView(
         starSystemSelector,
-        300, 
+        300,
         (ControlledStarSystem controlled) {return controlled.starSystem.name;},
         model.humanPlayer.color.color1,
         'rgb(200,200,200)',
         '30px geo',
-        'rgb(0,0,0)',
-        'rgb(50,50,50)',
-        'rgb(255,255,255)',
         2,
         onItemChanged: (_) {
           // TODO: implement when we have more than one star system
@@ -45,14 +42,11 @@ class ColoniesContextView extends ContextView {
     colonySelector = new ColonySelector(starSystemSelector.currentStarSystem);
     colonySelectorView = new ListSelectorView(
         colonySelector,
-        300, 
+        300,
         (Colony colony) {return colony.planet.name;},
         model.humanPlayer.color.color1,
         'rgb(200,200,200)',
         '30px geo',
-        'rgb(0,0,0)',
-        'rgb(50,50,50)',
-        'rgb(255,255,255)',
         2,
         onItemChanged: (Colony newValue, Colony oldValue) {
           colonyImprovementView.colony = newValue;
@@ -69,7 +63,7 @@ class ColoniesContextView extends ContextView {
         })
     );
 
-    colonyImprovementView = new ColonyImprovementsView();
+    colonyImprovementView = new ColonyImprovementsView(colonySelector.current());
     colonyShipsView = new ColonyShipView();
 
     Map<String, View> panels = {
@@ -77,11 +71,10 @@ class ColoniesContextView extends ContextView {
       'Ships': colonyShipsView
     };
     TabbedPanel coloniesTabbedPanel = new TabbedPanel(
-        gameView.model.humanPlayer,
         panels,
         'Improvements',
         0,
-        100,
+        150,
         30,
         Layout.TOP
     );
