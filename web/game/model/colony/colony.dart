@@ -5,13 +5,23 @@ class Colony {
   ControlledStarSystem system;
   Planet planet;
   int population;
+  List<OrbitalPlatform> orbitalPlatforms;
   // TODO: improvements
   
   Colony.max(SpaceProperties spaceProperties, this.planet) {
     planet.colony = this;
     population = getMaxPopulation();
+    orbitalPlatforms = [];
   }
-  
+
+  List<Surface> getSurfaces() {
+    List<Surface> surfaces = [new Surface(planet.tiles, 'Planet Surface')];
+    for(OrbitalPlatform platform in orbitalPlatforms) {
+      surfaces.add(new Surface(platform.tiles, 'Platform ${orbitalPlatforms.indexOf(platform) + 1}'));
+    }
+    return surfaces;
+  }
+
   num getPopulationMil() {
     return population ~/ 1000000;
   }
@@ -50,4 +60,10 @@ class Colony {
     //TODO: calculate research bonus
     return 1;
   }
+}
+
+class Surface {
+  HexagonalLattice lattice;
+  String name;
+  Surface(this.lattice, this.name);
 }

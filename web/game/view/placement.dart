@@ -16,6 +16,11 @@ class Dimension {
       return new Dimension(width, height);
     };
   };
+  static Function PLUS = (num width, num height) {
+    return (a, b) {
+      return new Dimension(a + width, b + height);
+    };
+  };
   num width;
   num height;
   Dimension(this.width, this.height);

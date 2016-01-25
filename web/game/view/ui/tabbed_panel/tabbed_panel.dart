@@ -108,7 +108,7 @@ class Tab extends Button {
   @override
   String getFillColor() {
     if(selected) {
-      return 'rgb(0, 0, 0)';
+      return theme.color2Alpha;
     } else {
       return super.getFillColor();
     }

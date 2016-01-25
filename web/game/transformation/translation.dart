@@ -5,6 +5,9 @@ class Translation extends Transformation {
   static Function CONSTANT = (num x, num y) {
     return (a, b) {return new Translation(x, y);};
   };
+  static Function PLUS = (num x, num y) {
+    return (a, b) {return new Translation(a + x, b + y);};
+  };
   static var ZERO_F = (num width, num height) {
     return ZERO;
   };

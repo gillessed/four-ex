@@ -11,9 +11,11 @@ part 'ui/scroll/vertical_scroll_view.dart';
 part 'game/menu/vertical_scroll_view_depr.dart';
 part 'ui/button/button.dart';
 part 'ui/selector/list_selector_view.dart';
+part 'ui/selector/index_list_selector.dart';
 part 'ui/paragraph.dart';
 part 'ui/tabbed_panel/tabbed_panel.dart';
 part 'ui/drag/draggable_view.dart';
+part 'ui/title/title_view.dart';
 
 abstract class View {
 

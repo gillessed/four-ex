@@ -27,7 +27,7 @@ class Planet extends PlanetaryBody {
     List<num> populationRange = planetTypeJson['POPULATION_RANGE'];
     num populationRatio = (random.nextDouble() * (populationRange[1] - populationRange[0]) + populationRange[0]);
     
-    TileBonusProbabilities tileBonusProbabitilies = new TileBonusProbabilities.fromJson(planetTypeJson['TILE_BONUSES']);
+    TileBonusProbabilities tileBonusProbabilities = new TileBonusProbabilities.fromJson(planetTypeJson['TILE_BONUSES']);
     
     HexagonalLattice<Tile> tiles = new HexagonalLattice.empty(true, false, TILE_WIDTH, TILE_HEIGHT);
     for(int i = 0; i < quality; i++) {
@@ -38,7 +38,7 @@ class Planet extends PlanetaryBody {
         x = point['x'];
         y = point['y'];
       } while(tiles.get(x, y) != null);
-      Tile tile = new Tile.generate(properties, tileBonusProbabitilies);
+      Tile tile = new Tile.generate(properties, tileBonusProbabilities);
       tiles.set(tile, x, y);
     }
     

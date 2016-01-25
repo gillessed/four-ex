@@ -12,6 +12,7 @@ part 'bonus/bonus.dart';
 part 'bonus/tile_bonuses.dart';
 part 'colony/colony.dart';
 part 'colony/improvement.dart';
+part 'colony/orbital_platform.dart';
 part 'space/space.dart';
 part 'space/space_properties.dart';
 part 'space/star_system/star_system.dart';

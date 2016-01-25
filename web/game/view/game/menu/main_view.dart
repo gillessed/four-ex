@@ -58,7 +58,7 @@ class MainView extends View {
   
   List<PlayerProperties> getDefaultPlayerProperties() {
 //    PlayerColorPalette p1 = new PlayerColorPalette('rgb(210,66,9)', 'rgb(237,128,9)', 'rgb(0,0,255)', 'rgb(0,0,255)');
-    Theme p1 = new Theme('rgb(9,66,210)', 'rgb(9,128,237)', 'rgb(0,115,180)', 'rgb(0,0,255)');
+    Theme p1 = new Theme('rgb(9,66,210)', 'rgba(9,128,237,0.1)', 'rgb(9,128,237)', 'rgba(9,128,237, 0.1)', 'rgb(0,115,180)', 'rgb(255,255,255)');
     Theme p2 = new Theme.single('rgb(255,0,0)');
     Theme p3 = new Theme.single('rgb(0,255,0)');
     return [

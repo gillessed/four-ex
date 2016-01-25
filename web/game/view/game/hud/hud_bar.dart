@@ -5,7 +5,7 @@ class HudBar extends View {
   static const num HUD_BAR_HEIGHT = 40;
   static const num CONTEXT_BUTTON_OFFSET = 30;
   static const num CONTEXT_BUTTON_MID_OFFSET = (TurnButton.BEVEL_WIDTH + TurnButton.HEIGHT) / 2 + CONTEXT_BUTTON_OFFSET;
-  
+
   Polygon get polygon {
     return new Polygon([
       new TPoint(1, 1),
@@ -73,6 +73,9 @@ class HudBar extends View {
     context..beginPath();
     polygon.drawPath(context);
     context
+      ..fillStyle = 'rgb(0,0,0)'
+      ..fill()
+      ..fillStyle = theme.color1Alpha
       ..fill()
       ..stroke();
      

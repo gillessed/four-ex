@@ -29,7 +29,8 @@ class ListSelectorView<T> extends View {
           T oldValue = selector.current();
           selector.previous();
           T newValue = selector.current();
-          if(oldValue != newValue) {
+          if(oldValue != newValue && onItemChanged != null) {
+            print(onItemChanged);
             onItemChanged(newValue, oldValue);
           }
         },
@@ -49,8 +50,10 @@ class ListSelectorView<T> extends View {
           T oldValue = selector.current();
           selector.next();
           T newValue = selector.current();
-          if(oldValue != newValue) {
+          if(oldValue != newValue && onItemChanged != null) {
+            print(onItemChanged);
             onItemChanged(newValue, oldValue);
+            print('huh');
           }
         },
         lineWidth,
@@ -77,6 +80,8 @@ class ListSelectorView<T> extends View {
       ..lineTo(width, height)
       ..lineTo(width, 0)
       ..closePath()
+      ..fillStyle = 'rgb(0,0,0)'
+      ..fill()
       ..stroke();
     context
       ..save()
@@ -141,8 +146,6 @@ class ListSelectorButton extends Button {
   bool containsPoint(TPoint point) {
     return polygon.contains(point);
   }
-  
-  
 }
 
 abstract class Selector<T> {

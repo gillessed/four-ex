@@ -1,16 +1,18 @@
 part of game_view;
 
-class ColonyTileView extends View {
+class LatticeView extends View {
   static const int HEXAGON_RADIUS = 60;
   static const int BONUS_INDICATOR_RADIUS = 8;
   static const num BONUS_RADIUS = -HEXAGON_RADIUS * 0.75 + BONUS_INDICATOR_RADIUS;
   static const num BONUS_SPREAD = 4;
   int population;
 
-  Colony colony;
-  HexagonalLattice lattice;
-  ColonyTileView(this.colony) {
-    lattice = new HexagonalLattice.empty(
+  Function latticeGetter;
+  HexagonalLattice get lattice => latticeGetter();
+  HexagonalLattice emptyLattice;
+
+  LatticeView(this.latticeGetter) {
+    emptyLattice = new HexagonalLattice.empty(
         true, false, Planet.TILE_WIDTH, Planet.TILE_HEIGHT);
   }
 
@@ -24,13 +26,15 @@ class ColonyTileView extends View {
       ..lineTo(width, height)
       ..lineTo(width, 0)
       ..closePath()
+      ..fillStyle = 'rgb(0,0,0)'
+      ..fill()
       ..clip()
       ..translate(HEXAGON_RADIUS + 10,
           HexagonalLattice.getHexagonHeight(HEXAGON_RADIUS) * 2 + 10);
     context
       ..strokeStyle = 'rgb(50,50,50)'
       ..lineWidth = 1;
-    lattice.points(HEXAGON_RADIUS).forEach((TPoint center) {
+    emptyLattice.points(HEXAGON_RADIUS).forEach((TPoint center) {
       context.save();
       context.translate(center.x, center.y);
       Polygon.getHexagon(HEXAGON_RADIUS).drawPath(context);
@@ -39,14 +43,16 @@ class ColonyTileView extends View {
     });
 
     context
-      ..strokeStyle = colony.system.player.color.color2
+      ..strokeStyle = theme.color2
       ..lineWidth = 2;
-    colony.planet.tiles
+    lattice
         .nonEmptyPoints(HEXAGON_RADIUS)
         .forEach((TPoint center, Tile tile) {
       context.save();
       context.translate(center.x, center.y);
       Polygon.getHexagon(HEXAGON_RADIUS).drawPath(context);
+      context.fillStyle = theme.color2Alpha;
+      context.fill();
       context.stroke();
       num bonusAngle = -PI / (BONUS_SPREAD * 2) * (tile.bonuses.length - 1);
       tile.bonuses.forEach((Bonus bonus) {
@@ -101,16 +107,5 @@ class ColonyTileView extends View {
     });
 
     context.restore();
-
-    context
-      ..strokeStyle = colony.system.player.color.color2
-      ..lineWidth = 2
-      ..beginPath()
-      ..moveTo(0, 0)
-      ..lineTo(0, height)
-      ..lineTo(width, height)
-      ..lineTo(width, 0)
-      ..closePath()
-      ..stroke();
   }
 }

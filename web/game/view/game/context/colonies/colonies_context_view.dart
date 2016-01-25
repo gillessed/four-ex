@@ -2,20 +2,17 @@ part of game_view;
 
 class ColoniesContextView extends ContextView {
   static const num SELECTOR_HEIGHT = 40;
-  static const OFFSET = 5;
+  static const num STATUS_HEIGHT = 150;
+  static const OFFSET = 1;
   
   ColoniesContextButton contextButton;
   GameView gameView;
-  StarSystem currentStarsystem;
-  Colony currentColony;
   ListSelectorView<ControlledStarSystem> starSystemSelectorView;
   StarSystemSelector starSystemSelector;
   ListSelectorView<Colony> colonySelectorView;
   ColonySelector colonySelector;
-
   ColonyImprovementsView colonyImprovementView;
-  ColonyShipView colonyShipsView;
-  //ColoniesTileView coloniesTileView;
+  ColonyStatusView colonyStatusView;
   
   ColoniesContextView(Game model, this.gameView) : super(model) {
     contextButton = new ColoniesContextButton(model, gameView, this);
@@ -25,7 +22,7 @@ class ColoniesContextView extends ContextView {
         300,
         (ControlledStarSystem controlled) {return controlled.starSystem.name;},
         model.humanPlayer.color.color1,
-        'rgb(200,200,200)',
+        'rgb(255,255,255)',
         '30px geo',
         2,
         onItemChanged: (_) {
@@ -45,13 +42,9 @@ class ColoniesContextView extends ContextView {
         300,
         (Colony colony) {return colony.planet.name;},
         model.humanPlayer.color.color1,
-        'rgb(200,200,200)',
+        'rgb(255,255,255)',
         '30px geo',
-        2,
-        onItemChanged: (Colony newValue, Colony oldValue) {
-          colonyImprovementView.colony = newValue;
-          colonyShipsView.colony = newValue;
-        });
+        2);
     addChild(
       colonySelectorView,
       new Placement(
@@ -63,29 +56,28 @@ class ColoniesContextView extends ContextView {
         })
     );
 
-    colonyImprovementView = new ColonyImprovementsView(colonySelector.current());
-    colonyShipsView = new ColonyShipView();
-
-    Map<String, View> panels = {
-      'Improvements': colonyImprovementView,
-      'Ships': colonyShipsView
-    };
-    TabbedPanel coloniesTabbedPanel = new TabbedPanel(
-        panels,
-        'Improvements',
-        0,
-        150,
-        30,
-        Layout.TOP
-    );
+    colonyStatusView = new ColonyStatusView(() => colonySelector.current());
     addChild(
-      coloniesTabbedPanel,
+        colonyStatusView,
+        new Placement(
+            (num parentWidth, num parentHeight) {
+          return new Translation(OFFSET, SELECTOR_HEIGHT + STATUS_HEIGHT);
+        },
+            (num parentWidth, num parentHeight) {
+          return new Dimension(parentWidth - OFFSET * 2, STATUS_HEIGHT);
+        })
+    );
+
+
+    colonyImprovementView = new ColonyImprovementsView(() => colonySelector.current());
+    addChild(
+      colonyImprovementView,
       new Placement(
         (num parentWidth, num parentHeight) {
-          return new Translation(OFFSET, SELECTOR_HEIGHT + OFFSET);
+          return new Translation(OFFSET, SELECTOR_HEIGHT + OFFSET + STATUS_HEIGHT);
         },
         (num parentWidth, num parentHeight) {
-          return new Dimension(parentWidth - OFFSET * 2, parentHeight - SELECTOR_HEIGHT - 2 * OFFSET);
+          return new Dimension(parentWidth - OFFSET * 2, parentHeight - SELECTOR_HEIGHT - 2 * OFFSET - STATUS_HEIGHT);
         })
     );
   }
