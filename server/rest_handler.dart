@@ -107,11 +107,11 @@ abstract class RestHandler {
     } else {
       throw new StateError("Unknown method type ${request.method}.");
     }
-    String reponseString = JSON.encode(responseBody);
-    request.response.headers.set(HttpHeaders.CONTENT_LENGTH, reponseString.length.toString());
+    String responseString = JSON.encode(responseBody);
+    request.response.headers.set(HttpHeaders.CONTENT_LENGTH, responseString.length.toString());
     request.response.headers.set(HttpHeaders.CONTENT_TYPE, 'application/json');
     request.response.statusCode = HttpStatus.OK;
-    request.response.write(reponseString);
+    request.response.write(responseString);
     request.response.close();
   }
   

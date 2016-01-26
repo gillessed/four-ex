@@ -46,6 +46,8 @@ class RestServer {
   void _serveFile(HttpRequest request, String path) {
     HttpResponse response = request.response;
     File file = new File('${basePath}/web${path}');
+    print(file.path);
+    print(file.existsSync());
     if (file.existsSync()) {
       if (path.endsWith('html')) {
         response.headers.set(HttpHeaders.CONTENT_TYPE, 'text/html');
