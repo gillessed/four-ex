@@ -1,0 +1,15 @@
+{
+  "__TYPE__": "object",
+  "NON_PLANET_FREQUENCY": {
+    "__TYPE__": "num"
+  },
+  "PLANET_COUNT_DISTRIBUTION": {
+      "__TYPE__": "array",
+      "__MODEL__": {
+        "__TYPE__": "num"
+      }
+  },
+  "DEFAULT_PLANET_POPULATION": {
+    "__TYPE__": "num"
+  }
+}
