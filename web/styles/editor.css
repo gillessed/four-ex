@@ -1,0 +1,25 @@
+table.object-table {
+    padding: 10px;
+}
+
+.object-label-cell {
+    padding-top: 10px;
+    padding-left: 10px;
+    vertical-align: top;
+    width: 300px;
+}
+.object-child-container {
+    margin-right: 10px;
+}
+.object-row {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.object-value-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+.delete-optional-object {
+    width: 100px;
+}

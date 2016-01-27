@@ -1,13 +1,50 @@
 library editor;
 
 import 'dart:html';
+import 'dart:convert';
+import 'schema/schema.dart';
+import 'component/component.dart';
 import '../game/model/model.dart';
 
-part 'constant_editor.dart';
-
 main() {
+
+  String schemaString = '''
+{
+  "__TYPE__": "obj",
+  "NON_PLANET_FREQUENCY": {
+    "__TYPE__": "str"
+  },
+  "PLANET_COUNT_DISTRIBUTION": {
+    "__TYPE__": "obj",
+    "SOME_KEY": {
+      "__TYPE__": "str"
+    },
+    "SOME_OTHER_KEY":  {
+      "__TYPE__": "obj",
+      "NESTED_KEY": {
+        "__TYPE__": "str"
+      }
+    }
+  },
+  "DEFAULT_PLANET_POPULATION": {
+    "__TYPE__": "str"
+  },
+  "OPTIONAL_KEY?": {
+    "__TYPE__": "str"
+  },
+  "OPTIONAL_OBJECT?": {
+    "__TYPE__": "obj",
+    "NESTED_OPTIONAL?": {
+      "__TYPE__": "str"
+    }
+  }
+}
+  ''';
+  Map json = JSON.decode(schemaString);
+  Schema schema = Schema.parse(json);
+
   new EditorMain(querySelector('div#main'), [
-    new ConstantEditor({})
+    new Editor('Constants', schema)
   ]).show();
 }
 
@@ -31,6 +68,12 @@ class EditorMain {
     button.innerHtml = 'Edit... <span class="caret"></span>';
     dropdown.children.add(button);
 
+    editorDiv = new DivElement();
+    editorDiv.id = 'editor-div';
+    editorDiv.style.paddingLeft = '100px';
+    editorDiv.style.paddingRight = '100px';
+    editorDiv.style.paddingTop = '100px';
+
     UListElement dropdownMenu = new UListElement();
     dropdownMenu.classes = ['dropdown-menu'];
     dropdownMenu.setAttribute('aria-labelledby', button.id);
@@ -39,19 +82,27 @@ class EditorMain {
       AnchorElement link = new AnchorElement();
       link.setAttribute('href', '#');
       link.innerHtml = editor.name;
-      link.onClick.listen((_) => editor.show);
+      link.onClick.listen((_) {editor.show(editorDiv);});
       li.children.add(link);
       dropdownMenu.children.add(li);
     }
     dropdown.children.add(dropdownMenu);
+
     mainElement.children.add(dropdown);
+    mainElement.children.add(editorDiv);
   }
 }
 
-abstract class Editor {
+class Editor {
   String name;
+  Schema schema;
 
-  Editor(this.name);
+  Editor(this.name, this.schema);
 
-  void show(DivElement editor);
+  void show(DivElement container) {
+    container.children.clear();
+    Component component = Component.createComponent(schema);
+    Element element = component.show();
+    container.children.add(element);
+  }
 }

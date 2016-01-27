@@ -1,39 +1,36 @@
 library component;
 
 import 'dart:html';
+import '../schema/schema.dart';
 
 part 'object_component.dart';
-part 'object_schema.dart';
+part 'free_string_component.dart';
 
 abstract class Component<T extends Schema> {
   T schema;
 
   Component(this.schema);
 
-  void show(Element container);
-}
+  Element show();
 
-abstract class Schema<T> {
-
-  static final String TYPE = '__TYPE__';
-  static final String STRING = 'str';
-  static final String OBJECT = 'obj';
-  static final String BOOL = 'bool';
-  static final String NUM = 'num';
-  static final String ARRAY = 'array';
-
-  T value;
-
-  void loadValue(var obj);
-
-  static Schema parse(Map obj) {
-    if(!obj.containsKey(TYPE)) {
-      throw new StateError('Object ${obj} has no ${TYPE} key.');
+  static Component createComponent(Schema schema) {
+    if(schema is ObjectSchema) {
+      return new ObjectComponent(schema as ObjectSchema);
+    } else if(schema is StringSchema) {
+      StringSchema stringSchema = schema as StringSchema;
+      if(stringSchema.possibleValues.isEmpty) {
+        return new FreeStringComponent(stringSchema);
+      } else {
+        throw new SchemaError('Cant do bounded strings yet.');
+      }
     }
-    if(obj[TYPE] == OBJECT) {
-      return new ObjectSchema.parse(obj);
-    } else {
-      throw new StateError('Object ${obj} type unknown: ${obj[TYPE]}.');
-    }
+    throw new SchemaError('Unknown schema type ${schema}.');
+  }
+
+  DivElement createPanel(Element child) {
+    DivElement panel = new DivElement();
+    panel.style.border = '1px solid black';
+    panel.children.add(child);
+    return panel;
   }
 }
