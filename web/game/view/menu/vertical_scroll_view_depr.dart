@@ -1,4 +1,4 @@
-part of view;
+part of game_view;
 
 class VerticalScrollView2 extends View {
   

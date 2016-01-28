@@ -15,9 +15,9 @@ abstract class Component<T extends Schema> {
 
   static Component createComponent(Schema schema) {
     if(schema is ObjectSchema) {
-      return new ObjectComponent(schema as ObjectSchema);
+      return new ObjectComponent(schema);
     } else if(schema is StringSchema) {
-      StringSchema stringSchema = schema as StringSchema;
+      StringSchema stringSchema = schema;
       if(stringSchema.possibleValues.isEmpty) {
         return new FreeStringComponent(stringSchema);
       } else {

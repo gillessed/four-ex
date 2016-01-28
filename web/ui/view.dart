@@ -1,21 +1,23 @@
 library view;
 
 import 'dart:html' hide Event;
-import '../transformation/transformation.dart';
-import '../utils/utils.dart';
+import 'transformation/transformation.dart';
+import 'utils/utils.dart';
 import 'theme.dart';
 
 part 'placement.dart';
-part 'ui/event.dart';
-part 'ui/scroll/vertical_scroll_view.dart';
-part 'game/menu/vertical_scroll_view_depr.dart';
-part 'ui/button/button.dart';
-part 'ui/selector/list_selector_view.dart';
-part 'ui/selector/index_list_selector.dart';
-part 'ui/paragraph.dart';
-part 'ui/tabbed_panel/tabbed_panel.dart';
-part 'ui/drag/draggable_view.dart';
-part 'ui/title/title_view.dart';
+part 'components/style.dart';
+part 'components/event.dart';
+part 'components/scroll/vertical_scroll_view.dart';
+part 'components/button/button.dart';
+part 'components/selector/list_selector_view.dart';
+part 'components/selector/index_list_selector.dart';
+part 'components/paragraph.dart';
+part 'components/tabbed_panel/tabbed_panel.dart';
+part 'components/drag/draggable_view.dart';
+part 'components/title/title_view.dart';
+part 'components/label/label.dart';
+part 'components/input/input.dart';
 
 abstract class View {
 
@@ -43,6 +45,7 @@ abstract class View {
   View parent;
   TPoint mouse;
   TPoint oldMouse;
+  Style style;
   
   View({this.uiTheme, this.clip: false}) {
     _children = new BiList.blank();

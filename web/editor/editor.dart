@@ -4,7 +4,6 @@ import 'dart:html';
 import 'dart:convert';
 import 'schema/schema.dart';
 import 'component/component.dart';
-import '../game/model/model.dart';
 
 main() {
 

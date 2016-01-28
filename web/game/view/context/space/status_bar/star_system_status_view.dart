@@ -71,7 +71,9 @@ class StarStatusComponent extends View {
   SpaceView spaceView;
   StarSystem model;
   Game game;
-  StarStatusComponent(this.game, this.model, this.spaceView);
+  StarStatusComponent(this.game, this.model, this.spaceView) {
+    eventListeners[Event.MOUSE_UP] = onMouseUp;
+  }
   
   num get radius => (model.star.size / 100) * STAR_COMPONENT_RADIUS;
   
@@ -89,8 +91,7 @@ class StarStatusComponent extends View {
       ..fillText(model.name, 0, -(height / 2 + radius) / 2);
   }
   
-  @override
-  void doMouseUp(MouseEvent e) {
+  void onMouseUp(MouseEvent e) {
     if(mouse.distanceTo(new TPoint(width / 2, height / 2)) < radius) {
       spaceView.centerViewOnPoint(model.pos);
     }

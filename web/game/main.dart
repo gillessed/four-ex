@@ -4,9 +4,9 @@
 import 'dart:html' hide Event;
 import 'canvas.dart';
 import 'model/model.dart';
-import 'view/view.dart';
-import 'view/game/game_view.dart';
-import 'transformation/transformation.dart';
+import '../ui/view.dart';
+import 'view/game_view.dart';
+import '../ui/transformation/transformation.dart';
 
 CanvasElement canvasElement;
 ButtonElement createButton;
