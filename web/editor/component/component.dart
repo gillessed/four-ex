@@ -1,6 +1,7 @@
 library component;
 
-import 'dart:html';
+import 'dart:html' show CanvasRenderingContext2D;
+import '../../space_penguin/space_penguin.dart';
 import '../schema/schema.dart';
 
 part 'object_component.dart';
@@ -11,7 +12,9 @@ abstract class Component<T extends Schema> {
 
   Component(this.schema);
 
-  Element show();
+  View show();
+
+  int computeHeight();
 
   static Component createComponent(Schema schema) {
     if(schema is ObjectSchema) {
@@ -25,12 +28,5 @@ abstract class Component<T extends Schema> {
       }
     }
     throw new SchemaError('Unknown schema type ${schema}.');
-  }
-
-  DivElement createPanel(Element child) {
-    DivElement panel = new DivElement();
-    panel.style.border = '1px solid black';
-    panel.children.add(child);
-    return panel;
   }
 }

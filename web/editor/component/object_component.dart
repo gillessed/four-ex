@@ -1,72 +1,118 @@
 part of component;
 
 class ObjectComponent extends Component<ObjectSchema> {
-  ObjectComponent(ObjectSchema schema) : super(schema);
+
+  static int LABEL_WIDTH = 300;
+  ObjectComponentView table;
+
+  ObjectComponent(ObjectSchema schema) : super(schema) {
+    table = new ObjectComponentView();
+  }
 
   @override
-  Element show() {
-    TableElement table = new TableElement();
-    table.classes = ['object-table'];
+  View show() {
+    table.style
+      ..borderThickness = 2
+      ..borderColor = 'rgb(0, 0, 0)';
 
     schema.fields.forEach((String key, Schema target) {
-      TableRowElement row = new TableRowElement();
-      row.classes = ['object-row'];
+      Label label = new Label('${key}:');
+      label.style
+        ..background = 'rgb(255, 255 ,255)'
+        ..textColor = 'rgb(0, 0, 0)'
+        ..fontFamily = 'helvetica'
+        ..fontSize = 16
+        ..textAlign = 'left'
+        ..verticalAlign = 'middle';
 
-      TableCellElement cell1 = _generateLabelCell(key);
-      row.children.add(cell1);
+      Component subComponent = Component.createComponent(target);
+      View subView = subComponent.show();
 
-      TableCellElement cell2 = _generateChildContainerCell(target, 2);
-      row.children.add(cell2);
-      table.children.add(row);
+      RowView row = new RowView(() => subComponent.computeHeight());
+      row.addChildAt(
+        label,
+        Translation.ZERO_F,
+        (num parentWidth, num parentHeight) {
+          return new Dimension(LABEL_WIDTH, parentHeight);
+        }
+      );
+      row.addChildAt(
+        subView,
+        Translation.CONSTANT(LABEL_WIDTH, 0),
+        Dimension.PLUS(-LABEL_WIDTH, 0)
+      );
+
+      table.addRow(row);
     });
 
     schema.optionalFields.forEach((String key, Schema target) {
-      TableRowElement row = new TableRowElement();
-      row.classes = ['object-row'];
 
-      TableCellElement cell1 = _generateLabelCell(key.substring(0, key.length - 1));
-      row.children.add(cell1);
-
-      TableCellElement cell2 = _generateChildContainerCell(target, 1);
-      row.children.add(cell2);
-
-      TableCellElement cell3 = _generateDeleteOptionalButtonCell(target);
-      row.children.add(cell3);
-
-      table.children.add(row);
     });
 
-    return createPanel(table);
+    return table;
   }
 
-  TableCellElement _generateLabelCell(String key) {
-    LabelElement label = new LabelElement();
-    label.innerHtml = '${key}: ';
-    TableCellElement cell = new TableCellElement();
-    cell.classes = ['object-label-cell'];
-    cell.children.add(label);
-    return cell;
+  @override
+  int computeHeight() {
+    return table.computeHeight();
+  }
+}
+
+class ObjectComponentView extends View {
+  static final int PADDING = 5;
+  int offset = 10;
+  List<RowView> _rows;
+  Function sumFunction;
+
+  ObjectComponentView() {
+    _rows = [];
+    sumFunction = (var value, RowView nextRow) => value + nextRow.computeHeight() + offset;
   }
 
-  TableCellElement _generateChildContainerCell(Schema target, int colspan) {
-    Element childContainer = Component.createComponent(target).show();
-    if(childContainer is DivElement) {
-      childContainer.classes.add('object-child-container');
+  void addRow(RowView row) {
+    _rows.add(row);
+    addChildAt(
+      row,
+      (num parentWidth, num parentHeight) {
+        if(_rows.indexOf(row) == 0) {
+          return new Translation(PADDING, PADDING);
+        } else {
+          int sum = _rows.getRange(0, _rows.indexOf(row)).fold(0, sumFunction) + PADDING;
+          return new Translation(PADDING, sum);
+        }
+      },
+      (num parentWidth, num parentHeight) {
+        return new Dimension(parentWidth - 2 * PADDING, row.computeHeight());
+      }
+    );
+  }
+
+  void removeRow(RowView row) {
+    _rows.remove(row);
+  }
+
+  void removeRowAt(int index) {
+    removeRow(_rows[index]);
+  }
+
+  int computeHeight() => _rows.fold(0, sumFunction) + PADDING;
+
+  @override
+  void drawComponent(CanvasRenderingContext2D context) {
+    if(style.borderColor != null && style.borderThickness != null) {
+      context
+        ..lineWidth = style.borderThickness
+        ..strokeStyle = style.borderColor
+        ..beginPath()
+        ..rect(0, 0, width, height)
+        ..stroke();
     }
-    TableCellElement cell = new TableCellElement();
-    cell.classes = ['object-value-container'];
-    cell.children.add(childContainer);
-    cell.colSpan = colspan;
-    return cell;
   }
+}
 
-  TableCellElement _generateDeleteOptionalButtonCell(Schema target) {
-    SpanElement span = new SpanElement();
-    span.classes = ['glyphicon', 'glyphicon-remove'];
-    ButtonElement button = new ButtonElement()..classes = ['btn', 'btn-danger'];
-    button.children.add(span);
-    TableCellElement cell = new TableCellElement()..classes = ['delete-optional-object'];
-    cell.children.add(button);
-    return cell;
-  }
+class RowView extends View {
+  Function heightFunction;
+  RowView(this.heightFunction);
+
+  int computeHeight() => heightFunction();
 }

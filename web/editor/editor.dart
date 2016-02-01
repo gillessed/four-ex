@@ -1,11 +1,12 @@
 library editor;
 
-import 'dart:html';
+import 'dart:html' hide Dimension;
 import 'dart:convert';
 import 'schema/schema.dart';
 import 'component/component.dart';
+import '../space_penguin/space_penguin.dart';
 
-main() {
+void main() {
 
   String schemaString = '''
 {
@@ -42,54 +43,53 @@ main() {
   Map json = JSON.decode(schemaString);
   Schema schema = Schema.parse(json);
 
-  new EditorMain(querySelector('div#main'), [
+  EditorView view = new EditorView([
     new Editor('Constants', schema)
-  ]).show();
+  ]);
+  space_penguin(view);
 }
 
-class EditorMain {
+class EditorView extends View {
 
-  Element mainElement;
   List<Editor> editors;
-  Element editorDiv;
 
-  EditorMain(this.mainElement, this.editors);
+  EditorView(this.editors) {
+    Label label = new Label('Four Ex Editor');
+    label.style
+      ..background = 'rgb(255, 255, 255)'
+      ..textColor = 'rgb(0, 0, 0)'
+      ..fontFamily = 'geo'
+      ..fontSize = 80
+      ..textAlign = 'center'
+      ..verticalAlign = 'middle';
+    addChildAt(label,
+      Translation.ZERO_F,
+      (num parentWidth, num parentHeight) {
+        return new Dimension(parentWidth, 150);
+      }
+    );
 
-  void show() {
-    DivElement dropdown = new DivElement();
-    dropdown.classes = ['dropdown'];
-    ButtonElement button = new ButtonElement();
-    button.classes = ['btn', 'btn-default', 'dropdown-toggle'];
-    button.id = 'editor-select-dropdown';
-    button.setAttribute('data-toggle', 'dropdown');
-    button.setAttribute('aria-haspopup', 'true');
-    button.setAttribute('aria-expanded', 'true');
-    button.innerHtml = 'Edit... <span class="caret"></span>';
-    dropdown.children.add(button);
-
-    editorDiv = new DivElement();
-    editorDiv.id = 'editor-div';
-    editorDiv.style.paddingLeft = '100px';
-    editorDiv.style.paddingRight = '100px';
-    editorDiv.style.paddingTop = '100px';
-
-    UListElement dropdownMenu = new UListElement();
-    dropdownMenu.classes = ['dropdown-menu'];
-    dropdownMenu.setAttribute('aria-labelledby', button.id);
-    for(Editor editor in editors) {
-      LIElement li = new LIElement();
-      AnchorElement link = new AnchorElement();
-      link.setAttribute('href', '#');
-      link.innerHtml = editor.name;
-      link.onClick.listen((_) {editor.show(editorDiv);});
-      li.children.add(link);
-      dropdownMenu.children.add(li);
-    }
-    dropdown.children.add(dropdownMenu);
-
-    mainElement.children.add(dropdown);
-    mainElement.children.add(editorDiv);
+    Component component = Component.createComponent(editors[0].schema);
+    addChildAt(
+      component.show(),
+      (num parentWidth, num parentHeight) {
+        return new Translation(30, 150);
+      },
+      (num parentWidth, num parentHeight) {
+        return new Dimension(parentWidth - 60, component.computeHeight());
+      }
+    );
   }
+
+  @override
+  drawComponent(CanvasRenderingContext2D context) {
+    context
+      ..fillStyle = 'rgb(255, 255, 255)'
+      ..beginPath()
+      ..rect(0, 0, width, height)
+      ..fill();
+  }
+
 }
 
 class Editor {
@@ -98,10 +98,10 @@ class Editor {
 
   Editor(this.name, this.schema);
 
-  void show(DivElement container) {
-    container.children.clear();
-    Component component = Component.createComponent(schema);
-    Element element = component.show();
-    container.children.add(element);
-  }
+//  void show(DivElement container) {
+//    container.children.clear();
+//    Component component = Component.createComponent(schema);
+//    Element element = component.show();
+//    container.children.add(element);
+//  }
 }

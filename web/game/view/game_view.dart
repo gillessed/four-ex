@@ -3,9 +3,8 @@ library game_view;
 import 'dart:html' hide Dimension, Event;
 import 'dart:async';
 import 'dart:math';
-import '../../ui/view.dart';
-import '../../ui/theme.dart';
-import '../../ui/transformation/transformation.dart';
+import '../../space_penguin/theme.dart';
+import '../../space_penguin/space_penguin.dart';
 import '../model/model.dart';
 import '../rest/rest_controller.dart';
 
