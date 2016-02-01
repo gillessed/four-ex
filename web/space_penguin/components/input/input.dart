@@ -7,10 +7,10 @@ class Input extends View {
   String _value;
   void set value(String str) {
     _value = str;
+    listen.fire(Event.ON_CHANGE, str);
     textMeasurements?.clear();
   }
   String get value => _value;
-  InputListeners listen;
   int cursorIndex;
   int highlightEnd;
   bool drag;
@@ -23,29 +23,28 @@ class Input extends View {
     style.fontSize = 16;
     style.fontFamily = 'arial';
     value = '';
-    listen = new InputListeners();
     cursorIndex = 0;
     highlightEnd = 0;
     drag = false;
     textMeasurements = [];
-    eventListeners[Event.MOUSE_DOWN] = (MouseEvent e) {
+    listen.on(Event.MOUSE_DOWN, (MouseEvent e) {
       View.keyFocusView = this;
       cursorIndex = getCursorPosition();
       highlightEnd = getCursorPosition();
       drag = true;
-    };
-    eventListeners[Event.MOUSE_MOVED] = (MouseEvent e) {
+    });
+    listen.on(Event.MOUSE_MOVED, (MouseEvent e) {
       if(drag) {
         highlightEnd = getCursorPosition();
       }
-    };
-    eventListeners[Event.MOUSE_UP] = (MouseEvent e) {
+    });
+    listen.on(Event.MOUSE_UP, (MouseEvent e) {
       drag = false;
-    };
-    eventListeners[Event.MOUSE_EXITED] = () {
+    });
+    listen.on(Event.MOUSE_EXITED, (MouseEvent e) {
       drag = false;
-    };
-    eventListeners[Event.KEY_DOWN] = (KeyEvent e) {
+    });
+    listen.on(Event.KEY_DOWN, (KeyEvent e) {
       if(e.ctrlKey) {
         if(e.keyCode == KeyCode.A) {
           cursorIndex = 0;
@@ -108,7 +107,7 @@ class Input extends View {
           }
         }
       }
-    };
+    });
   }
 
   @override
@@ -137,7 +136,7 @@ class Input extends View {
         ..strokeStyle = 'rgba(0, 153, 255, 0.5)'
         ..beginPath()
         ..moveTo(thickness + focusWidth / 2, thickness + focusWidth / 2)
-        ..lineTo(thickness / 2, height - thickness - focusWidth / 2)
+        ..lineTo(thickness + focusWidth / 2, height - thickness - focusWidth / 2)
         ..lineTo(width - thickness - focusWidth / 2, height - thickness - focusWidth / 2)
         ..lineTo(width - thickness - focusWidth / 2, thickness + focusWidth / 2)
         ..closePath()

@@ -69,9 +69,9 @@ class ResearchContextView extends ContextView {
 
     technologyPopup = new TechnologyPopup(model.humanPlayer);
     addChild(technologyPopup, Placement.NO_OP);
-    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
-    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
+    listen.on(Event.MOUSE_DOWN, onMouseDown);
+    listen.on(Event.MOUSE_UP, onMouseUp);
+    listen.on(Event.MOUSE_MOVED, onMouseMoved);
   }
 
   @override

@@ -9,15 +9,10 @@ abstract class View {
   static View keyFocusView;
   static List<View> mouseFocusViews = [];
   static Map<String, View> eventViews = {};
-  static Map<String, List<Function>> globalEventListeners = {
-    Event.MOUSE_WHEEL: [],
-    Event.MOUSE_UP: [],
-    Event.MOUSE_DOWN: [],
-    Event.MOUSE_MOVED: [],
-  };
+  static EventListener globalListen;
 
   BiList<View, Placement> _children;
-  Map<String, Function> eventListeners;
+  EventListener listen;
   Theme uiTheme;
   bool isVisible;
   bool clip;
@@ -34,7 +29,7 @@ abstract class View {
     mouse = new TPoint.zero();
     oldMouse = new TPoint.zero();
     isVisible = true;
-    eventListeners = {};
+    listen = new EventListener();
   }
 
   Theme get theme {
@@ -75,22 +70,13 @@ abstract class View {
       context.restore();
     }
   }
-
-  bool consumesMouseEvent() {
-    return eventListeners.containsKey(Event.MOUSE_DOWN)
-      || eventListeners.containsKey(Event.MOUSE_UP)
-      || eventListeners.containsKey(Event.MOUSE_MOVED)
-      || eventListeners.containsKey(Event.MOUSE_WHEEL)
-      || eventListeners.containsKey(Event.MOUSE_ENTERED)
-      || eventListeners.containsKey(Event.MOUSE_EXITED);
-  }
   
   bool computeHover() {
     if(containsPoint(mouse)) {
       if(computeChildHover()) {
         mouseFocusViews.insert(0, this);
         return true;
-      } else if(consumesMouseEvent()) {
+      } else if(listen.consumesMouseEvent()) {
         mouseFocusViews.insert(0, this);
         return true;
       }
@@ -117,36 +103,26 @@ abstract class View {
   }
 
   void eventKeyUp(KeyboardEvent e) {
-    if(keyFocusView != null && keyFocusView.eventListeners.containsKey(Event.KEY_UP)) {
-      keyFocusView.eventListeners[Event.KEY_UP](e);
-    }
+    keyFocusView?.listen.fire(Event.KEY_UP, (e));
   }
   
   void eventKeyDown(KeyboardEvent e) {
-    if(keyFocusView != null && keyFocusView.eventListeners.containsKey(Event.KEY_DOWN)) {
-      keyFocusView.eventListeners[Event.KEY_DOWN](e);
-    }
+    keyFocusView?.listen.fire(Event.KEY_UP, (e));
   }
   
   void eventMouseWheel(WheelEvent e) {
-    getViewForEvent(Event.MOUSE_WHEEL)(e);
-    for(Function listener in View.globalEventListeners[Event.MOUSE_WHEEL]) {
-      listener(e);
-    }
+    getViewForEvent(Event.MOUSE_WHEEL)?.fire(Event.MOUSE_WHEEL, e);
+    View.globalListen.fire(Event.MOUSE_WHEEL, (e));
   }
   
   void eventMouseDown(MouseEvent e) {
-    getViewForEvent(Event.MOUSE_DOWN)(e);
-    for(Function listener in View.globalEventListeners[Event.MOUSE_DOWN]) {
-      listener(e);
-    }
+    getViewForEvent(Event.MOUSE_DOWN)?.fire(Event.MOUSE_DOWN, e);
+    View.globalListen.fire(Event.MOUSE_DOWN, (e));
   }
   
   void eventMouseUp(MouseEvent e) {
-    getViewForEvent(Event.MOUSE_UP)(e);
-    for(Function listener in View.globalEventListeners[Event.MOUSE_UP]) {
-      listener(e);
-    }
+    getViewForEvent(Event.MOUSE_UP)?.fire(Event.MOUSE_UP, e);
+    View.globalListen.fire(Event.MOUSE_UP, (e));
     if(mouseFocusViews.isNotEmpty) {
       keyFocusView = mouseFocusViews.last;
     } else {
@@ -159,19 +135,17 @@ abstract class View {
     _children.forEach((child, placement) {
       computeMouseMoved(child, placement);
     });
-    getViewForEvent(Event.MOUSE_MOVED)(e);
-    for(Function listener in View.globalEventListeners[Event.MOUSE_MOVED]) {
-      listener(e);
-    }
+    getViewForEvent(Event.MOUSE_MOVED)?.fire(Event.MOUSE_MOVED, e);
+    View.globalListen.fire(Event.MOUSE_MOVED, (e));
   }
 
-  Function getViewForEvent(String event) {
+  EventListener getViewForEvent(Event event) {
     for(View view in View.mouseFocusViews.reversed) {
-      if(view.eventListeners.containsKey(event)) {
-        return view.eventListeners[event];
+      if(view.listen.consumes(event)) {
+        return view.listen;
       }
     }
-    return (_){};
+    return null;
   }
   
   void drawComponent(CanvasRenderingContext2D context) {}

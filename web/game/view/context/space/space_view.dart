@@ -21,11 +21,11 @@ class SpaceView extends View {
     space = model.space;
     spaceTranslation = new Translation(0, 0);
     spaceScale = new UniformScale(LIGHT_YEAR_RATIO);
-    eventListeners[Event.MOUSE_WHEEL] = onMouseWheel;
-    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
-    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
-    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
+    listen.on(Event.MOUSE_WHEEL, onMouseWheel);
+    listen.on(Event.MOUSE_DOWN, onMouseDown);
+    listen.on(Event.MOUSE_UP, onMouseUp);
+    listen.on(Event.MOUSE_MOVED, onMouseMoved);
+    listen.on(Event.MOUSE_EXITED, onMouseExited);
   }
   
   @override

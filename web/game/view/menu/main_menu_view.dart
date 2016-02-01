@@ -29,8 +29,8 @@ class MainMenuView extends View {
     }
     context.restore();
 
-    eventListeners[Event.KEY_DOWN] = onKeyDown;
-    eventListeners[Event.MOUSE_WHEEL] = onMouseWheel;
+    listen.on(Event.KEY_DOWN, onKeyDown);
+    listen.on(Event.MOUSE_WHEEL, onMouseWheel);
   }
 
   int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);

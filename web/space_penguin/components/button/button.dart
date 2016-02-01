@@ -12,7 +12,7 @@ abstract class Button extends View {
   
   Button({Function onClick}) {
     if(onClick != null) {
-      eventListeners[Event.MOUSE_UP] = (MouseEvent e) {onClick();};
+      listen.on(Event.MOUSE_UP, (MouseEvent e) => onClick());
     }
   }
   

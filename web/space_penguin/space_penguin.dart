@@ -9,7 +9,7 @@ import 'canvas.dart';
 part 'view.dart';
 part 'placement.dart';
 part 'components/style.dart';
-part 'components/event.dart';
+part 'event.dart';
 part 'components/scroll/vertical_scroll_view.dart';
 part 'components/button/button.dart';
 part 'components/selector/list_selector_view.dart';
@@ -106,13 +106,13 @@ void space_penguin(View mainView) {
 
     // Do mouse entered/exited
     for(View view in oldViews) {
-      if(!View.mouseFocusViews.contains(view) && view.eventListeners.containsKey(Event.MOUSE_EXITED)) {
-        view.eventListeners[Event.MOUSE_EXITED]();
+      if(!View.mouseFocusViews.contains(view)) {
+        view.listen.fire(Event.MOUSE_EXITED, null);
       }
     }
     for(View view in View.mouseFocusViews) {
-      if(!oldViews.contains(view) && view.eventListeners.containsKey(Event.MOUSE_ENTERED)) {
-        view.eventListeners[Event.MOUSE_ENTERED]();
+      if(!oldViews.contains(view)) {
+        view.listen.fire(Event.MOUSE_ENTERED, null);
       }
     }
 

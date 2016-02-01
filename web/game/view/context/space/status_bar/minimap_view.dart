@@ -14,10 +14,10 @@ class MinimapView extends View {
     space = model.space;
     minimapArea = new Rectangle(0, 0, 1, 1);
     mapDrag = false;
-    eventListeners[Event.MOUSE_DOWN] = onMouseDown;
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
-    eventListeners[Event.MOUSE_MOVED] = onMouseMoved;
-    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
+    listen.on(Event.MOUSE_DOWN, onMouseDown);
+    listen.on(Event.MOUSE_UP, onMouseUp);
+    listen.on(Event.MOUSE_MOVED, onMouseMoved);
+    listen.on(Event.MOUSE_EXITED, onMouseExited);
   }
   
   @override

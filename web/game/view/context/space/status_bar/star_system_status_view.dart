@@ -72,7 +72,7 @@ class StarStatusComponent extends View {
   StarSystem model;
   Game game;
   StarStatusComponent(this.game, this.model, this.spaceView) {
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    listen.on(Event.MOUSE_UP, onMouseUp);
   }
   
   num get radius => (model.star.size / 100) * STAR_COMPONENT_RADIUS;

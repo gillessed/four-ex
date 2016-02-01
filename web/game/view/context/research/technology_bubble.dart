@@ -8,9 +8,9 @@ class TechnologyBubble extends View {
   List<TechnologyBubble> childrenBubbles = [];
   
   TechnologyBubble(this.player, this.contextView, this.technology, this.translation) {
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
-    eventListeners[Event.MOUSE_ENTERED] = onMouseEntered;
-    eventListeners[Event.MOUSE_EXITED] = onMouseExited;
+    listen.on(Event.MOUSE_UP, onMouseUp);
+    listen.on(Event.MOUSE_ENTERED, onMouseEntered);
+    listen.on(Event.MOUSE_EXITED, onMouseExited);
   }
 
   @override

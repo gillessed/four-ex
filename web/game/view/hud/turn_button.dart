@@ -27,7 +27,7 @@ class TurnButton extends View {
       new TPoint(LOWER_BEVEL_WIDTH / 2, HEIGHT),
       new TPoint(-LOWER_BEVEL_WIDTH / 2, HEIGHT)
     ]);
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    listen.on(Event.MOUSE_UP, (_) => model.turn++);
   }
 
   @override
@@ -62,9 +62,5 @@ class TurnButton extends View {
   
   bool containsPoint(TPoint p) {
     return polygon.contains(p);
-  }
-
-  void onMouseUp(MouseEvent e) {
-    model.turn++;
   }
 }

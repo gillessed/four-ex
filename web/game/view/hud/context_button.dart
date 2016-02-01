@@ -25,7 +25,11 @@ abstract class ContextButton extends View {
       new TPoint(SIZE, SIZE),
       new TPoint(0, SIZE),
     ]);
-    eventListeners[Event.MOUSE_UP] = onMouseUp;
+    listen.on(Event.MOUSE_UP, (MouseEvent e) {
+      if(e.button == 0 && !e.ctrlKey) {
+        gameView.switchContextView(contextView);
+      }
+    });
   }
 
   bool containsPoint(TPoint p) {
@@ -57,12 +61,6 @@ abstract class ContextButton extends View {
       }
     } else {
       return model.humanPlayer.color.color2;
-    }
-  }
-
-  void onMouseUp(MouseEvent e) {
-    if(e.button == 0 && !e.ctrlKey) {
-      gameView.switchContextView(contextView);
     }
   }
 }

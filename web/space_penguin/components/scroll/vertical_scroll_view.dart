@@ -28,9 +28,7 @@ class VerticalScrollView extends View {
           return new Dimension(SCROLL_BAR_WIDTH, parentHeight);
         }
     );
-    eventListeners[Event.MOUSE_WHEEL] = (WheelEvent e) {
-      scroll(e.deltaY / 2);
-    };
+    listen.on(Event.MOUSE_WHEEL, (WheelEvent e) => scroll(e.deltaY / 2));
   }
 
   @override
@@ -90,11 +88,11 @@ class VerticalScrollBar extends View {
       scroller.computeTranslation,
       scroller.computeDimension
     );
-    eventListeners[Event.MOUSE_DOWN] = (e) {
+    listen.on(Event.MOUSE_DOWN, (MouseEvent e) {
       num mid = scroller.y + scroller.height / 2;
       scrollView.scroll(scrollView.mouse.y - mid);
       scroller.scrolling = true;
-    };
+    });
   }
 
   @override
@@ -124,17 +122,15 @@ class VerticalScroller extends View {
 
   VerticalScrollView scrollView;
   VerticalScroller(this.scrollView) {
-    View.globalEventListeners[Event.MOUSE_UP].add((MouseEvent e) {
+    listen.on(Event.MOUSE_UP, (MouseEvent e) {
       scrolling = false;
     });
-    View.globalEventListeners[Event.MOUSE_MOVED].add((WheelEvent e) {
+    listen.on(Event.MOUSE_MOVED, (MouseEvent e) {
       if(scrolling) {
         scrollView.scroll(scrollView.mouse.y - scrollView.oldMouse.y);
       }
     });
-    eventListeners[Event.MOUSE_DOWN] = (WheelEvent e) {
-      scrolling = true;
-    };
+    listen.on(Event.MOUSE_DOWN, (WheelEvent e) => scrolling = true);
   }
 
   @override
