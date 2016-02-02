@@ -9,7 +9,7 @@ abstract class View {
   static View keyFocusView;
   static List<View> mouseFocusViews = [];
   static Map<String, View> eventViews = {};
-  static EventListener globalListen;
+  static EventListener globalListen = new EventListener();
 
   BiList<View, Placement> _children;
   EventListener listen;
@@ -103,11 +103,15 @@ abstract class View {
   }
 
   void eventKeyUp(KeyboardEvent e) {
-    keyFocusView?.listen.fire(Event.KEY_UP, (e));
+    if(keyFocusView != null) {
+      keyFocusView.listen.fire(Event.KEY_UP, (e));
+    }
   }
   
   void eventKeyDown(KeyboardEvent e) {
-    keyFocusView?.listen.fire(Event.KEY_UP, (e));
+    if(keyFocusView != null) {
+      keyFocusView?.listen.fire(Event.KEY_DOWN, (e));
+    }
   }
   
   void eventMouseWheel(WheelEvent e) {

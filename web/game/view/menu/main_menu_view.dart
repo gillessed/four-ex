@@ -11,6 +11,9 @@ class MainMenuView extends View {
   
   MainMenuView(this.model, this.mainView) {
     terminal = new Terminal(model, mainView);
+
+    listen.on(Event.KEY_DOWN, onKeyDown);
+    listen.on(Event.MOUSE_WHEEL, onMouseWheel);
   }
   
   @override
@@ -28,14 +31,12 @@ class MainMenuView extends View {
              ..translate(0, LINE_HEIGHT);
     }
     context.restore();
-
-    listen.on(Event.KEY_DOWN, onKeyDown);
-    listen.on(Event.MOUSE_WHEEL, onMouseWheel);
   }
 
   int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);
 
   void onKeyDown(KeyboardEvent e) {
+    print('wat...');
     int keyCode = e.keyCode;
     if(keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
       if(e.shiftKey) {
