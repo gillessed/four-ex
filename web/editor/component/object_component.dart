@@ -46,7 +46,33 @@ class ObjectComponent extends Component<ObjectSchema> {
     });
 
     schema.optionalFields.forEach((String key, Schema target) {
+      Label label = new Label('${key}:');
+      label.style
+        ..background = 'rgb(255, 255 ,255)'
+        ..textColor = 'rgb(0, 0, 0)'
+        ..fontFamily = 'helvetica'
+        ..fontSize = 16
+        ..textAlign = 'left'
+        ..verticalAlign = 'middle';
 
+      Component subComponent = Component.createComponent(target);
+      View subView = subComponent.show();
+
+      RowView row = new RowView(() => subComponent.computeHeight());
+      row.addChildAt(
+        label,
+        Translation.ZERO_F,
+        (num parentWidth, num parentHeight) {
+          return new Dimension(LABEL_WIDTH, parentHeight);
+        }
+      );
+      row.addChildAt(
+        subView,
+        Translation.CONSTANT(LABEL_WIDTH, 0),
+        Dimension.PLUS(-LABEL_WIDTH, 0)
+      );
+
+      table.addRow(row);
     });
 
     return table;

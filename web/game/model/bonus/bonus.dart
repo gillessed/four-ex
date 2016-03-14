@@ -14,6 +14,11 @@ enum BonusType {
   HAPPINESS
 }
 
+enum Application {
+  PLUS,
+  TIMES
+}
+
 Map<BonusType, String> _BONUS_NAMES = {
   BonusType.INDUSTRY: 'Industry',
   BonusType.ECONOMY: 'Economy',
@@ -40,35 +45,45 @@ BonusType _getBonusType(String key) {
 
 class Bonus {
   BonusType type;
-  int amount;
+  num amount;
+  Application application;
   
-  Bonus(this.type, this.amount);
+  Bonus(this.type, this.amount, this.application);
 
   String humanReadableString() {
-    return '${_BONUS_NAMES[type]}: +${amount}';
+    return '${_BONUS_NAMES[type]}: ${application == Application.PLUS ? 'x' : '+'}${amount}';
   }
   
   static Bonus createTileBonus(BonusType type, List<num> probabilities) {
     num rand = random.nextDouble();
     num total = probabilities[0];
     if(rand < total) {
-      return new Bonus(type, BIG_BONUS);
+      return new Bonus(type, BIG_BONUS, Application.TIMES);
     }
     total += probabilities[1];
     if(rand < total) {
-      return new Bonus(type, BIGGER_BONUS);
+      return new Bonus(type, BIGGER_BONUS, Application.TIMES);
     }
     total += probabilities[2];
     if(rand < total) {
-      return new Bonus(type, BIGGEST_BONUS);
+      return new Bonus(type, BIGGEST_BONUS, Application.TIMES);
     }
     return null;
   }
   
   static List<Bonus> parseJsonList(Map json) {
     List<Bonus> bonuses = [];
-    json.forEach((String key, int amount) {
-      bonuses.add(new Bonus(_getBonusType(key), amount));
+    json.forEach((String key, String amountStr) {
+      Application application;
+      if(amountStr.startsWith('+')) {
+        application = Application.PLUS;
+      } else if(amountStr.startsWith('x')) {
+        application = Application.TIMES;
+      } else {
+        throw new StateError('Unknown application type: ${amountStr}');
+      }
+      num amount = num.parse(amountStr.substring(1));
+      bonuses.add(new Bonus(_getBonusType(key), amount, application));
     });
     return bonuses;
   }

@@ -36,7 +36,6 @@ class MainMenuView extends View {
   int get totalHeight => LINE_HEIGHT * (terminal.lines.length + 1);
 
   void onKeyDown(KeyboardEvent e) {
-    print('wat...');
     int keyCode = e.keyCode;
     if(keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
       if(e.shiftKey) {

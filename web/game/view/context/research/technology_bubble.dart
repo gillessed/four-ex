@@ -146,7 +146,7 @@ class TechnologyBubble extends View {
     }
   }
 
-  void onMouseEntered() {
+  void onMouseEntered(MouseEvent e) {
     contextView.technologyPopup.technology = technology;
     contextView.technologyPopup.bubblePoint = new TPoint(
         translation.dx + width / 2 + contextView.layerTranslation.dx,
@@ -155,7 +155,7 @@ class TechnologyBubble extends View {
     contextView.technologyPopup.isVisible = true;
   }
 
-  void onMouseExited() {
+  void onMouseExited(MouseEvent e) {
     contextView.technologyPopup.isVisible = false;
   }
 }

@@ -3,7 +3,7 @@ part of game_view;
 class ColonyImprovementsView extends View {
   static final MARGIN = 20;
   static final TILE_STATUS_HEIGHT = 300;
-  static final IMPROVEMENT_LIST_WIDTH = 400;
+  static final IMPROVEMENT_LIST_WIDTH = 300;
 
   Function colonyGetter;
   Colony get colony => colonyGetter();

@@ -4,7 +4,7 @@
     "DESCRIPTION": "Develop basic space research capabilities.",
     "COST": 10000,
     "BONUSES": {
-      "RESEARCH": 5
+      "RESEARCH": "x0.05"
     }
   },
   {
@@ -12,7 +12,7 @@
     "DESCRIPTION": "Create labs capable of experimenting through dimensional barriers.",
     "COST": 40000,
     "BONUSES": {
-      "RESEARCH": 5
+      "RESEARCH": "x0.05"
     },
     "PREREQUISITES": [
       "Scientific Method"
@@ -23,7 +23,7 @@
     "DESCRIPTION": "Grants a deeper understanding of the underlying fabric of the universe.",
     "COST": 90000,
     "BONUSES": {
-      "RESEARCH": 10
+      "RESEARCH": "x0.1"
     },
     "PREREQUISITES": [
       "Dimensional Laboratories"
@@ -35,7 +35,7 @@
     "COST": 5000,
     "REPEATABLE": true,
     "BONUSES": {
-      "RESEARCH": 2
+      "RESEARCH": "x0.01"
     },
     "PREREQUISITES": [
       "Scientific Method"

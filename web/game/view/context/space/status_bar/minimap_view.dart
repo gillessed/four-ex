@@ -83,7 +83,7 @@ class MinimapView extends View {
     }
   }
 
-  void onMouseExited() {
+  void onMouseExited(MouseEvent e) {
     mapDrag = false;
   }
   

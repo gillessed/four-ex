@@ -1,0 +1,10 @@
+[
+  {
+    "NAME": "Basic Factory",
+    "DESCRIPTION": "Increases production of a planet.",
+    "COST": 1000,
+    "BONUSES": {
+      "INDUSTRY": "+5"
+    }
+  }
+]
